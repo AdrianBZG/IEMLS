@@ -1,2 +1,2 @@
-# Multiagent_Environment_Simulator
-Multiagent Environment Simulator for the Intelligent Systems subject
+# IEMLS: Interactive Environment & Machine Learning Simulator
+Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject
