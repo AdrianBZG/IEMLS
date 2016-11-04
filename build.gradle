@@ -24,8 +24,14 @@ jar {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/org.moeaframework/moeaframework
+    compile group: 'org.moeaframework', name: 'moeaframework', version: '2.11'
+
     // https://mvnrepository.com/artifact/es.usc.citius.hipster/hipster-all
     compile group: 'es.usc.citius.hipster', name: 'hipster-all', version: '1.0.1'
+
+    // https://mvnrepository.com/artifact/io.reactivex/rxjavafx
+    compile group: 'io.reactivex', name: 'rxjavafx', version: '0.2.0'
 
     // https://mvnrepository.com/artifact/com.pholser/junit-quickcheck-core
     compile group: 'com.pholser', name: 'junit-quickcheck-core', version: '0.6.1'
