@@ -4,14 +4,32 @@
  * Copyright 20XX Eleazar Díaz Delgado. All rights reserved.
  */
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 
 /**
  * TODO: Commenta algo
  *
  */
-public class Main {
+public class Main extends Application {
+    public static String TITLE = "IEMLS";
+
 
     public static void main(String[] args) {
-        System.out.println("Hello World");
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(ClassLoader.getSystemClassLoader().getResource("Main.fxml"));
+
+        Scene scene = new Scene(root);
+        primaryStage.setTitle(TITLE);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
