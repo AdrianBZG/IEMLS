@@ -1,5 +1,5 @@
 /**
- * IEMLS - Agent.java 4/11/16
+ * IEMLS - AgentView.java 4/11/16
  * <p>
  * Copyright 20XX Eleazar Díaz Delgado. All rights reserved.
  */
@@ -24,9 +24,9 @@ import javafx.scene.shape.Circle;
  * TODO: REMOVE
  *
  */
-public class Agent extends Group {
+public class AgentView extends Group {
 
-    public Agent() {
+    public AgentView() {
         Circle left = new Circle(30);
         Circle right = new Circle(30);
         right.setTranslateX(100);

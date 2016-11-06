@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.contrib/junit-theories/5.0-alpha-3/4237129090e918da0dc47f54bfedef49593d799d/junit-theories-5.0-alpha-3.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.contrib/junit-theories/5.0-alpha-3/b5176944fb27b5431af7286f2c996d7ade915a14/junit-theories-5.0-alpha-3-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

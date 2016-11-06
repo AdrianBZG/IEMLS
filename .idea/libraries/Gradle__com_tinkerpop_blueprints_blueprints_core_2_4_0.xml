@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tinkerpop.blueprints/blueprints-core/2.4.0/316d18a772e94ffa8a780a97a2157abfb7ddf86d/blueprints-core-2.4.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tinkerpop.blueprints/blueprints-core/2.4.0/38102a134a2952a89aec464637998a585a2b8e28/blueprints-core-2.4.0-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
