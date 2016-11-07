@@ -110,4 +110,9 @@ public class EnvironmentMap<Obj extends IObject> {
     public void setGenerator(Optional<IGenerator> generator) {
         this.generator = generator;
     }
+
+    public void removeAt (int x, int y) {
+        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).removeAt(x % CHUNK_SIZE, y % CHUNK_SIZE);
+
+    }
 }

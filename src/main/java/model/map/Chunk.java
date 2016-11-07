@@ -91,4 +91,8 @@ public class Chunk<Obj extends IObject> {
     public HashMap<Integer, Obj> getChunk() {
         return chunk;
     }
+
+    public void removeAt (int x, int y) {
+        chunk.remove(y * getSize() + x);
+    }
 }
