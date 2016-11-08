@@ -6,9 +6,9 @@
 
 package view;
 
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +18,8 @@ import model.object.IObject;
 import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
 import java.util.Optional;
 
 /**
@@ -88,6 +90,17 @@ public class Environment extends Pane {
                     new Agent());
                 paintEnvironmentMap();
             });
+
+        JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
+                .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY))
+                .filter(nodeEvent -> nodeEvent.isControlDown())
+                .subscribe(mouseEvent -> {
+                    getEnvironmentMap().removeAt(
+                            (int)((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
+                            (int)((mouseEvent.getY() + getTranslation().getValue()) / getZoom())
+                            );
+                    paintEnvironmentMap();
+                });
     }
 
     /**

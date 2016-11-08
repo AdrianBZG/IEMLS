@@ -19,4 +19,6 @@ public class Agent implements IObject {
     public TypeObject getType() {
         return TypeObject.Agent;
     }
+
+
 }
