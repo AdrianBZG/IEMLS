@@ -11,4 +11,5 @@ package model.map.generator;
  *
  */
 public interface IGenerator {
+
 }

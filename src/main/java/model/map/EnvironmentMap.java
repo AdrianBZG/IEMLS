@@ -8,6 +8,7 @@ package model.map;
 
 import model.map.generator.IGenerator;
 import model.object.IObject;
+import rx.observables.JavaFxObservable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

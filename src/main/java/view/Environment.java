@@ -8,6 +8,7 @@ package view;
 
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -23,6 +24,7 @@ import java.util.Optional;
  * TODO: Implement a Timer, each tick of clock update all environment, with agent algorithms in independents threads.
  * TODO: The Threads could wait for ticks, or define a path to follow(but the main idea is work in real time with
  * TODO: dynamic environments, leaks of resources, agents blocking pass)
+ * TODO: LIMIT Zoom on getter and setters, 1..100
  *
  */
 public class Environment extends Pane {
@@ -51,13 +53,32 @@ public class Environment extends Pane {
     private double lastDragPosY = 0.0;
 
 
+    /**
+     * Generate a basic environment
+     */
     public Environment() {
         environmentMap = new EnvironmentMap();
         clipDraw();
-        drapMap();
+        dragMap();
+        drawObjects();
+        zoomMap();
+    }
 
+    /**
+     * Zoom map
+     */
+    private void zoomMap() {
+        JavaFxObservable.fromNodeEvents(this, ScrollEvent.ANY)
+            .subscribe(scrollEvent -> {
+                setZoom(scrollEvent.getDeltaY() / 10 + getZoom());
+                paintEnvironmentMap();
+            });
+    }
 
-
+    /**
+     * Draw Objects
+     */
+    private void drawObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
             .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.PRIMARY))
             .subscribe(mouseEvent -> {
@@ -92,7 +113,7 @@ public class Environment extends Pane {
     /**
      * Drag Map
      */
-    private void drapMap() {
+    private void dragMap() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_PRESSED)
             .filter(ev -> ev.getButton().equals(MouseButton.MIDDLE))
             .subscribe(mouseEvent -> {
@@ -124,7 +145,7 @@ public class Environment extends Pane {
                     (int)(Math.ceil(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
                     (int)(Math.ceil(getTranslation().getValue() / getZoom() + j)));
                 if (iObjectOptional.isPresent()) {
-                    Circle circle = new Circle(getZoom() / 2);
+                    Circle circle = new Circle(getZoom() / 2);  /// TODO: REPLACE with pencil object
                     circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
                     circle.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
                     getChildren().add(circle);
