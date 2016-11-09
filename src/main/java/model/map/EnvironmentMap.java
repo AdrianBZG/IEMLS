@@ -8,6 +8,7 @@ package model.map;
 
 import model.map.generator.IGenerator;
 import model.object.IObject;
+import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
 
 import java.util.ArrayList;
@@ -24,14 +25,14 @@ import java.util.Optional;
  *       TODO: specified format or serialize?
  * TODO: Unload unused Chunk from memory to disk
  */
-public class EnvironmentMap<Obj extends IObject> {
+public class EnvironmentMap {
 
     private static int CHUNK_SIZE = 32;
 
     /**
      * Partial Map with zones explored
      */
-    HashMap<Sector, Chunk<Obj>> map = new HashMap<>();
+    HashMap<Sector, Chunk> map = new HashMap<>();
 
     Optional<IGenerator> generator = Optional.empty();
 
@@ -50,7 +51,22 @@ public class EnvironmentMap<Obj extends IObject> {
      * @param generator
      */
     public EnvironmentMap(IGenerator generator) {
-        this.generator.of(generator);
+        this.generator = Optional.of(generator);
+        getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
+        generateChunkNoise(Sector.pos(0,0));
+    }
+
+    private void generateChunkNoise(Sector pos) {
+        if (generator.isPresent()) {
+            for (int i = 0; i < CHUNK_SIZE; i++) {
+                for (int j = 0; j < CHUNK_SIZE; j++) {
+                    double gen = generator.get().generateAtPoint((pos.getX() * CHUNK_SIZE + i) / 10.0, (pos.getY() * CHUNK_SIZE + j) / 10.0);
+                    if (gen > 0) {
+                        set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Agent());
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -59,22 +75,22 @@ public class EnvironmentMap<Obj extends IObject> {
      * @param y coordinate
      * @return Object from map
      */
-    public Optional<Obj> get(int x, int y) {
+    public Optional<IObject> get(int x, int y) {
         Sector sector = Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE);
-        Chunk<Obj> chunk = getMap().get(sector);
+        Chunk chunk = getMap().get(sector);
         if (chunk == null) {
+            Chunk chunkAux = new Chunk(CHUNK_SIZE);
+            getMap().put(sector, chunkAux);
             if (getGenerator().isPresent()) {
-                Chunk<Obj> chunkAux = new Chunk<>(getGenerator().get(), CHUNK_SIZE);
-                getMap().put(sector, chunkAux);
-                return chunkAux.get(x % CHUNK_SIZE, y % CHUNK_SIZE);
+                generateChunkNoise(sector);
+                return get(x, y);
             }
             else {
-                getMap().put(sector, new Chunk<>(CHUNK_SIZE));
                 return Optional.empty();
             }
         }
         else {
-            return chunk.get(x % CHUNK_SIZE, y % CHUNK_SIZE);
+            return chunk.get(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
         }
 
     }
@@ -82,10 +98,10 @@ public class EnvironmentMap<Obj extends IObject> {
     /**
      * Set a object into map position, it ensure that not overlap other objects
      */
-    public void set(int x, int y, Obj object) {
+    public void set(int x, int y, IObject object) {
         //TODO: Generate chunk if not exist into hashmap the chunk. Here is strange but isn't a big penalization
-        get(x, y);
-        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).set(x % CHUNK_SIZE, y % CHUNK_SIZE, object);
+        //get(x, y);
+        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
     }
 
     /**
@@ -100,7 +116,7 @@ public class EnvironmentMap<Obj extends IObject> {
     /**
      *
      */
-    public HashMap<Sector, Chunk<Obj>> getMap() {
+    public HashMap<Sector, Chunk> getMap() {
         return map;
     }
 
@@ -113,7 +129,7 @@ public class EnvironmentMap<Obj extends IObject> {
     }
 
     public void removeAt (int x, int y) {
-        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).removeAt(x % CHUNK_SIZE, y % CHUNK_SIZE);
+        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
 
     }
 }

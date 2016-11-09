@@ -14,12 +14,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import model.map.EnvironmentMap;
+import model.map.generator.SimplexNoise;
 import model.object.IObject;
 import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
 import java.util.Optional;
 
 /**
@@ -30,7 +29,7 @@ import java.util.Optional;
  *
  */
 public class Environment extends Pane {
-    private EnvironmentMap<IObject> environmentMap;
+    private EnvironmentMap environmentMap;
 
     /**
      * TODO: REMOVE NOT USED
@@ -59,11 +58,12 @@ public class Environment extends Pane {
      * Generate a basic environment
      */
     public Environment() {
-        environmentMap = new EnvironmentMap();
+        environmentMap = new EnvironmentMap(new SimplexNoise());
         clipDraw();
         dragMap();
         drawObjects();
         zoomMap();
+        paintEnvironmentMap();
     }
 
     /**
@@ -154,9 +154,26 @@ public class Environment extends Pane {
         getChildren().clear();
         for (int i = 0; i < getWidth() / getZoom(); i++) {
             for (int j = 0; j < getHeight() / getZoom(); j++) {
-                Optional<Agent> iObjectOptional = getEnvironmentMap().get(
-                    (int)(Math.ceil(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
-                    (int)(Math.ceil(getTranslation().getValue() / getZoom() + j)));
+                /*double noise = SimplexNoise.noise((getTranslation().getKey() / getZoom() + i) / 10, (getTranslation().getValue() / getZoom() + j) / 10);
+                if (noise > 0) {
+                    Circle circle = new Circle(getZoom() / 2);
+                    circle.setFill(new Color(0, 0, (noise+1)/2, 1));
+                    circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
+                    circle.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
+                    getChildren().add(circle);
+                }*/
+
+                Optional<IObject> iObjectOptional = getEnvironmentMap().get(
+                    (int)(Math.floor(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
+                    (int)(Math.floor(getTranslation().getValue() / getZoom() + j)));
+
+                //Text text = new Text();
+                //text.setFont(new Font(10));
+                //text.setText("(" +  (int)(Math.ceil(getTranslation().getKey() / getZoom() + i)) + ", " +
+                //    (int)(Math.ceil(getTranslation().getValue() / getZoom() + j)) + ")");
+                //text.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
+                //text.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
+                //getChildren().add(text);
                 if (iObjectOptional.isPresent()) {
                     Circle circle = new Circle(getZoom() / 2);  /// TODO: REPLACE with pencil object
                     circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());

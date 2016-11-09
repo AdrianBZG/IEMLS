@@ -16,7 +16,7 @@ import java.util.Optional;
  * TODO: Commenta algo
  *
  */
-public class Chunk<Obj extends IObject> {
+public class Chunk {
     /**
      * Represent chunk size
      */
@@ -25,7 +25,7 @@ public class Chunk<Obj extends IObject> {
     /**
      * Represent information about contents in the chunk
      */
-    HashMap<Integer, Obj> chunk = new HashMap<Integer, Obj>();
+    HashMap<Integer, IObject> chunk = new HashMap<>();
 
     /**
      * Generate a empty Chunk
@@ -36,22 +36,12 @@ public class Chunk<Obj extends IObject> {
     }
 
     /**
-     * Generate a chunk with specified generator
-     * TODO: implement a interface to generator
-     * @param generator
-     * @param chunkSize
-     */
-    public Chunk(IGenerator generator, int chunkSize) {
-
-    }
-
-    /**
      * Get a map object in the limited chunk
      * @param x
      * @param y
      * @return
      */
-    public Optional<Obj> get(int x, int y) {
+    public Optional<IObject> get(int x, int y) {
         if (x < getSize() && y < getSize()
             && x >= 0 && y >= 0) {
             return Optional.ofNullable(getUnsafe(x, y));
@@ -67,14 +57,14 @@ public class Chunk<Obj extends IObject> {
      * @param y
      * @return
      */
-    public Obj getUnsafe(int x, int y) {
+    public IObject getUnsafe(int x, int y) {
         return getChunk().get(y * getSize() + x);
     }
 
     /**
      * Set a IObject into a position into chunk
      */
-    public void set(int x, int y, Obj object) {
+    public void set(int x, int y, IObject object) {
         getChunk().put(y * getSize() + x, object);
     }
 
@@ -88,7 +78,7 @@ public class Chunk<Obj extends IObject> {
     /**
      *
      */
-    public HashMap<Integer, Obj> getChunk() {
+    public HashMap<Integer, IObject> getChunk() {
         return chunk;
     }
 
