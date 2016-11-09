@@ -7,7 +7,8 @@
 package model.map.generator;
 
 /**
- * TODO: Commenta algo
+ * TODO: IMPROVE in general the generator should give something more than a simple double
+ * TODO: Return a enum?,
  *
  */
 public interface IGenerator {

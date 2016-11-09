@@ -4,6 +4,10 @@ import java.util.Random;
 
 /**
  * Created by eleazardd on 9/11/16.
+ * Taken from a Stefan Gustavson gist
+ *
+ * TODO: Improve
+ * TODO: Touch gradients to get special walls
  */
 public class SimplexNoise implements IGenerator {
     public static int[][] grad3 = {{1,1,0},{-1,1,0}, {1,-1,0}, {-1,-1,0},

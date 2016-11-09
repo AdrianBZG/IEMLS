@@ -12,6 +12,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Pair;
 import model.map.EnvironmentMap;
 import model.map.generator.SimplexNoise;
@@ -59,10 +61,16 @@ public class Environment extends Pane {
      */
     public Environment() {
         environmentMap = new EnvironmentMap(new SimplexNoise());
+
+        // Event handlers
         clipDraw();
         dragMap();
         drawObjects();
+        removeObjects();
         zoomMap();
+        redraw();
+
+        // Paint
         paintEnvironmentMap();
     }
 
@@ -78,19 +86,36 @@ public class Environment extends Pane {
     }
 
     /**
+     * Redraw on changes of window
+     */
+    private void redraw() {
+        JavaFxObservable.fromObservableValue(widthProperty())
+                .subscribe(width -> paintEnvironmentMap());
+
+        JavaFxObservable.fromObservableValue(heightProperty())
+                .subscribe(height -> paintEnvironmentMap());
+    }
+
+    /**
      * Draw Objects
      */
     private void drawObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
-            .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.PRIMARY))
-            .subscribe(mouseEvent -> {
-                getEnvironmentMap().set(
-                    (int)((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
-                    (int)((mouseEvent.getY() + getTranslation().getValue()) / getZoom()),
-                    new Agent());
-                paintEnvironmentMap();
-            });
+                .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.PRIMARY))
+                .subscribe(mouseEvent -> {
+                    getEnvironmentMap().set(
+                            (int) ((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
+                            (int) ((mouseEvent.getY() + getTranslation().getValue()) / getZoom()),
+                            new Agent());
+                    paintEnvironmentMap();
+                });
 
+    }
+
+    /**
+     * Remove objects from scene
+     */
+    private void removeObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
                 .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY))
                 .filter(nodeEvent -> nodeEvent.isControlDown())
@@ -105,6 +130,7 @@ public class Environment extends Pane {
 
     /**
      * Avoid draw outside of this Pane
+     * TODO: Change pencil to draw chars
      */
     private void clipDraw() {
         Rectangle clipRect = new Rectangle(getWidth(), getHeight());
@@ -149,24 +175,15 @@ public class Environment extends Pane {
 
     /**
      * Paint EnvironmentMap
+     * TODO: To draw a objects it should implement factory? or a model defines who should be the view
      */
     private void paintEnvironmentMap() {
         getChildren().clear();
         for (int i = 0; i < getWidth() / getZoom(); i++) {
             for (int j = 0; j < getHeight() / getZoom(); j++) {
-                /*double noise = SimplexNoise.noise((getTranslation().getKey() / getZoom() + i) / 10, (getTranslation().getValue() / getZoom() + j) / 10);
-                if (noise > 0) {
-                    Circle circle = new Circle(getZoom() / 2);
-                    circle.setFill(new Color(0, 0, (noise+1)/2, 1));
-                    circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
-                    circle.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
-                    getChildren().add(circle);
-                }*/
-
                 Optional<IObject> iObjectOptional = getEnvironmentMap().get(
                     (int)(Math.floor(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
                     (int)(Math.floor(getTranslation().getValue() / getZoom() + j)));
-
                 //Text text = new Text();
                 //text.setFont(new Font(10));
                 //text.setText("(" +  (int)(Math.ceil(getTranslation().getKey() / getZoom() + i)) + ", " +
@@ -175,7 +192,7 @@ public class Environment extends Pane {
                 //text.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
                 //getChildren().add(text);
                 if (iObjectOptional.isPresent()) {
-                    Circle circle = new Circle(getZoom() / 2);  /// TODO: REPLACE with pencil object
+                    Rectangle circle = new Rectangle(getZoom() / 2, getZoom() / 2);
                     circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
                     circle.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
                     getChildren().add(circle);

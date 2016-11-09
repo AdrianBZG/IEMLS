@@ -24,6 +24,7 @@ import java.util.Optional;
  * TODO: Let save map in disk.
  *       TODO: specified format or serialize?
  * TODO: Unload unused Chunk from memory to disk
+ *
  */
 public class EnvironmentMap {
 
@@ -45,9 +46,6 @@ public class EnvironmentMap {
 
     /**
      * Generate a procedural map
-     * TODO: DO IT
-     * TODO: Decide which procedural methods is use. In case of several methods pass through
-     * TODO: arguments the object(function) that generate it in function of points
      * @param generator
      */
     public EnvironmentMap(IGenerator generator) {
@@ -76,7 +74,7 @@ public class EnvironmentMap {
      * @return Object from map
      */
     public Optional<IObject> get(int x, int y) {
-        Sector sector = Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE);
+        Sector sector = makeSector(x, y);
         Chunk chunk = getMap().get(sector);
         if (chunk == null) {
             Chunk chunkAux = new Chunk(CHUNK_SIZE);
@@ -96,12 +94,17 @@ public class EnvironmentMap {
     }
 
     /**
-     * Set a object into map position, it ensure that not overlap other objects
+     * Set a object into map position, it ensure that not overlap other objects, *the chunk should already create*
      */
     public void set(int x, int y, IObject object) {
-        //TODO: Generate chunk if not exist into hashmap the chunk. Here is strange but isn't a big penalization
-        //get(x, y);
-        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
+        Chunk chunk = getMap().get(makeSector(x, y));
+        if (chunk != null) {
+            chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
+        }
+    }
+
+    private Sector makeSector(int x, int y) {
+        return Sector.pos((int)Math.floor((float)x / CHUNK_SIZE), (int)Math.floor((float)y / CHUNK_SIZE));
     }
 
     /**
@@ -129,7 +132,6 @@ public class EnvironmentMap {
     }
 
     public void removeAt (int x, int y) {
-        getMap().get(Sector.pos(x / CHUNK_SIZE, y / CHUNK_SIZE)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
-
+        getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
     }
 }
