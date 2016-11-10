@@ -31,6 +31,9 @@ import java.util.Optional;
  *
  */
 public class Environment extends Pane {
+    private static double MAX_ZOOM = 50.0;
+    private static double MIN_ZOOM = 5.0;
+
     private EnvironmentMap environmentMap;
 
     /**
@@ -221,7 +224,15 @@ public class Environment extends Pane {
     }
 
     public void setZoom(double zoom) {
-        this.zoom = zoom;
+        if (zoom > MAX_ZOOM) {
+            this.zoom = MAX_ZOOM;
+        }
+        else if (zoom < MIN_ZOOM) {
+            this.zoom = MIN_ZOOM;
+        }
+        else {
+            this.zoom = zoom;
+        }
     }
 
     public Pair<Double, Double> getTranslation() {
