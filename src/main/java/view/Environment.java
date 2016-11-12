@@ -31,6 +31,9 @@ import java.util.Optional;
  *
  */
 public class Environment extends Pane {
+    private static double MAX_ZOOM = 50.0;
+    private static double MIN_ZOOM = 5.0;
+
     private EnvironmentMap environmentMap;
 
     /**
@@ -101,7 +104,7 @@ public class Environment extends Pane {
      */
     private void drawObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
-                .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.PRIMARY))
+                .filter(MouseEvent::isPrimaryButtonDown)
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().set(
                             (int) ((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
@@ -117,8 +120,7 @@ public class Environment extends Pane {
      */
     private void removeObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
-                .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY))
-                .filter(nodeEvent -> nodeEvent.isControlDown())
+                .filter(nodeEvent -> nodeEvent.isSecondaryButtonDown() && nodeEvent.isControlDown())
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
                             (int)((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
@@ -154,14 +156,14 @@ public class Environment extends Pane {
      */
     private void dragMap() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_PRESSED)
-            .filter(ev -> ev.getButton().equals(MouseButton.MIDDLE))
+            .filter(MouseEvent::isMiddleButtonDown)
             .subscribe(mouseEvent -> {
                 lastDragPosX = mouseEvent.getX();
                 lastDragPosY = mouseEvent.getY();
             });
 
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_DRAGGED)
-            .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.MIDDLE))
+            .filter(MouseEvent::isMiddleButtonDown)
             .subscribe(nodeEvent -> {
                 setTranslation(new Pair<>(
                     - nodeEvent.getX() + lastDragPosX + getTranslation().getKey(),
@@ -221,7 +223,15 @@ public class Environment extends Pane {
     }
 
     public void setZoom(double zoom) {
-        this.zoom = zoom;
+        if (zoom > MAX_ZOOM) {
+            this.zoom = MAX_ZOOM;
+        }
+        else if (zoom < MIN_ZOOM) {
+            this.zoom = MIN_ZOOM;
+        }
+        else {
+            this.zoom = zoom;
+        }
     }
 
     public Pair<Double, Double> getTranslation() {
