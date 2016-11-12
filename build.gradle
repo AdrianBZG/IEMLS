@@ -14,13 +14,19 @@ task runApp(type: JavaExec) {
 sourceSets.main.resources.srcDir 'src/main/java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
+
+// The jar is found in build/libs/IEMLS.jar
 jar {
     manifest {
         attributes 'Main-Class': 'Main'
     }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' // Remove security problems when package all in a jar
+
 }
 
 dependencies {
