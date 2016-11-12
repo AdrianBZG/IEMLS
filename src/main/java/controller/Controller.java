@@ -6,10 +6,13 @@
 
 package controller;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.layout.BorderPane;
+import view.Environment;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,11 +23,17 @@ import java.util.ResourceBundle;
  */
 public class Controller implements Initializable {
 
+    @FXML
+    public BorderPane centralPane;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
+    public void generateMap() {
+        centralPane.setCenter(new Environment());
+    }
 
     public void aboutDialog() {
         Dialog dialog = new Dialog();

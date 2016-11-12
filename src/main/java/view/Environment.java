@@ -6,14 +6,11 @@
 
 package view;
 
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.util.Pair;
 import model.map.EnvironmentMap;
 import model.map.generator.SimplexNoise;
@@ -27,7 +24,6 @@ import java.util.Optional;
  * TODO: Implement a Timer, each tick of clock update all environment, with agent algorithms in independents threads.
  * TODO: The Threads could wait for ticks, or define a path to follow(but the main idea is work in real time with
  * TODO: dynamic environments, leaks of resources, agents blocking pass)
- * TODO: LIMIT Zoom on getter and setters, 1..100
  *
  */
 public class Environment extends Pane {
@@ -83,7 +79,7 @@ public class Environment extends Pane {
     private void zoomMap() {
         JavaFxObservable.fromNodeEvents(this, ScrollEvent.ANY)
             .subscribe(scrollEvent -> {
-                setZoom(scrollEvent.getDeltaY() / 10 + getZoom());
+                setZoom(scrollEvent.getDeltaY() / 10 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
                 paintEnvironmentMap();
             });
     }
@@ -104,7 +100,7 @@ public class Environment extends Pane {
      */
     private void drawObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
-                .filter(MouseEvent::isPrimaryButtonDown)
+                .filter(mouseEvent -> mouseEvent.getButton().equals(MouseButton.PRIMARY))
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().set(
                             (int) ((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
@@ -120,7 +116,7 @@ public class Environment extends Pane {
      */
     private void removeObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
-                .filter(nodeEvent -> nodeEvent.isSecondaryButtonDown() && nodeEvent.isControlDown())
+                .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY) && nodeEvent.isControlDown())
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
                             (int)((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
@@ -186,13 +182,7 @@ public class Environment extends Pane {
                 Optional<IObject> iObjectOptional = getEnvironmentMap().get(
                     (int)(Math.floor(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
                     (int)(Math.floor(getTranslation().getValue() / getZoom() + j)));
-                //Text text = new Text();
-                //text.setFont(new Font(10));
-                //text.setText("(" +  (int)(Math.ceil(getTranslation().getKey() / getZoom() + i)) + ", " +
-                //    (int)(Math.ceil(getTranslation().getValue() / getZoom() + j)) + ")");
-                //text.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
-                //text.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
-                //getChildren().add(text);
+
                 if (iObjectOptional.isPresent()) {
                     Rectangle circle = new Rectangle(getZoom() / 2, getZoom() / 2);
                     circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
@@ -222,7 +212,13 @@ public class Environment extends Pane {
         return zoom;
     }
 
-    public void setZoom(double zoom) {
+    /**
+     * Set zoom over a zone
+     * @param zoom
+     * @param x
+     * @param y
+     */
+    public void setZoom(double zoom, double x, double y) {
         if (zoom > MAX_ZOOM) {
             this.zoom = MAX_ZOOM;
         }
@@ -230,6 +226,9 @@ public class Environment extends Pane {
             this.zoom = MIN_ZOOM;
         }
         else {
+            double xOffset = (x / (2 * zoom)) * (zoom - this.zoom);
+            double yOffset = (y / (2 * zoom)) * (zoom - this.zoom);
+            setTranslation(new Pair<>(getTranslation().getKey() + xOffset, getTranslation().getValue() + yOffset));
             this.zoom = zoom;
         }
     }

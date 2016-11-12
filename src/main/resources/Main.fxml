@@ -86,7 +86,7 @@
                                     <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="99.0" promptText="Inf" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                     <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="83.0" promptText="Inf" GridPane.rowIndex="3" />
                                     <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Button mnemonicParsing="false" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                                    <Button mnemonicParsing="false" onAction="#generateMap" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                                  </children>
                                  <FlowPane.margin>
                                     <Insets />
@@ -103,7 +103,7 @@
                 </TitledPane>
               </panes>
             </Accordion>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <BorderPane fx:id="centralPane" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <center>
                   <Label text="Select a new Map to simulate a enviroment with agents" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                      <font>
