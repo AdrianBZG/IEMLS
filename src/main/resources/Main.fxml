@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.TextFlow?>
-<?import view.Environment?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
         <MenuBar>
             <menus>
@@ -21,25 +31,69 @@
                         <MenuItem fx:id="close" mnemonicParsing="false" text="Close" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Copy" />
+                  <MenuItem mnemonicParsing="false" text="Cut" />
+                  <MenuItem mnemonicParsing="false" text="Paste" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="View">
+               <items>
+                  <RadioMenuItem mnemonicParsing="false" text="Left Panel" />
+                  <RadioMenuItem mnemonicParsing="false" text="Information Panel" />
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Options">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />
               </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="About">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Documentation" />
+                  <MenuItem mnemonicParsing="false" onAction="#aboutDialog" text="About" />
+               </items>
             </Menu>
             </menus>
         </MenuBar>
       <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <Accordion>
+            <Accordion prefHeight="471.0" prefWidth="210.0">
               <panes>
-                <TitledPane animated="false" text="Map">
+                <TitledPane animated="false" prefWidth="388.0" text="Map">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <FlowPane prefHeight="418.0" prefWidth="228.0">
+                           <children>
+                              <GridPane hgap="20.0" prefHeight="153.0" prefWidth="238.0" vgap="10.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="50.0" prefWidth="99.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="12.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="98.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label prefHeight="16.0" text="Make a new Map" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" />
+                                    <Label text="Noise" GridPane.rowIndex="1" />
+                                    <ChoiceBox prefHeight="26.0" prefWidth="101.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Label text="Dimensions" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                    <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="99.0" promptText="Inf" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                    <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="83.0" promptText="Inf" GridPane.rowIndex="3" />
+                                    <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button mnemonicParsing="false" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                                 </children>
+                                 <FlowPane.margin>
+                                    <Insets />
+                                 </FlowPane.margin>
+                              </GridPane>
+                           </children>
+                        </FlowPane>
                   </content>
                 </TitledPane>
                 <TitledPane animated="false" expanded="false" text="Agents">
@@ -49,12 +103,28 @@
                 </TitledPane>
               </panes>
             </Accordion>
-            <Environment prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;">
+            <BorderPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <center>
+                  <Label text="Select a new Map to simulate a enviroment with agents" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <TextFlow prefHeight="200.0" prefWidth="200.0" />
+                  <Label text="Information" />
                </children>
-            </VBox>
+            </GridPane>
          </children>
       </HBox>
     </children>
