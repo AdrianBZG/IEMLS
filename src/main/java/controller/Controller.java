@@ -6,11 +6,11 @@
 
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import view.Environment;
 
@@ -26,9 +26,18 @@ public class Controller implements Initializable {
     @FXML
     public BorderPane centralPane;
 
+    @FXML
+    public ChoiceBox noiseChoose;
+
+    @FXML
+    public ListView<String> listObjects;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        ObservableList<String> list = FXCollections.observableArrayList(
+                "Item 1", "Item 2", "Item 3", "Item 4");
+        listObjects.setItems(list);
     }
 
     public void generateMap() {
@@ -40,7 +49,7 @@ public class Controller implements Initializable {
         dialog.getDialogPane().getButtonTypes().add(new ButtonType("Got it!", ButtonBar.ButtonData.CANCEL_CLOSE));
         dialog.setTitle("About");
         dialog.setHeaderText("IEMLS");
-        dialog.setContentText("Information about project ....");
+        dialog.setContentText("Information about project ...");
         dialog.showAndWait();
     }
 }

@@ -6,10 +6,13 @@
 
 package model.object;
 
+import javafx.scene.Node;
+import view.ResourceView;
+
 /**
  * Represent a unit visual of a resource, but it can be consumed partiality
  */
-public class Resource {
+public class Resource extends MapObject {
     /**
      * Represent a available quantity of resource
      */
@@ -49,5 +52,15 @@ public class Resource {
     public Resource setTag(String tag) {
         this.tag = tag;
         return this;
+    }
+
+    @Override
+    public TypeObject getType() {
+        return TypeObject.Resource;
+    }
+
+    @Override
+    public Node getVisualObject() {
+        return new ResourceView();
     }
 }

@@ -5,10 +5,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
         <MenuBar>
             <menus>
@@ -65,28 +67,35 @@
                   <content>
                         <FlowPane prefHeight="418.0" prefWidth="228.0">
                            <children>
-                              <GridPane hgap="20.0" prefHeight="153.0" prefWidth="238.0" vgap="10.0">
+                              <GridPane hgap="20.0" vgap="10.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="50.0" prefWidth="99.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="12.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="98.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="ALWAYS" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="50.0" vgrow="ALWAYS" />
+                                    <RowConstraints vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <Label prefHeight="16.0" text="Make a new Map" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" />
-                                    <Label text="Noise" GridPane.rowIndex="1" />
-                                    <ChoiceBox prefHeight="26.0" prefWidth="101.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Label text="Type Map" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="noiseChoose" prefHeight="26.0" prefWidth="101.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                     <Label text="Dimensions" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                     <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="99.0" promptText="Inf" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                     <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="83.0" promptText="Inf" GridPane.rowIndex="3" />
                                     <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Button mnemonicParsing="false" onAction="#generateMap" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                                    <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                                    <Label text="Objects" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                                    <ListView fx:id="listObjects" prefHeight="100.0" prefWidth="249.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS" />
                                  </children>
                                  <FlowPane.margin>
                                     <Insets />

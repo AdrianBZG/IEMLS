@@ -6,8 +6,7 @@
 
 package model.map;
 
-import model.map.generator.IGenerator;
-import model.object.IObject;
+import model.object.MapObject;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class Chunk {
     /**
      * Represent information about contents in the chunk
      */
-    HashMap<Integer, IObject> chunk = new HashMap<>();
+    HashMap<Integer, MapObject> chunk = new HashMap<>();
 
     /**
      * Generate a empty Chunk
@@ -41,7 +40,7 @@ public class Chunk {
      * @param y
      * @return
      */
-    public Optional<IObject> get(int x, int y) {
+    public Optional<MapObject> get(int x, int y) {
         if (x < getSize() && y < getSize()
             && x >= 0 && y >= 0) {
             return Optional.ofNullable(getUnsafe(x, y));
@@ -57,14 +56,14 @@ public class Chunk {
      * @param y
      * @return
      */
-    public IObject getUnsafe(int x, int y) {
+    public MapObject getUnsafe(int x, int y) {
         return getChunk().get(y * getSize() + x);
     }
 
     /**
-     * Set a IObject into a position into chunk
+     * Set a MapObject into a position into chunk
      */
-    public void set(int x, int y, IObject object) {
+    public void set(int x, int y, MapObject object) {
         getChunk().put(y * getSize() + x, object);
     }
 
@@ -78,7 +77,7 @@ public class Chunk {
     /**
      *
      */
-    public HashMap<Integer, IObject> getChunk() {
+    public HashMap<Integer, MapObject> getChunk() {
         return chunk;
     }
 

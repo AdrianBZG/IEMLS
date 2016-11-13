@@ -27,14 +27,10 @@ import javafx.scene.shape.Circle;
 public class AgentView extends Group {
 
     public AgentView() {
-        Circle left = new Circle(30);
-        Circle right = new Circle(30);
-        right.setTranslateX(100);
-        getChildren().addAll(left, right);
-
-        setOnMouseClicked(mouseEvent -> {
-            left.setFill(Color.BLUE);
-            right.setFill(Color.BLUE);
-        });
+        Circle right = new Circle(10);
+        right.setTranslateX(-10);
+        right.setTranslateY(-10);
+        right.setFill(Color.BLUE);
+        getChildren().addAll(right);
     }
 }

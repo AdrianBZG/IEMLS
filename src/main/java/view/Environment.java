@@ -6,6 +6,7 @@
 
 package view;
 
+import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import model.map.EnvironmentMap;
 import model.map.generator.SimplexNoise;
-import model.object.IObject;
+import model.object.MapObject;
 import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
 
@@ -179,15 +180,17 @@ public class Environment extends Pane {
         getChildren().clear();
         for (int i = 0; i < getWidth() / getZoom(); i++) {
             for (int j = 0; j < getHeight() / getZoom(); j++) {
-                Optional<IObject> iObjectOptional = getEnvironmentMap().get(
+                Optional<MapObject> iObjectOptional = getEnvironmentMap().get(
                     (int)(Math.floor(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
                     (int)(Math.floor(getTranslation().getValue() / getZoom() + j)));
 
                 if (iObjectOptional.isPresent()) {
-                    Rectangle circle = new Rectangle(getZoom() / 2, getZoom() / 2);
-                    circle.setTranslateX(i * getZoom() + getZoom() / 2 - getTranslation().getKey() % getZoom());
-                    circle.setTranslateY(j * getZoom() + getZoom() / 2 - getTranslation().getValue() % getZoom());
-                    getChildren().add(circle);
+                    Node node = iObjectOptional.get().getVisualObject();
+                    node.setScaleX(1 / MAX_ZOOM * 2 * getZoom());
+                    node.setScaleY(1 / MAX_ZOOM * 2 * getZoom());
+                    node.setTranslateX(i * getZoom() + getZoom() - getTranslation().getKey() % getZoom());
+                    node.setTranslateY(j * getZoom() + getZoom() - getTranslation().getValue() % getZoom());
+                    getChildren().add(node);
                 }
             }
         }

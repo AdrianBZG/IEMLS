@@ -7,9 +7,10 @@
 package model.map;
 
 import model.map.generator.IGenerator;
-import model.object.IObject;
+import model.object.Block;
+import model.object.MapObject;
+import model.object.Resource;
 import model.object.agent.Agent;
-import rx.observables.JavaFxObservable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +60,11 @@ public class EnvironmentMap {
             for (int i = 0; i < CHUNK_SIZE; i++) {
                 for (int j = 0; j < CHUNK_SIZE; j++) {
                     double gen = generator.get().generateAtPoint((pos.getX() * CHUNK_SIZE + i) / 10.0, (pos.getY() * CHUNK_SIZE + j) / 10.0);
-                    if (gen > 0) {
-                        set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Agent());
+                    if (gen > 0.5) {
+                        set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Block());
+                    }
+                    else if (gen > 0) {
+                        set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Resource(50, "Food"));
                     }
                 }
             }
@@ -73,7 +77,7 @@ public class EnvironmentMap {
      * @param y coordinate
      * @return Object from map
      */
-    public Optional<IObject> get(int x, int y) {
+    public Optional<MapObject> get(int x, int y) {
         Sector sector = makeSector(x, y);
         Chunk chunk = getMap().get(sector);
         if (chunk == null) {
@@ -96,7 +100,7 @@ public class EnvironmentMap {
     /**
      * Set a object into map position, it ensure that not overlap other objects, *the chunk should already create*
      */
-    public void set(int x, int y, IObject object) {
+    public void set(int x, int y, MapObject object) {
         Chunk chunk = getMap().get(makeSector(x, y));
         if (chunk != null) {
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);

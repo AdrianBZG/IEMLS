@@ -6,18 +6,25 @@
 
 package model.object.agent;
 
-import model.object.IObject;
+import javafx.scene.Node;
+import model.object.MapObject;
 import model.object.TypeObject;
+import view.AgentView;
 
 /**
- * TODO: Commenta algo
+ *
  *
  */
-public class Agent implements IObject {
+public class Agent extends MapObject {
 
     @Override
     public TypeObject getType() {
         return TypeObject.Agent;
+    }
+
+    @Override
+    public Node getVisualObject() {
+        return new AgentView();
     }
 
 
