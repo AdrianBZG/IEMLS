@@ -55,6 +55,10 @@ public class EnvironmentView extends Pane {
     private double lastDragPosX = 0.0;
     private double lastDragPosY = 0.0;
 
+    /**
+     * Paint map object
+     */
+    private Optional<MapObject> pencil = Optional.empty();
 
     /**
      * Generate a basic environment
@@ -103,11 +107,13 @@ public class EnvironmentView extends Pane {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
                 .filter(mouseEvent -> mouseEvent.getButton().equals(MouseButton.PRIMARY))
                 .subscribe(mouseEvent -> {
-                    getEnvironmentMap().set(
-                            (int) ((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
-                            (int) ((mouseEvent.getY() + getTranslation().getValue()) / getZoom()),
-                            new Agent());
-                    paintEnvironmentMap();
+                    getPencil().ifPresent(pencil -> {
+                        getEnvironmentMap().set(
+                                (int) ((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
+                                (int) ((mouseEvent.getY() + getTranslation().getValue()) / getZoom()),
+                                pencil);
+                        paintEnvironmentMap();
+                    });
                 });
 
     }
@@ -194,6 +200,24 @@ public class EnvironmentView extends Pane {
                 }
             }
         }
+    }
+
+    /**
+     * Set Pencil
+     */
+    public void setPencil(MapObject mapObject) {
+        pencil = Optional.of(mapObject);
+    }
+
+    /**
+     * Set Cursor
+     */
+    public void setCursor() {
+        pencil = Optional.empty();
+    }
+
+    public Optional<MapObject> getPencil() {
+        return pencil;
     }
 
     /**

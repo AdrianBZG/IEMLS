@@ -6,6 +6,8 @@
 
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
 import model.object.agent.Agent;
+import rx.observables.JavaFxObservable;
 import view.CellObjectView;
 import view.EnvironmentView;
 
@@ -27,6 +30,7 @@ import java.util.ResourceBundle;
  *
  */
 public class Controller implements Initializable {
+    EnvironmentView environmentView;
 
     @FXML
     public BorderPane centralPane;
@@ -45,10 +49,18 @@ public class Controller implements Initializable {
 
         listObjects.setItems(list);
         listObjects.setCellFactory(value -> new CellObjectView());
+        listObjects.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observableValue, mapObject, newMapObject) -> {
+                    if (environmentView != null) {
+                        environmentView.setPencil(newMapObject);
+                }
+            });
     }
 
     public void generateMap() {
-        centralPane.setCenter(new EnvironmentView());
+        environmentView = new EnvironmentView();
+        centralPane.setCenter(environmentView);
     }
 
     public void aboutDialog() {
