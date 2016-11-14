@@ -17,4 +17,6 @@ public abstract class MapObject {
     public abstract TypeObject getType();
 
     public abstract Node getVisualObject();
+
+    public abstract String getName();
 }

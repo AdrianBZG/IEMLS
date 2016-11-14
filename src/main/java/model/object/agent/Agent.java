@@ -27,5 +27,8 @@ public class Agent extends MapObject {
         return new AgentView();
     }
 
-
+    @Override
+    public String getName() {
+        return "Agent";
+    }
 }

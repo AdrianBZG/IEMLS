@@ -12,7 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import view.Environment;
+import model.object.Block;
+import model.object.MapObject;
+import model.object.Resource;
+import model.object.agent.Agent;
+import view.CellObjectView;
+import view.EnvironmentView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,18 +35,20 @@ public class Controller implements Initializable {
     public ChoiceBox noiseChoose;
 
     @FXML
-    public ListView<String> listObjects;
+    public ListView<MapObject> listObjects;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ObservableList<String> list = FXCollections.observableArrayList(
-                "Item 1", "Item 2", "Item 3", "Item 4");
+        ObservableList<MapObject> list = FXCollections.observableArrayList(
+                new Agent(), new Resource(10, "Food"), new Block());
+
         listObjects.setItems(list);
+        listObjects.setCellFactory(value -> new CellObjectView());
     }
 
     public void generateMap() {
-        centralPane.setCenter(new Environment());
+        centralPane.setCenter(new EnvironmentView());
     }
 
     public void aboutDialog() {

@@ -1,5 +1,5 @@
 /**
- * IEMLS - Environment.java 4/11/16
+ * IEMLS - EnvironmentView.java 4/11/16
  * <p>
  * Copyright 20XX Eleazar Díaz Delgado. All rights reserved.
  */
@@ -27,7 +27,7 @@ import java.util.Optional;
  * TODO: dynamic environments, leaks of resources, agents blocking pass)
  *
  */
-public class Environment extends Pane {
+public class EnvironmentView extends Pane {
     private static double MAX_ZOOM = 50.0;
     private static double MIN_ZOOM = 5.0;
 
@@ -59,7 +59,7 @@ public class Environment extends Pane {
     /**
      * Generate a basic environment
      */
-    public Environment() {
+    public EnvironmentView() {
         environmentMap = new EnvironmentMap(new SimplexNoise());
 
         // Event handlers

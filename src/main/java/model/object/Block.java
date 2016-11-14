@@ -23,4 +23,9 @@ public class Block extends MapObject {
     public Node getVisualObject() {
         return new BlockView();
     }
+
+    @Override
+    public String getName() {
+        return "Block";
+    }
 }

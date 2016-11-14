@@ -63,4 +63,9 @@ public class Resource extends MapObject {
     public Node getVisualObject() {
         return new ResourceView();
     }
+
+    @Override
+    public String getName() {
+        return "Resource";
+    }
 }
