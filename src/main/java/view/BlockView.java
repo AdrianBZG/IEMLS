@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * Created by eleazardd on 13/11/16.
  */
-public class BlockView extends Group {
+public class BlockView extends ObjectView {
 
     public BlockView() {
         Rectangle rectangle = new Rectangle(20,20);

@@ -1,15 +1,13 @@
 package view;
 
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import rx.observables.JavaFxObservable;
 
 /**
  * Created by eleazardd on 13/11/16.
  */
-public class ResourceView extends Group {
+public class ResourceView extends ObjectView {
 
     public ResourceView() {
         Circle circle = new Circle(10);

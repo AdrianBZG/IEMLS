@@ -6,7 +6,7 @@
 
 package model.object;
 
-import javafx.scene.Node;
+import view.ObjectView;
 
 /**
  * TODO: Define more interactions between objects
@@ -16,7 +16,7 @@ public abstract class MapObject {
 
     public abstract TypeObject getType();
 
-    public abstract Node getVisualObject();
+    public abstract ObjectView getVisualObject();
 
     public abstract String getName();
 }

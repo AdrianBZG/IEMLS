@@ -7,6 +7,7 @@
 package model.object;
 
 import javafx.scene.Node;
+import view.ObjectView;
 import view.ResourceView;
 
 /**
@@ -60,7 +61,7 @@ public class Resource extends MapObject {
     }
 
     @Override
-    public Node getVisualObject() {
+    public ObjectView getVisualObject() {
         return new ResourceView();
     }
 

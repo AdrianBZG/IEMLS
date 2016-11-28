@@ -6,8 +6,8 @@
 
 package model.object;
 
-import javafx.scene.Node;
 import view.BlockView;
+import view.ObjectView;
 
 /**
  * Represent a no passing tile, a wall
@@ -20,7 +20,7 @@ public class Block extends MapObject {
     }
 
     @Override
-    public Node getVisualObject() {
+    public ObjectView getVisualObject() {
         return new BlockView();
     }
 

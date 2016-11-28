@@ -6,10 +6,10 @@
 
 package model.object.agent;
 
-import javafx.scene.Node;
 import model.object.MapObject;
 import model.object.TypeObject;
 import view.AgentView;
+import view.ObjectView;
 
 /**
  *
@@ -23,7 +23,7 @@ public class Agent extends MapObject {
     }
 
     @Override
-    public Node getVisualObject() {
+    public ObjectView getVisualObject() {
         return new AgentView();
     }
 

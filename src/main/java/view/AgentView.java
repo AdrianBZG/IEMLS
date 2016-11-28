@@ -24,7 +24,7 @@ import javafx.scene.shape.Circle;
  * TODO: REMOVE
  *
  */
-public class AgentView extends Group {
+public class AgentView extends ObjectView {
 
     public AgentView() {
         Circle right = new Circle(10);

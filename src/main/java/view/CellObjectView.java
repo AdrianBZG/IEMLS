@@ -1,5 +1,7 @@
 package view;
 
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -12,6 +14,7 @@ import model.object.MapObject;
  */
 public class CellObjectView extends ListCell<MapObject> {
     HBox box = new HBox();
+    Button options = new Button("Options");
     Pane spacer = new Pane();
     Label tag = new Label();
 
@@ -19,6 +22,7 @@ public class CellObjectView extends ListCell<MapObject> {
         super();
         box.getChildren().addAll(tag, spacer);
         box.setHgrow(spacer, Priority.ALWAYS);
+        box.setSpacing(5.0);
     }
 
     @Override
@@ -28,6 +32,11 @@ public class CellObjectView extends ListCell<MapObject> {
             setGraphic(null);
         } else {
             if (item != null) {
+                ObjectView objectView = item.getVisualObject();
+                if (objectView.hasOptions()) {
+                    options.setOnMouseClicked(mouseEvent -> objectView.showOptions());
+                    box.getChildren().add(options);
+                }
                 tag.setText(item.getName());
                 box.getChildren().add(item.getVisualObject());
             }
