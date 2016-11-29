@@ -6,18 +6,21 @@
 
 package view;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
 import model.map.EnvironmentMap;
 import model.map.generator.SimplexNoise;
 import model.object.MapObject;
-import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
+import util.Tuple;
 
 import java.util.Optional;
 
@@ -28,32 +31,27 @@ import java.util.Optional;
  *
  */
 public class EnvironmentView extends Pane {
-    private static double MAX_ZOOM = 50.0;
-    private static double MIN_ZOOM = 5.0;
+    private static double TILE_SIZE = 20; // Normal tile size
+    private static double MAX_ZOOM = 3.0;
+    private static double MIN_ZOOM = 0.3; // Min Multiplier zoom
 
     private EnvironmentMap environmentMap;
 
     /**
-     * TODO: REMOVE NOT USED
+     * Determine the size of tiled, by default 1.0x resize the tiled
      */
-    private double aspect = 0.0;
-    /**
-     * The zoom is determine by size of agent in pixels
-     * if zoom is 10 the agent occupy 10 pixels
-     */
-    private double zoom = 30.0;
+    private double zoom = 1.0;
 
     /**
      * Scroll of map on x,y
      */
-    private Pair<Double, Double> translation = new Pair<>(0.0, 0.0);
+    private Tuple<Double, Double> translation = new Tuple<>(0.0, 0.0);
 
 
     /**
      * Auxiliary click variable
      */
-    private double lastDragPosX = 0.0;
-    private double lastDragPosY = 0.0;
+    private Tuple<Double, Double> lastDragPos = new Tuple<>(0.0,0.0);
 
     /**
      * Paint map object
@@ -65,7 +63,6 @@ public class EnvironmentView extends Pane {
      */
     public EnvironmentView() {
         environmentMap = new EnvironmentMap(new SimplexNoise());
-
         // Event handlers
         clipDraw();
         dragMap();
@@ -84,7 +81,8 @@ public class EnvironmentView extends Pane {
     private void zoomMap() {
         JavaFxObservable.fromNodeEvents(this, ScrollEvent.ANY)
             .subscribe(scrollEvent -> {
-                setZoom(scrollEvent.getDeltaY() / 10 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
+                System.out.println(scrollEvent.getDeltaY());
+                setZoom(scrollEvent.getDeltaY() / 1000 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
                 paintEnvironmentMap();
             });
     }
@@ -109,8 +107,8 @@ public class EnvironmentView extends Pane {
                 .subscribe(mouseEvent -> {
                     getPencil().ifPresent(pencil -> {
                         getEnvironmentMap().set(
-                                (int) ((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
-                                (int) ((mouseEvent.getY() + getTranslation().getValue()) / getZoom()),
+                                (int) ((mouseEvent.getX() + getTranslation().getX()) / getTileSize()),
+                                (int) ((mouseEvent.getY() + getTranslation().getY()) / getTileSize()),
                                 pencil);
                         paintEnvironmentMap();
                     });
@@ -126,8 +124,8 @@ public class EnvironmentView extends Pane {
                 .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY) && nodeEvent.isControlDown())
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
-                            (int)((mouseEvent.getX() + getTranslation().getKey()) / getZoom()),
-                            (int)((mouseEvent.getY() + getTranslation().getValue()) / getZoom())
+                            (int)((mouseEvent.getX() + getTranslation().getX()) / getTileSize()),
+                            (int)((mouseEvent.getY() + getTranslation().getY()) / getTileSize())
                             );
                     paintEnvironmentMap();
                 });
@@ -142,13 +140,11 @@ public class EnvironmentView extends Pane {
         JavaFxObservable.fromObservableValue(widthProperty())
             .subscribe(width -> {
                 clipRect.setWidth(width.intValue());
-                setAspect(getWidth() / getHeight());
             });
 
         JavaFxObservable.fromObservableValue(heightProperty())
             .subscribe(height -> {
                 clipRect.setHeight(height.intValue());
-                setAspect(getWidth() / getHeight());
             });
 
         setClip(clipRect);
@@ -161,18 +157,18 @@ public class EnvironmentView extends Pane {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_PRESSED)
             .filter(MouseEvent::isMiddleButtonDown)
             .subscribe(mouseEvent -> {
-                lastDragPosX = mouseEvent.getX();
-                lastDragPosY = mouseEvent.getY();
+                lastDragPos.setFst(mouseEvent.getX());
+                lastDragPos.setSnd(mouseEvent.getY());
             });
 
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_DRAGGED)
             .filter(MouseEvent::isMiddleButtonDown)
             .subscribe(nodeEvent -> {
-                setTranslation(new Pair<>(
-                    - nodeEvent.getX() + lastDragPosX + getTranslation().getKey(),
-                    - nodeEvent.getY() + lastDragPosY + getTranslation().getValue()));
-                lastDragPosX = nodeEvent.getX();
-                lastDragPosY = nodeEvent.getY();
+                setTranslation(new Tuple<>(
+                    - nodeEvent.getX() + lastDragPos.getX() + getTranslation().getX(),
+                    - nodeEvent.getY() + lastDragPos.getY() + getTranslation().getY()));
+                lastDragPos.setFst(nodeEvent.getX());
+                lastDragPos.setSnd(nodeEvent.getY());
                 paintEnvironmentMap();
             });
 
@@ -184,18 +180,20 @@ public class EnvironmentView extends Pane {
      */
     private void paintEnvironmentMap() {
         getChildren().clear();
-        for (int i = 0; i < getWidth() / getZoom(); i++) {
-            for (int j = 0; j < getHeight() / getZoom(); j++) {
+        for (int i = 0; i < getWidth() / getTileSize(); i++) {
+            for (int j = 0; j < getHeight() / getTileSize(); j++) {
                 Optional<MapObject> iObjectOptional = getEnvironmentMap().get(
-                    (int)(Math.floor(getTranslation().getKey() / getZoom() + i)),   /// TODO: ceil or floor depends of ???
-                    (int)(Math.floor(getTranslation().getValue() / getZoom() + j)));
+                    (int)(Math.floor(getTranslation().getX() / getTileSize() + i)),   /// TODO: ceil or floor depends of ???
+                    (int)(Math.floor(getTranslation().getY() / getTileSize() + j)));
 
                 if (iObjectOptional.isPresent()) {
                     Node node = iObjectOptional.get().getVisualObject();
-                    node.setScaleX(1 / MAX_ZOOM * 2 * getZoom());
-                    node.setScaleY(1 / MAX_ZOOM * 2 * getZoom());
-                    node.setTranslateX(i * getZoom() + getZoom() - getTranslation().getKey() % getZoom());
-                    node.setTranslateY(j * getZoom() + getZoom() - getTranslation().getValue() % getZoom());
+                    node.setScaleX(getZoom());
+                    node.setScaleY(getZoom());
+                    // to Smooth translation uncomment the follow lines vvvvvv
+                    // but there problems with click pos
+                    node.setTranslateX(i * getTileSize()); // - getTranslation().getX() % getTileSize());
+                    node.setTranslateY(j * getTileSize()); // - getTranslation().getY() % getTileSize());
                     getChildren().add(node);
                 }
             }
@@ -227,12 +225,8 @@ public class EnvironmentView extends Pane {
         return environmentMap;
     }
 
-    public double getAspect() {
-        return aspect;
-    }
-
-    public void setAspect(double aspect) {
-        this.aspect = aspect;
+    public double getTileSize() {
+        return getZoom() * TILE_SIZE;
     }
 
     public double getZoom() {
@@ -253,18 +247,19 @@ public class EnvironmentView extends Pane {
             this.zoom = MIN_ZOOM;
         }
         else {
-            double xOffset = (x / (2 * zoom)) * (zoom - this.zoom);
-            double yOffset = (y / (2 * zoom)) * (zoom - this.zoom);
-            setTranslation(new Pair<>(getTranslation().getKey() + xOffset, getTranslation().getValue() + yOffset));
+            double xOffset = x / (zoom * TILE_SIZE);
+            double yOffset = y / (zoom * TILE_SIZE);
+            // TODO: Adjust the translation on zoom
+            setTranslation(new Tuple<>(getTranslation().getX(), getTranslation().getY()));
             this.zoom = zoom;
         }
     }
 
-    public Pair<Double, Double> getTranslation() {
+    public Tuple<Double, Double> getTranslation() {
         return translation;
     }
 
-    public void setTranslation(Pair<Double, Double> translation) {
+    public void setTranslation(Tuple<Double, Double> translation) {
         this.translation = translation;
     }
 }
