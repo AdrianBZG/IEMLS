@@ -89,8 +89,8 @@
                                     <Label text="Type Map" GridPane.rowIndex="1" />
                                     <ChoiceBox fx:id="noiseChoose" prefHeight="26.0" prefWidth="101.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                     <Label text="Dimensions" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                    <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="99.0" promptText="Inf" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                    <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="83.0" promptText="Inf" GridPane.rowIndex="3" />
+                                    <TextField fx:id="yDim" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="99.0" promptText="Inf" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                    <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="83.0" promptText="Inf" GridPane.rowIndex="3" fx:id="xDim" />
                                     <Label text="X" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Button mnemonicParsing="false" onAction="#generateMap" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                                     <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="5" />

@@ -41,6 +41,12 @@ public class Controller implements Initializable {
     @FXML
     public ListView<MapObject> listObjects;
 
+    @FXML
+    public TextField xDim;
+
+    @FXML
+    public TextField yDim;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -59,8 +65,20 @@ public class Controller implements Initializable {
     }
 
     public void generateMap() {
-        environmentView = new EnvironmentView();
-        centralPane.setCenter(environmentView);
+        if (xDim.getText() == "" || yDim.getText() == "") {
+            environmentView = new EnvironmentView();
+            centralPane.setCenter(environmentView);
+        }
+        else {
+            try {
+                int width = Integer.parseInt(xDim.getText());
+                int height = Integer.parseInt(yDim.getText());
+                environmentView = new EnvironmentView(width, height);
+                centralPane.setCenter(environmentView);
+            } catch (Exception e) {
+                // TODO: LAUNCH ERROR
+            }
+        }
     }
 
     public void aboutDialog() {

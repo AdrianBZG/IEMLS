@@ -59,10 +59,26 @@ public class EnvironmentView extends Pane {
     private Optional<MapObject> pencil = Optional.empty();
 
     /**
-     * Generate a basic environment
+     * Infinite map
      */
     public EnvironmentView() {
         environmentMap = new EnvironmentMap(new SimplexNoise());
+        setup();
+    }
+
+    /**
+     * Generate a basic environment
+     */
+    public EnvironmentView(int dimX, int dimY) {
+        environmentMap = new EnvironmentMap(new SimplexNoise());
+        environmentMap.setDimensions(dimX, dimY);
+        setup();
+    }
+
+    /**
+     * Setup map
+     */
+    private void setup() {
         // Event handlers
         clipDraw();
         dragMap();

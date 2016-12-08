@@ -10,16 +10,17 @@ import java.util.Random;
  * TODO: Touch gradients to get special walls
  */
 public class SimplexNoise implements IGenerator {
-    public static int[][] grad3 = {{1,1,0},{-1,1,0}, {1,-1,0}, {-1,-1,0},
+    public int[][] grad3 = {{1,1,0},{-1,1,0}, {1,-1,0}, {-1,-1,0},
                      {1,0,1}, {-1,0,1}, {1,0,-1}, {-1,0,-1},
                      {0,1,1}, {0,-1,1}, {0,1,-1}, {0,-1,-1}};
 
-    private static final double F2 = 0.5*(Math.sqrt(3.0)-1.0);
-    private static final double G2 = (3.0-Math.sqrt(3.0))/6.0;
+    private final double F2 = 0.5*(Math.sqrt(3.0)-1.0);
+    private final double G2 = (3.0-Math.sqrt(3.0))/6.0;
 
-    private static short perm[] = new short[512];
-    private static short permMod12[] = new short[512];
-    static {
+    private short perm[] = new short[512];
+    private short permMod12[] = new short[512];
+
+    public SimplexNoise() {
         Random rand = new Random();
         for(int i=0; i<512; i++)
         {
@@ -30,15 +31,15 @@ public class SimplexNoise implements IGenerator {
 
 
     // This method is a *lot* faster than using (int)Math.floor(x)
-    private static int fastfloor(double x) {
+    private int fastfloor(double x) {
         int xi = (int)x;
         return x<xi ? xi-1 : xi;
     }
 
-    private static double dot(int[] g, double x, double y) {
+    private double dot(int[] g, double x, double y) {
         return g[0]*x + g[1]*y; }
 
-    public static double noise(double xin, double yin) {
+    public double noise(double xin, double yin) {
         double n0, n1, n2; // Noise contributions from the three corners
         // Skew the input space to determine which simplex cell we're in
         double s = (xin+yin)*F2; // Hairy factor for 2D

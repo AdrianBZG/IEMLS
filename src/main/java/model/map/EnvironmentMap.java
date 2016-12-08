@@ -11,6 +11,7 @@ import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
 import model.object.agent.Agent;
+import util.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,8 @@ public class EnvironmentMap {
      */
     HashMap<Sector, Chunk> map = new HashMap<>();
 
+    Optional<Tuple<Integer, Integer>> dimensions = Optional.empty();
+
     Optional<IGenerator> generator = Optional.empty();
 
     /**
@@ -54,6 +57,7 @@ public class EnvironmentMap {
         getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
         generateChunkNoise(Sector.pos(0,0));
     }
+
 
     private void generateChunkNoise(Sector pos) {
         if (generator.isPresent()) {
@@ -78,8 +82,16 @@ public class EnvironmentMap {
      * @return Object from map
      */
     public Optional<MapObject> get(int x, int y) {
+        if (getDimensions().isPresent()) {
+            if (getDimensions().get().getWidth() < x || getDimensions().get().getHeight() < y
+                    || x < 0 || y < 0) {
+                return Optional.empty();
+            }
+        }
+
         Sector sector = makeSector(x, y);
         Chunk chunk = getMap().get(sector);
+
         if (chunk == null) {
             Chunk chunkAux = new Chunk(CHUNK_SIZE);
             getMap().put(sector, chunkAux);
@@ -101,6 +113,12 @@ public class EnvironmentMap {
      * Set a object into map position, it ensure that not overlap other objects, *the chunk should already create*
      */
     public void set(int x, int y, MapObject object) {
+        if (getDimensions().isPresent()) {
+            if (getDimensions().get().getWidth() < x || getDimensions().get().getHeight() < y
+                    || x < 0 || y < 0) {
+                return;
+            }
+        }
         Chunk chunk = getMap().get(makeSector(x, y));
         if (chunk != null) {
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
@@ -129,6 +147,14 @@ public class EnvironmentMap {
 
     public Optional<IGenerator> getGenerator() {
         return generator;
+    }
+
+    public Optional<Tuple<Integer, Integer>> getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(int x, int y) {
+        this.dimensions = Optional.of(new Tuple<>(x, y));
     }
 
     public void setGenerator(Optional<IGenerator> generator) {
