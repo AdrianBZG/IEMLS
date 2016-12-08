@@ -13,6 +13,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,6 +23,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
@@ -61,6 +63,42 @@
         </MenuBar>
       <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
+            <ToolBar orientation="VERTICAL">
+              <items>
+                <Button mnemonicParsing="false">
+                    <graphic>
+                        <FontIcon iconLiteral="fa-mouse-pointer" iconSize="24" />
+                    </graphic>
+                </Button>
+                  <Button mnemonicParsing="false">
+                      <graphic>
+                          <FontIcon iconLiteral="fa-times" iconSize="24" />
+                      </graphic>
+                  </Button>
+                  <Label />
+                  <Button mnemonicParsing="false">
+                      <graphic>
+                          <FontIcon iconLiteral="fa-play" iconSize="24" />
+                      </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false">
+                      <graphic>
+                          <FontIcon iconLiteral="fa-pause" iconSize="24" />
+                      </graphic>
+                  </Button>
+                  <Label />
+                  <Button mnemonicParsing="false">
+                      <graphic>
+                          <FontIcon iconLiteral="fa-undo" iconSize="24" />
+                      </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false">
+                      <graphic>
+                          <FontIcon iconLiteral="fa-repeat" iconSize="24" />
+                      </graphic>
+                  </Button>
+              </items>
+            </ToolBar>
             <Accordion prefHeight="471.0" prefWidth="210.0">
               <panes>
                 <TitledPane animated="false" prefWidth="388.0" text="Map">
@@ -121,19 +159,6 @@
                   </Label>
                </center>
             </BorderPane>
-            <GridPane>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label text="Information" />
-               </children>
-            </GridPane>
          </children>
       </HBox>
     </children>

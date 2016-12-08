@@ -14,7 +14,7 @@ task runApp(type: JavaExec) {
 sourceSets.main.resources.srcDir 'src/main/java'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 
@@ -44,4 +44,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.pholser/junit-quickcheck-generators
     compile group: 'com.pholser', name: 'junit-quickcheck-generators', version: '0.6.1'
+
+    // http://aalmiray.github.io/ikonli/
+    compile group: 'org.kordamp.ikonli', name: 'ikonli-javafx', version:'1.8.0'
+    compile group: 'org.kordamp.ikonli', name: 'ikonli-fontawesome-pack', version:'1.8.0'
 }
