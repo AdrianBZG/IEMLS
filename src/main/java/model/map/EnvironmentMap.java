@@ -87,6 +87,10 @@ public class EnvironmentMap {
                     || x < 0 || y < 0) {
                 return Optional.empty();
             }
+            if (getDimensions().get().getWidth() <= x || getDimensions().get().getHeight() <= y
+                    || x <= 0 || y <= 0) {
+                return Optional.of(new Block());
+            }
         }
 
         Sector sector = makeSector(x, y);
