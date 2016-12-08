@@ -65,20 +65,29 @@ public class Controller implements Initializable {
     }
 
     public void generateMap() {
-        if (xDim.getText() == "" || yDim.getText() == "") {
+        if (xDim.getText().equals("") && yDim.getText().equals("")) {
             environmentView = new EnvironmentView();
             centralPane.setCenter(environmentView);
         }
         else {
             try {
-                int width = Integer.parseInt(xDim.getText());
-                int height = Integer.parseInt(yDim.getText());
+                int width = Math.abs(Integer.parseInt(xDim.getText()));
+                int height = Math.abs(Integer.parseInt(yDim.getText()));
                 environmentView = new EnvironmentView(width, height);
                 centralPane.setCenter(environmentView);
             } catch (Exception e) {
-                // TODO: LAUNCH ERROR
+                errorDialog("Fail To build a map with " + xDim.getText() + " x " + yDim.getText());
             }
         }
+    }
+
+    public void errorDialog(String error) {
+        Dialog dialog = new Dialog();
+        dialog.getDialogPane().getButtonTypes().add(new ButtonType("Got it!", ButtonBar.ButtonData.CANCEL_CLOSE));
+        dialog.setTitle("Error");
+        dialog.setHeaderText("An error has occurred");
+        dialog.setContentText(error);
+        dialog.showAndWait();
     }
 
     public void aboutDialog() {
