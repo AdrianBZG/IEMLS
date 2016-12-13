@@ -6,6 +6,7 @@
 
 package controller;
 
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import model.map.generator.IGenerator;
+import model.map.generator.SimplexNoise;
 import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
@@ -23,6 +26,7 @@ import view.CellObjectView;
 import view.EnvironmentView;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -36,7 +40,7 @@ public class Controller implements Initializable {
     public BorderPane centralPane;
 
     @FXML
-    public ChoiceBox noiseChoose;
+    public ChoiceBox<IGenerator> noiseChoose;
 
     @FXML
     public ListView<MapObject> listObjects;
@@ -46,6 +50,15 @@ public class Controller implements Initializable {
 
     @FXML
     public TextField yDim;
+
+    @FXML
+    public TitledPane mapTitledPane;
+
+    @FXML
+    public Accordion accordion;
+
+    @FXML
+    public Label initialMessage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,23 +75,38 @@ public class Controller implements Initializable {
                         environmentView.setPencil(newMapObject);
                 }
             });
+        accordion.setExpandedPane(mapTitledPane);
+
+        // Noise methods available
+        noiseChoose.setItems(FXCollections.observableArrayList(new SimplexNoise()));  // TODO: Add more methods
+        noiseChoose.getSelectionModel().selectFirst();
     }
 
+
+    /**
+     * Generate a map
+     * TODO: Reset change seed in noiseChoose to don't repeat map
+     */
     public void generateMap() {
         if (xDim.getText().equals("") && yDim.getText().equals("")) {
-            environmentView = new EnvironmentView();
+            environmentView = new EnvironmentView(noiseChoose.getSelectionModel().getSelectedItem());
             centralPane.setCenter(environmentView);
         }
         else {
             try {
                 int width = Math.abs(Integer.parseInt(xDim.getText()));
                 int height = Math.abs(Integer.parseInt(yDim.getText()));
-                environmentView = new EnvironmentView(width, height);
+                environmentView = new EnvironmentView(width, height, noiseChoose.getSelectionModel().getSelectedItem());
                 centralPane.setCenter(environmentView);
             } catch (Exception e) {
                 errorDialog("Fail To build a map with " + xDim.getText() + " x " + yDim.getText());
             }
         }
+    }
+
+    public void clearMap() {
+        centralPane.setCenter(initialMessage);
+        environmentView = null;
     }
 
     public void errorDialog(String error) {

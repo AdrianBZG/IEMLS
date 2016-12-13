@@ -69,4 +69,17 @@ public class Resource extends MapObject {
     public String getName() {
         return "Resource";
     }
+
+    @Override
+    public boolean hasOptions() {
+        return true;
+    }
+
+    /**
+     * Display a dialog with capacity of modified the resource settings
+     */
+    @Override
+    public void options() {
+        // TODO: Define it
+    }
 }

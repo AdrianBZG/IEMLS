@@ -28,4 +28,9 @@ public class Block extends MapObject {
     public String getName() {
         return "Block";
     }
+
+    @Override
+    public boolean hasOptions() {
+        return false;
+    }
 }

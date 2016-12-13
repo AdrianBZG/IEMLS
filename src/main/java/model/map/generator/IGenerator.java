@@ -14,4 +14,7 @@ package model.map.generator;
 public interface IGenerator {
 
     double generateAtPoint(double x, double y);
+
+    String getGeneratorName();
+
 }

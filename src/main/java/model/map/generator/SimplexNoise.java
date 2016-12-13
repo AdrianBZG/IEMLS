@@ -96,4 +96,14 @@ public class SimplexNoise implements IGenerator {
     public double generateAtPoint(double x, double y) {
         return noise(x, y);
     }
+
+    @Override
+    public String getGeneratorName() {
+        return "Simplex Noise";
+    }
+
+    @Override
+    public String toString() {
+        return getGeneratorName();
+    }
 }

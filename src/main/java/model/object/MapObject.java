@@ -19,4 +19,11 @@ public abstract class MapObject {
     public abstract ObjectView getVisualObject();
 
     public abstract String getName();
+
+    public abstract boolean hasOptions();
+
+    /**
+     * TODO: Define how interact with this
+     */
+    public void options() {};
 }

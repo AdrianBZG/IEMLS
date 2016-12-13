@@ -6,4 +6,5 @@ package model.algorithms;
  * @description: Main class of algorithms
  */
 public class Algorithm {
+
 }

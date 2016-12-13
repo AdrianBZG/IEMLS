@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.map.EnvironmentMap;
+import model.map.generator.IGenerator;
 import model.map.generator.SimplexNoise;
 import model.object.MapObject;
 import rx.observables.JavaFxObservable;
@@ -61,16 +62,16 @@ public class EnvironmentView extends Pane {
     /**
      * Infinite map
      */
-    public EnvironmentView() {
-        environmentMap = new EnvironmentMap(new SimplexNoise());
+    public EnvironmentView(IGenerator generator) {
+        environmentMap = new EnvironmentMap(generator);
         setup();
     }
 
     /**
      * Generate a basic environment
      */
-    public EnvironmentView(int dimX, int dimY) {
-        environmentMap = new EnvironmentMap(new SimplexNoise());
+    public EnvironmentView(int dimX, int dimY, IGenerator generator) {
+        environmentMap = new EnvironmentMap(generator);
         environmentMap.setDimensions(dimX, dimY);
         setup();
     }

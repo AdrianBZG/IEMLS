@@ -10,6 +10,7 @@ import model.map.generator.IGenerator;
 import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
+import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Tuple;
 
@@ -40,6 +41,11 @@ public class EnvironmentMap {
     Optional<Tuple<Integer, Integer>> dimensions = Optional.empty();
 
     Optional<IGenerator> generator = Optional.empty();
+
+    /**
+     * List of Agents
+     */
+    ArrayList<Agent> agents = new ArrayList<>();
 
     /**
      * Build a empty map
@@ -73,6 +79,22 @@ public class EnvironmentMap {
                 }
             }
         }
+    }
+
+    /**
+     * Remove a agent
+     */
+    private void removeAgent(Agent agent) {
+        agents.remove(agent);
+    }
+
+    /**
+     * Add agent
+     * @param agent
+     * @return
+     */
+    private void addAgent(Agent agent) {
+        agents.add(agent);
     }
 
     /**
@@ -125,12 +147,32 @@ public class EnvironmentMap {
         }
         Chunk chunk = getMap().get(makeSector(x, y));
         if (chunk != null) {
+            removeAt(x,y);
+            if (object.getType() == TypeObject.Agent) {
+                addAgent((Agent)object);
+            }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
         }
     }
 
     private Sector makeSector(int x, int y) {
         return Sector.pos((int)Math.floor((float)x / CHUNK_SIZE), (int)Math.floor((float)y / CHUNK_SIZE));
+    }
+
+    /**
+     * Remove a map object in a determined position
+     * @param x
+     * @param y
+     */
+    public void removeAt (int x, int y) {
+        get(x, y).ifPresent(mapObject -> {
+            if (mapObject.getType() == TypeObject.Agent) {
+                removeAgent((Agent) mapObject);
+            }
+            else {
+                getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
+            }
+        });
     }
 
     /**
@@ -163,9 +205,5 @@ public class EnvironmentMap {
 
     public void setGenerator(Optional<IGenerator> generator) {
         this.generator = generator;
-    }
-
-    public void removeAt (int x, int y) {
-        getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
     }
 }
