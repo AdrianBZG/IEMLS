@@ -127,12 +127,6 @@ public class EnvironmentView extends Pane {
                                 (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
                                 (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()),
                                 pencil);
-                        /*System.out.println("---");
-                        System.out.println(getTileSize());
-                        System.out.println(mouseEvent.getX());
-                        System.out.println(getTranslation().getX());
-                        System.out.println(mouseEvent.getY());
-                        System.out.println(getTranslation().getY());*/
                         paintEnvironmentMap();
                     });
                 });
@@ -199,24 +193,41 @@ public class EnvironmentView extends Pane {
 
     /**
      * Paint EnvironmentMap
-     * TODO: To draw a objects it should implement factory? or a model defines who should be the view
+     * TODO: Paint object out screen to avoid false white, it happen on translating on borders of map
+     * TODO: Adjust the mouse to different values of translation?
      */
     private void paintEnvironmentMap() {
         getChildren().clear();
         for (int i = 0; i < getWidth() / getTileSize(); i++) {
             for (int j = 0; j < getHeight() / getTileSize(); j++) {
-                Optional<MapObject> iObjectOptional = getEnvironmentMap().get(
-                    (int)(Math.floor(getTranslation().getX() / getTileSize() + i)),   /// TODO: ceil or floor depends of ???
-                    (int)(Math.floor(getTranslation().getY() / getTileSize() + j)));
+                Optional<MapObject> iObjectOptional;
+                if (getTranslation().getX() >= 0 && getTranslation().getY() >= 0) {
+                    iObjectOptional = getEnvironmentMap().get(
+                            (int)(Math.floor(getTranslation().getX() / getTileSize() + i)),
+                            (int)(Math.floor(getTranslation().getY() / getTileSize() + j)));
+                }
+                else if (getTranslation().getX() < 0 && getTranslation().getY() >= 0) {
+                    iObjectOptional = getEnvironmentMap().get(
+                            (int)(Math.ceil(getTranslation().getX() / getTileSize() + i)),
+                            (int)(Math.floor(getTranslation().getY() / getTileSize() + j)));
+                }
+                else if (getTranslation().getX() >= 0 && getTranslation().getY() < 0) {
+                    iObjectOptional = getEnvironmentMap().get(
+                            (int)(Math.floor(getTranslation().getX() / getTileSize() + i)),
+                            (int)(Math.ceil(getTranslation().getY() / getTileSize() + j)));
+                }
+                else {//if (getTranslation().getX() > 0 && getTranslation().getY() >= 0) {
+                    iObjectOptional = getEnvironmentMap().get(
+                            (int)(Math.ceil(getTranslation().getX() / getTileSize() + i)),
+                            (int)(Math.ceil(getTranslation().getY() / getTileSize() + j)));
+                }
 
                 if (iObjectOptional.isPresent()) {
                     Node node = iObjectOptional.get().getVisualObject();
                     node.setScaleX(getZoom());
                     node.setScaleY(getZoom());
-                    // to Smooth translation uncomment the follow lines vvvvvv
-                    // but there problems with click pos
-                    node.setTranslateX(i * getTileSize()); // - getTranslation().getX() % getTileSize());
-                    node.setTranslateY(j * getTileSize()); // - getTranslation().getY() % getTileSize());
+                    node.setTranslateX(i * getTileSize() - getTranslation().getX() % getTileSize());
+                    node.setTranslateY(j * getTileSize() - getTranslation().getY() % getTileSize());
                     getChildren().add(node);
                 }
             }
