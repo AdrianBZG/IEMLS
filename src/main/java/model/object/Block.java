@@ -9,6 +9,7 @@ package model.object;
 import view.BlockView;
 import view.ObjectView;
 
+
 /**
  * Represent a no passing tile, a wall
  */

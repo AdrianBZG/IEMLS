@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- * Defines visual aspect of a agent with different options to change in function of type of agent
+ * Defines visual aspect of a agent with different showOptions to change in function of type of agent
  *
  * TODO: POSSIBLE CHANGES:
  * TODO: COLOR

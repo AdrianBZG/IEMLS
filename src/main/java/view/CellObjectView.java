@@ -1,6 +1,5 @@
 package view;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -8,13 +7,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import model.object.MapObject;
+import org.kordamp.ikonli.fontawesome.FontAwesome;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Created by eleazardd on 14/11/16.
  */
 public class CellObjectView extends ListCell<MapObject> {
     HBox box = new HBox();
-    Button options = new Button("Options");
+    Button options = new Button();
     Pane spacer = new Pane();
     Label tag = new Label();
 
@@ -23,6 +24,7 @@ public class CellObjectView extends ListCell<MapObject> {
         box.getChildren().addAll(tag, spacer);
         box.setHgrow(spacer, Priority.ALWAYS);
         box.setSpacing(5.0);
+        options.setGraphic(new FontIcon(FontAwesome.GEARS));
     }
 
     @Override
@@ -32,9 +34,8 @@ public class CellObjectView extends ListCell<MapObject> {
             setGraphic(null);
         } else {
             if (item != null) {
-                ObjectView objectView = item.getVisualObject();
-                if (objectView.hasOptions()) {
-                    options.setOnMouseClicked(mouseEvent -> objectView.showOptions());
+                if (item.hasOptions()) {
+                    options.setOnMouseClicked(mouseEvent -> item.showOptions());
                     box.getChildren().add(options);
                 }
                 tag.setText(item.getName());

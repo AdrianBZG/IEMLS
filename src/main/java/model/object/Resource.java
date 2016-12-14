@@ -6,7 +6,6 @@
 
 package model.object;
 
-import javafx.scene.Node;
 import view.ObjectView;
 import view.ResourceView;
 
@@ -79,7 +78,7 @@ public class Resource extends MapObject {
      * Display a dialog with capacity of modified the resource settings
      */
     @Override
-    public void options() {
+    public void showOptions() {
         // TODO: Define it
     }
 }

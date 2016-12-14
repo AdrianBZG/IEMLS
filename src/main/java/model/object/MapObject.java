@@ -25,5 +25,5 @@ public abstract class MapObject {
     /**
      * TODO: Define how interact with this
      */
-    public void options() {};
+    public void showOptions() {};
 }
