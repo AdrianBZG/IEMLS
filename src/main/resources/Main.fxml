@@ -26,7 +26,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
         <MenuBar>
             <menus>
@@ -77,9 +77,9 @@
                       </graphic>
                   </Button>
                   <Label />
-                  <Button mnemonicParsing="false">
+                  <Button fx:id="playButton" mnemonicParsing="false" onMouseClicked="#onPlayButton">
                       <graphic>
-                          <FontIcon iconLiteral="fa-play" iconSize="24" />
+                          <FontIcon id="playButton" iconLiteral="fa-play" iconSize="24" />
                       </graphic>
                   </Button>
                   <Button mnemonicParsing="false">

@@ -82,6 +82,11 @@ public class Controller implements Initializable {
         noiseChoose.getSelectionModel().selectFirst();
     }
 
+    @FXML
+    public void onPlayButton () {
+        System.out.println("On Play Button");
+    }
+
 
     /**
      * Generate a map
