@@ -14,11 +14,17 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.scene.control.Dialog;
 import model.object.MapObject;
 import model.object.TypeObject;
+import util.Directions;
 import util.Tuple;
 import view.AgentView;
 import view.ObjectView;
 
 import java.util.Optional;
+
+
+
+
+
 
 /**
  *
@@ -29,6 +35,12 @@ public class Agent extends MapObject {
      * Position Agent
      */
     private Tuple<Integer, Integer> position;
+
+    public Agent () {}
+
+    public Agent (Tuple<Integer, Integer> position) {
+        this.position = position;
+    }
 
     @Override
     public TypeObject getType() {
@@ -87,5 +99,17 @@ public class Agent extends MapObject {
 
     public void setPosition(Tuple<Integer, Integer> position) {
         this.position = position;
+    }
+
+    public void move (Directions dir) {
+        switch (dir) {
+            case UP:
+                position.setSnd(position.getSnd() + 1);
+                break;
+            case RIGHT:
+                position.setFst(position.getFst() + 1);
+                break;
+        }
+
     }
 }

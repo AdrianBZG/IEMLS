@@ -14,16 +14,11 @@ import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Tuple;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-import java.io.ObjectOutputStream;   // For map exporting
-import java.io.ObjectInputStream;    // For map saving
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
 
 /**
  * Represent full map extension
@@ -102,6 +97,15 @@ public class EnvironmentMap {
      */
     private void addAgent(Agent agent) {
         agents.add(agent);
+        System.out.println("Number of agents: " + agents.size());
+    }
+
+    public ArrayList<Agent> getAgents () {
+        return agents;
+    }
+
+    public Agent getAgent (int inx) {
+        return agents.get(inx);
     }
 
     /**
@@ -156,7 +160,9 @@ public class EnvironmentMap {
         if (chunk != null) {
             removeAt(x,y);
             if (object.getType() == TypeObject.Agent) {
-                addAgent((Agent)object);
+                //addAgent(((Agent)object));
+                System.out.println("Added agent at " + x + ", " + y);
+                addAgent(new Agent(new Tuple<Integer, Integer>(x, y)));
             }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
         }
@@ -175,9 +181,11 @@ public class EnvironmentMap {
         get(x, y).ifPresent(mapObject -> {
             if (mapObject.getType() == TypeObject.Agent) {
                 removeAgent((Agent) mapObject);
+                System.out.println("removed agent at " + x + ", " + y);
             }
             else {
                 getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
+                System.out.println("Removed something else at " + x + ", " + y);
             }
         });
     }
@@ -216,12 +224,15 @@ public class EnvironmentMap {
 
 
     /**
-     * This method saves the map to a file.
+     * This method saves the map to a file. Is connected with the menu item save map button
      */
     public void saveMap () {
 
     }
 
+    /**
+     * This method load a map from a file. Is connected with the menu item load map button
+     */
     public void loadMap () {
 
     }

@@ -84,7 +84,7 @@
                           <FontIcon id="playButton" iconLiteral="fa-play" iconSize="24" />
                       </graphic>
                   </Button>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onMouseClicked="#onStopButton">
                       <graphic>
                           <FontIcon iconLiteral="fa-pause" iconSize="24" />
                       </graphic>
