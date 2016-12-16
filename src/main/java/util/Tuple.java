@@ -44,4 +44,23 @@ public class Tuple<A, B> {
     public void setSnd(B snd) {
         this.snd = snd;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tuple<?, ?> tuple = (Tuple<?, ?>) o;
+
+        if (fst != null ? !fst.equals(tuple.fst) : tuple.fst != null) return false;
+        return snd != null ? snd.equals(tuple.snd) : tuple.snd == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fst != null ? fst.hashCode() : 0;
+        result = 31 * result + (snd != null ? snd.hashCode() : 0);
+        return result;
+    }
 }

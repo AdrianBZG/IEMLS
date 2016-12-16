@@ -87,7 +87,9 @@ public class EnvironmentMap {
      * Remove a agent
      */
     private void removeAgent(Agent agent) {
-        agents.remove(agent);
+        int i = 0;
+        while (agents.size() > i && !agent.getPosition().equals(agents.get(i).getPosition())) i++;
+        agents.remove(i);
     }
 
     /**
@@ -97,7 +99,6 @@ public class EnvironmentMap {
      */
     private void addAgent(Agent agent) {
         agents.add(agent);
-        System.out.println("Number of agents: " + agents.size());
     }
 
     public ArrayList<Agent> getAgents () {
@@ -160,9 +161,9 @@ public class EnvironmentMap {
         if (chunk != null) {
             removeAt(x,y);
             if (object.getType() == TypeObject.Agent) {
-                //addAgent(((Agent)object));
-                System.out.println("Added agent at " + x + ", " + y);
-                addAgent(new Agent(new Tuple<Integer, Integer>(x, y)));
+                Agent agent = (Agent)object;
+                agent.setPosition(new Tuple<>(x,y));
+                addAgent(agent);
             }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
         }
@@ -181,12 +182,8 @@ public class EnvironmentMap {
         get(x, y).ifPresent(mapObject -> {
             if (mapObject.getType() == TypeObject.Agent) {
                 removeAgent((Agent) mapObject);
-                System.out.println("removed agent at " + x + ", " + y);
             }
-            else {
-                getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
-                System.out.println("Removed something else at " + x + ", " + y);
-            }
+            getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
         });
     }
 

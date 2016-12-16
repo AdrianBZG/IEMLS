@@ -34,13 +34,9 @@ public class Agent extends MapObject {
     /**
      * Position Agent
      */
-    private Tuple<Integer, Integer> position;
+    private Tuple<Integer, Integer> position = new Tuple<>(0,0);
 
     public Agent () {}
-
-    public Agent (Tuple<Integer, Integer> position) {
-        this.position = position;
-    }
 
     @Override
     public TypeObject getType() {
