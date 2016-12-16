@@ -25,6 +25,7 @@ import rx.observables.JavaFxObservable;
 import view.CellObjectView;
 import view.EnvironmentView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -34,6 +35,7 @@ import java.util.ResourceBundle;
  *
  */
 public class Controller implements Initializable {
+    EnvironmentManager environmentManager;
     EnvironmentView environmentView;
 
     @FXML
@@ -82,9 +84,26 @@ public class Controller implements Initializable {
         noiseChoose.getSelectionModel().selectFirst();
     }
 
+
+    @FXML
+    public void onSaveMap () throws IOException {
+        environmentView.getEnvironmentMap().saveMap();
+    }
+
+    @FXML
+    public void onLoadMap () throws IOException, ClassNotFoundException {
+        environmentView.getEnvironmentMap().loadMap();
+    }
+
+
     @FXML
     public void onPlayButton () {
-        System.out.println("On Play Button");
+        environmentManager.play();
+    }
+
+    @FXML
+    public void onStopButton () {
+        environmentManager.stop();
     }
 
 

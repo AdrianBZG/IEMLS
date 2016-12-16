@@ -9,6 +9,8 @@ package model.object;
 import view.BlockView;
 import view.ObjectView;
 
+import java.io.Serializable;
+
 
 /**
  * Represent a no passing tile, a wall

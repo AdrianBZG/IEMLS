@@ -14,9 +14,16 @@ import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Tuple;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+
+import java.io.ObjectOutputStream;   // For map exporting
+import java.io.ObjectInputStream;    // For map saving
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 
 /**
  * Represent full map extension
@@ -205,5 +212,17 @@ public class EnvironmentMap {
 
     public void setGenerator(Optional<IGenerator> generator) {
         this.generator = generator;
+    }
+
+
+    /**
+     * This method saves the map to a file.
+     */
+    public void saveMap () {
+
+    }
+
+    public void loadMap () {
+
     }
 }

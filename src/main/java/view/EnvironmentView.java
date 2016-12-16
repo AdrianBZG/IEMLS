@@ -141,8 +141,8 @@ public class EnvironmentView extends Pane {
                 .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY) && nodeEvent.isControlDown())
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
-                            (int)((mouseEvent.getX() + getTranslation().getX()) / getTileSize()),
-                            (int)((mouseEvent.getY() + getTranslation().getY()) / getTileSize())
+                            (int)((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
+                            (int)((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize())
                             );
                     paintEnvironmentMap();
                 });

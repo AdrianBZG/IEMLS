@@ -13,6 +13,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import view.ObjectView;
 import view.ResourceView;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**

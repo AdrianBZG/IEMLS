@@ -6,6 +6,7 @@
 
 package model.map;
 
+
 /**
  * Auxiliary class used to access to different sectors into EnvironmentMap
  *

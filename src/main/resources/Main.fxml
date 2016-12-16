@@ -33,10 +33,12 @@
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem fx:id="openFile" mnemonicParsing="false" text="Open File" />
+                  <MenuItem fx:id="saveMapMenuItem" mnemonicParsing="false" onAction="#onSaveMap" text="Save Map" />
+                  <MenuItem fx:id="loadMapMenuItem" mnemonicParsing="false" onAction="#onLoadMap" text="Load Map" />
                         <MenuItem fx:id="close" mnemonicParsing="false" text="Close" />
                     </items>
                 </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
+            <Menu mnemonicParsing="false" text="Load Map">
               <items>
                 <MenuItem mnemonicParsing="false" text="Copy" />
                   <MenuItem mnemonicParsing="false" text="Cut" />
