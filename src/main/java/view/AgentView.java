@@ -33,4 +33,5 @@ public class AgentView extends ObjectView {
         right.setFill(Color.BLUE);
         getChildren().addAll(right);
     }
+
 }

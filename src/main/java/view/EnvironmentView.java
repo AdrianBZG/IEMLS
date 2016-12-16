@@ -32,7 +32,7 @@ import java.util.Optional;
  *
  */
 public class EnvironmentView extends Pane {
-    private static double TILE_SIZE = 20; // Normal tile size
+    public static double TILE_SIZE = 20; // Normal tile size
     private static double MAX_ZOOM = 3.0;
     private static double MIN_ZOOM = 0.3; // Min Multiplier zoom
 
@@ -141,8 +141,8 @@ public class EnvironmentView extends Pane {
                 .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY) && nodeEvent.isControlDown())
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
-                            (int)((mouseEvent.getX() + getTranslation().getX()) / getTileSize()),
-                            (int)((mouseEvent.getY() + getTranslation().getY()) / getTileSize())
+                            (int)((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
+                            (int)((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize())
                             );
                     paintEnvironmentMap();
                 });
@@ -189,6 +189,10 @@ public class EnvironmentView extends Pane {
                 paintEnvironmentMap();
             });
 
+    }
+
+    public void updateMap () {
+        paintEnvironmentMap();
     }
 
     /**

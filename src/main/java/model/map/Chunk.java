@@ -15,7 +15,7 @@ import java.util.Optional;
  * TODO: Commenta algo
  *
  */
-public class Chunk {
+public class Chunk  {
     /**
      * Represent chunk size
      */
