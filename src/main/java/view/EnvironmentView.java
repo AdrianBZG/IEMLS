@@ -124,8 +124,8 @@ public class EnvironmentView extends Pane {
                 .subscribe(mouseEvent -> {
                     getPencil().ifPresent(pencil -> {
                         getEnvironmentMap().set(
-                                (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
-                                (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()),
+                                (int) ((mouseEvent.getX() + (getTranslation().getX()) + getTileSize()) / getTileSize()),
+                                (int) ((mouseEvent.getY() + (getTranslation().getY()) + getTileSize()) / getTileSize()),
                                 pencil);
                         paintEnvironmentMap();
                     });
