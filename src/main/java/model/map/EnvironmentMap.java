@@ -233,6 +233,7 @@ public class EnvironmentMap {
 
     /**
      * This method makes agents explore the map randomly avoiding last position and obstacles.
+     * When resource is next to the agent he pick up it.
      */
     public void agentsExplorationStep () {
         for (int i = 0; i < agents.size(); i++) {
@@ -257,12 +258,14 @@ public class EnvironmentMap {
 
             boolean nextToResource = false;
 
+            System.out.println ("--------------------NEXT MOVEMENT");
 
             int j = 0;
             for (Directions nextAction : Directions.values()) {
                 if (resourceAtPos(nextPositions.get(j))) {
                     nextToResource = true;
                     lastActions.add(i, nextAction);
+                    System.out.println ("Next to resource at " + nextAction);
                     performAction(agent, pos, nextAction);
                     break;
                 }
@@ -273,9 +276,13 @@ public class EnvironmentMap {
                 }
             }
 
+            for (Directions dirs : allowedActions) {
+                System.out.println ("Allowed Action: " + dirs);
+            }
+
             if (!nextToResource) {
                 Integer action = (int) (Math.random() * allowedActions.size());
-                if (action > (0.4 * allowedActions.size())) {  // 60 % to take the most probable action.
+                if (mostProbableAction != null && action > (0.4 * allowedActions.size())) {  // 60 % to take the most probable action.
                     System.out.println("The most probable action is taken: " + mostProbableAction);
                     lastActions.add(i, mostProbableAction);
                     performAction(agent, pos, mostProbableAction);
@@ -291,7 +298,7 @@ public class EnvironmentMap {
     }
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
-        return (!agent.getLastPos().equals(nextPos) &&
+        return (
                 (!get(nextPos).isPresent() ||
                         get(nextPos).get().getType() != TypeObject.Obstacle));
     }

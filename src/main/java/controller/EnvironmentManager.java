@@ -21,7 +21,7 @@ public class EnvironmentManager {
     private EnvironmentView mapView;
     private EnvironmentMap map;
     private static Timer timer = null;
-    private int interval = 500;
+    private int interval = 200;
 
     public EnvironmentManager (EnvironmentView mapView) {
 
@@ -36,7 +36,7 @@ public class EnvironmentManager {
         }
         return timer;
     }
-
+    
     /**
      * Execute the timer for the IEMLS world.
      */
