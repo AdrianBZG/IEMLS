@@ -14,7 +14,6 @@ import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Directions;
 import util.Tuple;
-import view.EnvironmentView;
 
 
 import java.util.ArrayList;
@@ -52,6 +51,8 @@ public class EnvironmentMap {
      * List of Agents
      */
     ArrayList<Agent> agents = new ArrayList<>();
+
+    ArrayList<Directions> lastActions = new ArrayList<>();
 
     /**
      * Build a empty map
@@ -234,52 +235,88 @@ public class EnvironmentMap {
      * This method makes agents explore the map randomly avoiding last position and obstacles.
      */
     public void agentsExplorationStep () {
-        for (Agent agent : agents) {
+        for (int i = 0; i < agents.size(); i++) {
+            Agent agent = agents.get(i);
             Tuple<Integer, Integer> pos = agent.getPosition();
             removeAt(pos.getX(), pos.getY());
 
-            ArrayList<Directions> allowedActions = new ArrayList<Directions>();
+            ArrayList<Directions> allowedActions = new ArrayList<>();
+            Directions mostProbableAction = null;
 
-            Tuple<Integer, Integer> nextPos = new Tuple<>(pos.getX(), pos.getY() + 1);
-            if (checkAllowedPos(nextPos, agent))
-                allowedActions.add(Directions.DOWN);
+            Tuple<Integer, Integer> nextPos1 = new Tuple<>(pos.getX(), pos.getY() - 1);
+            Tuple<Integer, Integer> nextPos2 = new Tuple<>(pos.getX() + 1, pos.getY());
+            Tuple<Integer, Integer> nextPos3 = new Tuple<>(pos.getX(), pos.getY() + 1);
+            Tuple<Integer, Integer> nextPos4 = new Tuple<>(pos.getX() - 1, pos.getY());
 
-            nextPos = new Tuple<>(pos.getX(), pos.getY() - 1);
-            if (checkAllowedPos(nextPos, agent))
-                allowedActions.add(Directions.UP);
+            ArrayList<Tuple<Integer, Integer>> nextPositions = new ArrayList<>();
 
-            nextPos = new Tuple<>(pos.getX() + 1, pos.getY());
-            if (checkAllowedPos(nextPos, agent))
-                allowedActions.add(Directions.RIGHT);
+            nextPositions.add(nextPos1);
+            nextPositions.add(nextPos2);
+            nextPositions.add(nextPos3);
+            nextPositions.add(nextPos4);
 
-            nextPos = new Tuple<>(pos.getX() - 1, pos.getY());
-            if (checkAllowedPos(nextPos, agent))
-                allowedActions.add(Directions.LEFT);
+            boolean nextToResource = false;
 
-            Integer action = (int) (Math.random() * allowedActions.size());
-            performAction(agent,pos,allowedActions.get(action));
+
+            int j = 0;
+            for (Directions nextAction : Directions.values()) {
+                if (resourceAtPos(nextPositions.get(j))) {
+                    nextToResource = true;
+                    lastActions.add(i, nextAction);
+                    performAction(agent, pos, nextAction);
+                    break;
+                }
+                if (!nextToResource && checkAllowedPos(nextPositions.get(j++), agent)) {
+                    allowedActions.add(nextAction);
+                    if (lastActions.size() > 0 && lastActions.get(i) == nextAction)
+                        mostProbableAction = nextAction;
+                }
+            }
+
+            if (!nextToResource) {
+                Integer action = (int) (Math.random() * allowedActions.size());
+                if (action > (0.4 * allowedActions.size())) {  // 60 % to take the most probable action.
+                    System.out.println("The most probable action is taken: " + mostProbableAction);
+                    lastActions.add(i, mostProbableAction);
+                    performAction(agent, pos, mostProbableAction);
+                } else {
+                    if (allowedActions.size() > 0) {
+                        System.out.println("The action " + allowedActions.get(action) + " is taken");
+                        lastActions.add(i, allowedActions.get(action));
+                        performAction(agent, pos, allowedActions.get(action));
+                    }
+                }
+            }
         }
     }
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
-        return (!agent.getLastPos().equals(nextPos) && (!get(nextPos).isPresent() || get(nextPos).get().getType() != TypeObject.Obstacle));
+        return (!agent.getLastPos().equals(nextPos) &&
+                (!get(nextPos).isPresent() ||
+                        get(nextPos).get().getType() != TypeObject.Obstacle));
     }
 
-    public void performAction (Agent agent, Tuple<Integer, Integer> pos, Directions dir) {
-        switch(dir) {
-            case UP:
-                set(pos.getX(), pos.getY() - 1, agent);
-                break;
-            case RIGHT:
-                set(pos.getX() + 1, pos.getY(), agent);
-                break;
-            case LEFT:
-                set(pos.getX() - 1, pos.getY(), agent);
-                break;
-            case DOWN:
-                set(pos.getX(), pos.getY() + 1, agent);
-                break;
+    private void performAction (Agent agent, Tuple<Integer, Integer> pos, Directions dir) {
+        if (dir != null) {
+            switch(dir) {
+                case UP:
+                    set(pos.getX(), pos.getY() - 1, agent);
+                    break;
+                case RIGHT:
+                    set(pos.getX() + 1, pos.getY(), agent);
+                    break;
+                case LEFT:
+                    set(pos.getX() - 1, pos.getY(), agent);
+                    break;
+                case DOWN:
+                    set(pos.getX(), pos.getY() + 1, agent);
+                    break;
+            }
         }
+    }
+
+    private boolean resourceAtPos (Tuple<Integer, Integer> pos) {
+        return get(pos).isPresent() && get(pos).get().getType() == TypeObject.Resource;
     }
 
     /**

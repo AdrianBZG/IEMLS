@@ -12,7 +12,9 @@ import es.usc.citius.hipster.model.problem.ProblemBuilder;
 import es.usc.citius.hipster.model.function.impl.LazyNodeExpander;
 import es.usc.citius.hipster.model.problem.SearchProblem;
 import model.map.EnvironmentMap;
+import model.object.TypeObject;
 import model.object.agent.Agent;
+import util.Directions;
 import util.Tuple;
 
 /**
@@ -21,14 +23,15 @@ import util.Tuple;
  */
 public class AStar  {
 
-    SearchProblem<Object, Tuple<Integer, Integer>, WeightedNode<Object, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap environmentMap, Agent agent) {
+    SearchProblem<Object, Tuple<Integer, Integer>, WeightedNode<Object, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, Agent agent) {
 
         return ProblemBuilder.create()
                 .initialState(new Tuple<Integer, Integer>(0,0))
                 .defineProblemWithExplicitActions()
                 .useActionFunction(new ActionFunction<Object, Tuple<Integer,Integer>>() {
                     @Override
-                    public Iterable<Object> actionsFor(Tuple<Integer, Integer> integerIntegerTuple) {
+                    public Iterable<Object> actionsFor(Tuple<Integer, Integer> pos) {
+
                         return null;
                     }
                 })
@@ -41,15 +44,23 @@ public class AStar  {
                 .useCostFunction(new CostFunction<Object, Tuple<Integer,Integer>, Double>() {
                     @Override
                     public Double evaluate(Transition<Object, Tuple<Integer, Integer>> transition) {
+
                         return null;
                     }
                 })
                 .useHeuristicFunction(new HeuristicFunction<Tuple<Integer, Integer>, Double>() {
                     @Override
                     public Double estimate(Tuple<Integer, Integer> integerIntegerTuple) {
+
                         return null;
                     }
                 })
                 .build();
+    }
+
+    private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent, EnvironmentMap map) {
+        return (!agent.getLastPos().equals(nextPos) &&
+                (!map.get(nextPos).isPresent() ||
+                        map.get(nextPos).get().getType() != TypeObject.Obstacle));
     }
 }
