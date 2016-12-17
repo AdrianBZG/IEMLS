@@ -12,7 +12,9 @@ import model.object.MapObject;
 import model.object.Resource;
 import model.object.TypeObject;
 import model.object.agent.Agent;
+import util.Directions;
 import util.Tuple;
+import view.EnvironmentView;
 
 
 import java.util.ArrayList;
@@ -43,6 +45,8 @@ public class EnvironmentMap {
     Optional<Tuple<Integer, Integer>> dimensions = Optional.empty();
 
     Optional<IGenerator> generator = Optional.empty();
+
+
 
     /**
      * List of Agents
@@ -101,12 +105,17 @@ public class EnvironmentMap {
         agents.add(agent);
     }
 
+
     public ArrayList<Agent> getAgents () {
         return agents;
     }
 
     public Agent getAgent (int inx) {
         return agents.get(inx);
+    }
+
+    public Optional<MapObject> get(Tuple <Integer, Integer> pos) {
+        return get(pos.getX(), pos.getY());
     }
 
     /**
@@ -173,6 +182,7 @@ public class EnvironmentMap {
         return Sector.pos((int)Math.floor((float)x / CHUNK_SIZE), (int)Math.floor((float)y / CHUNK_SIZE));
     }
 
+
     /**
      * Remove a map object in a determined position
      * @param x
@@ -221,6 +231,58 @@ public class EnvironmentMap {
 
 
     /**
+     * This method makes agents explore the map randomly avoiding last position and obstacles.
+     */
+    public void agentsExplorationStep () {
+        for (Agent agent : agents) {
+            Tuple<Integer, Integer> pos = agent.getPosition();
+            removeAt(pos.getX(), pos.getY());
+
+            ArrayList<Directions> allowedActions = new ArrayList<Directions>();
+
+            Tuple<Integer, Integer> nextPos = new Tuple<>(pos.getX(), pos.getY() + 1);
+            if (checkAllowedPos(nextPos, agent))
+                allowedActions.add(Directions.DOWN);
+
+            nextPos = new Tuple<>(pos.getX(), pos.getY() - 1);
+            if (checkAllowedPos(nextPos, agent))
+                allowedActions.add(Directions.UP);
+
+            nextPos = new Tuple<>(pos.getX() + 1, pos.getY());
+            if (checkAllowedPos(nextPos, agent))
+                allowedActions.add(Directions.RIGHT);
+
+            nextPos = new Tuple<>(pos.getX() - 1, pos.getY());
+            if (checkAllowedPos(nextPos, agent))
+                allowedActions.add(Directions.LEFT);
+
+            Integer action = (int) (Math.random() * allowedActions.size());
+            performAction(agent,pos,allowedActions.get(action));
+        }
+    }
+
+    private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
+        return (!agent.getLastPos().equals(nextPos) && (!get(nextPos).isPresent() || get(nextPos).get().getType() != TypeObject.Obstacle));
+    }
+
+    public void performAction (Agent agent, Tuple<Integer, Integer> pos, Directions dir) {
+        switch(dir) {
+            case UP:
+                set(pos.getX(), pos.getY() - 1, agent);
+                break;
+            case RIGHT:
+                set(pos.getX() + 1, pos.getY(), agent);
+                break;
+            case LEFT:
+                set(pos.getX() - 1, pos.getY(), agent);
+                break;
+            case DOWN:
+                set(pos.getX(), pos.getY() + 1, agent);
+                break;
+        }
+    }
+
+    /**
      * This method saves the map to a file. Is connected with the menu item save map button
      */
     public void saveMap () {
@@ -233,4 +295,6 @@ public class EnvironmentMap {
     public void loadMap () {
 
     }
+
+
 }
