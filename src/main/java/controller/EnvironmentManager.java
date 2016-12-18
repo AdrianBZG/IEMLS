@@ -21,7 +21,7 @@ public class EnvironmentManager {
     private EnvironmentView mapView;
     private EnvironmentMap map;
     private static Timer timer = null;
-    private int interval = 500;
+    private int interval = 200;
 
     public EnvironmentManager (EnvironmentView mapView) {
 
@@ -46,10 +46,11 @@ public class EnvironmentManager {
             public void run()
             {
                 Platform.runLater(() -> {
-                    exploreMap();
+                    map.agentsExplorationStep();
+                    mapView.updateMap();
                 });
             }
-        }, 0, interval);
+        }, 10, interval);
 
     }
 
@@ -61,18 +62,6 @@ public class EnvironmentManager {
         }
     }
 
-    private void exploreMap() {
-        if(map.getAgents().size() > 0) {
-            Agent agent = map.getAgents().get(0);
-            System.out.println(map.getAgents().size());
-            map.removeAt(agent.getPosition().getX(), agent.getPosition().getY());
-            map.set(agent.getPosition().getX(), agent.getPosition().getY() + 1, agent);
-            mapView.updateMap();
-        }
-        else {
-            System.out.println("No agents on map");
-        }
-    }
 
 
 }

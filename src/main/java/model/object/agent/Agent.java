@@ -35,6 +35,8 @@ public class Agent extends MapObject {
      * Position Agent
      */
     private Tuple<Integer, Integer> position = new Tuple<>(0,0);
+    private Tuple<Integer, Integer> lastPos = new Tuple<>(0,0);
+    private boolean firstPos = true;
 
     public Agent () {}
 
@@ -93,7 +95,15 @@ public class Agent extends MapObject {
         return position;
     }
 
+    public Tuple<Integer, Integer> getLastPos () { return lastPos; }
+
     public void setPosition(Tuple<Integer, Integer> position) {
+        if (firstPos) {
+            firstPos = false;
+        }
+        else {
+            lastPos = this.position;
+        }
         this.position = position;
     }
 
