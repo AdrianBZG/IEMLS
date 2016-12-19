@@ -173,6 +173,7 @@ public class EnvironmentMap {
             if (object.getType() == TypeObject.Agent) {
                 Agent agent = (Agent)object;
                 agent.setPosition(new Tuple<>(x,y));
+                agent.setMap(this);
                 addAgent(agent);
             }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);

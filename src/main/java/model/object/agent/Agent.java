@@ -6,12 +6,12 @@
 
 package model.object.agent;
 
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextArea;
+import javafx.collections.FXCollections;
+import javafx.scene.control.*;
+import model.algorithms.Algorithm;
+import model.map.EnvironmentMap;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
-import javafx.scene.control.Dialog;
 import model.object.MapObject;
 import model.object.TypeObject;
 import util.Directions;
@@ -19,6 +19,9 @@ import util.Tuple;
 import view.AgentView;
 import view.ObjectView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -35,10 +38,36 @@ public class Agent extends MapObject {
      * Position Agent
      */
     private Tuple<Integer, Integer> position = new Tuple<>(0,0);
-    private Tuple<Integer, Integer> lastPos = new Tuple<>(0,0);
-    private boolean firstPos = true;
 
-    public Agent () {}
+    /**
+     * Reference to map
+     */
+    private EnvironmentMap map;
+
+    /**
+     * Algorithm into Agent
+     */
+    Algorithm algorithm;
+
+    public Agent() {
+    }
+
+    public void setMap(EnvironmentMap map) {
+        this.map = map;
+    }
+
+    public ArrayList<MapObject> getArounds() {
+        ArrayList<MapObject> ret = new ArrayList<>();
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (!(i == 1 && j == 1)) {
+                    map.get(getPosition().getX() + i, getPosition().getY() + j)
+                        .ifPresent((mapObject -> ret.add(mapObject)));
+                }
+            }
+        }
+        return ret;
+    }
 
     @Override
     public TypeObject getType() {
@@ -79,11 +108,15 @@ public class Agent extends MapObject {
         ButtonType applyChanges = new ButtonType("Apply", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
-        TextArea textArea = new TextArea();
-        dialog.getDialogPane().setContent(textArea);
+        ChoiceBox<Algorithm> algorithmChoiceBox = new ChoiceBox<>();
+        algorithmChoiceBox.setItems(FXCollections.observableArrayList(Algorithm.getAlgorithms()));
+        algorithmChoiceBox.getSelectionModel().selectFirst();
+
+        dialog.getDialogPane().setContent(algorithmChoiceBox);
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyChanges) {
-                return null; // new changes
+                setAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                return null;
             }
             return null;
         });
@@ -91,31 +124,41 @@ public class Agent extends MapObject {
         Optional<String> result = dialog.showAndWait();
     }
 
-    public Tuple<Integer, Integer> getPosition() {
-        return position;
-    }
-
-    public Tuple<Integer, Integer> getLastPos () { return lastPos; }
-
-    public void setPosition(Tuple<Integer, Integer> position) {
-        if (firstPos) {
-            firstPos = false;
-        }
-        else {
-            lastPos = this.position;
-        }
-        this.position = position;
-    }
-
     public void move (Directions dir) {
         switch (dir) {
             case UP:
+                map.removeAt(position.getX(), position.getY());
                 position.setSnd(position.getSnd() + 1);
+                map.set(position.getX(), position.getY(), this);
                 break;
             case RIGHT:
+                map.removeAt(position.getX(), position.getY());
                 position.setFst(position.getFst() + 1);
+                map.set(position.getX(), position.getY(), this);
+                break;
+            case LEFT:
+                map.removeAt(position.getX(), position.getY());
+                position.setFst(position.getFst() - 1);
+                map.set(position.getX(), position.getY(), this);
+                break;
+            case DOWN:
+                map.removeAt(position.getX(), position.getY());
+                position.setFst(position.getSnd() - 1);
+                map.set(position.getX(), position.getY(), this);
                 break;
         }
 
+    }
+
+    /**
+     *
+     */
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
+
+    public Agent setAlgorithm(Algorithm algorithm) {
+        this.algorithm = algorithm;
+        return this;
     }
 }

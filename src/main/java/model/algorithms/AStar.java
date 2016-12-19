@@ -18,6 +18,9 @@ import util.Tuple;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
+;
+
 /**
  * Created by eleazardd on 13/12/16.
  * TODO: Implement Function of transition to define the map
@@ -26,13 +29,13 @@ public class AStar  {
 
     private static EnvironmentMap map;
 
-    SearchProblem<Object, Tuple<Integer, Integer>, WeightedNode<Object, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, Agent agent) {
+    SearchProblem<Directions, Tuple<Integer, Integer>, WeightedNode<Directions, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, Agent agent) {
 
         this.map = map;
         return ProblemBuilder.create()
                 .initialState(new Tuple<Integer, Integer>(0,0))
                 .defineProblemWithExplicitActions()
-                .useActionFunction(new ActionFunction<Object, Tuple<Integer,Integer>>() {
+                .useActionFunction(new ActionFunction<Directions, Tuple<Integer,Integer>>() {
                     @Override
                     public Iterable<Directions> actionsFor(Tuple<Integer, Integer> pos) {
 
@@ -40,7 +43,7 @@ public class AStar  {
 
                     }
                 })
-                .useTransitionFunction(new ActionStateTransitionFunction<Object, Tuple<Integer,Integer>>() {
+                .useTransitionFunction(new ActionStateTransitionFunction<Directions, Tuple<Integer,Integer>>() {
                     @Override
                     public Tuple<Integer, Integer> apply(Object o, Tuple<Integer, Integer> integerIntegerTuple) {
                         return null;

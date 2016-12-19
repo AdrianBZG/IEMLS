@@ -6,6 +6,7 @@
 
 package model.object;
 
+import util.Tuple;
 import view.ObjectView;
 
 /**
@@ -13,6 +14,24 @@ import view.ObjectView;
  *
  */
 public abstract class MapObject {
+
+    private Tuple<Integer, Integer> position = new Tuple<>(0,0);
+
+    /**
+     *
+     * @param x
+     * @param y
+     */
+    public void setPosition(int x, int y) {
+        position = new Tuple<>(x, y);
+    }
+
+    /**
+     *
+     */
+    public Tuple<Integer, Integer> getPosition() {
+        return position;
+    }
 
     public abstract TypeObject getType();
 
