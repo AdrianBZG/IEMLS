@@ -9,18 +9,22 @@ package model.object.agent;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import model.algorithms.Algorithm;
+import model.map.Chunk;
 import model.map.EnvironmentMap;
+import model.map.Sector;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import model.object.MapObject;
 import model.object.TypeObject;
 import util.Directions;
+import util.Position;
 import util.Tuple;
 import view.AgentView;
 import view.ObjectView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,6 +43,8 @@ public class Agent extends MapObject {
      */
     private Tuple<Integer, Integer> position = new Tuple<>(0,0);
 
+    private Tuple<Integer, Integer> lastPosition = null;
+
     /**
      * Reference to map
      */
@@ -51,6 +57,23 @@ public class Agent extends MapObject {
 
     public Agent() {
     }
+
+    public void setPosition (Tuple<Integer, Integer> pos) {
+        if (getLastPosition() == null) {
+            setLastPosition(new Tuple<>(0, 0));
+        }
+        else {
+            setLastPosition(position);
+        }
+        position = pos;
+    }
+
+    public void setLastPosition (Tuple<Integer, Integer> pos) {
+        lastPosition = pos;
+    }
+
+    public Tuple<Integer, Integer> getPosition () { return position; }
+    public Tuple<Integer, Integer> getLastPosition () { return lastPosition; }
 
     public void setMap(EnvironmentMap map) {
         this.map = map;
@@ -148,6 +171,25 @@ public class Agent extends MapObject {
                 break;
         }
 
+    }
+
+    /**
+     * Get all allowed actions for the actual position of the agent.
+     * @return an array with all allowed actions.
+     */
+    public ArrayList<Directions> getAllowedActions () {
+
+        ArrayList<Directions> allowedDirections = new ArrayList<>();
+
+        for (Directions dir : Directions.values())
+            if (checkAllowedPos(Position.getInDirection(getPosition(), dir)))
+                allowedDirections.add(dir);
+
+        return allowedDirections;
+    }
+
+    private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos) {
+        return ((!map.get(nextPos).isPresent() || map.get(nextPos).get().getType() != TypeObject.Obstacle));
     }
 
     /**

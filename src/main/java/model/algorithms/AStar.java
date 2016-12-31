@@ -28,7 +28,7 @@ import java.util.Arrays;
 public class AStar  {
 
     private static EnvironmentMap map;
-
+/*
     SearchProblem<Directions, Tuple<Integer, Integer>, WeightedNode<Directions, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, Agent agent) {
 
         this.map = map;
@@ -43,8 +43,8 @@ public class AStar  {
 
                     }
                 })
-                .useTransitionFunction(new ActionStateTransitionFunction<Directions, Tuple<Integer,Integer>>() {
-                    @Override
+                .useTransitionFunction(new ActionStateTransitionFunction<util.Directions, Tuple<Integer,Integer>>() {
+
                     public Tuple<Integer, Integer> apply(Object o, Tuple<Integer, Integer> integerIntegerTuple) {
                         return null;
                     }
@@ -87,8 +87,9 @@ public class AStar  {
     }
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent, EnvironmentMap map) {
-        return (!agent.getLastPos().equals(nextPos) &&
+        return (!agent.getLastPosition().equals(nextPos) &&
                 (!map.get(nextPos).isPresent() ||
                         map.get(nextPos).get().getType() != TypeObject.Obstacle));
     }
+    */
 }

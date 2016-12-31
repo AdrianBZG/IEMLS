@@ -13,6 +13,7 @@ import model.object.Resource;
 import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Directions;
+import util.Position;
 import util.Tuple;
 
 
@@ -232,76 +233,57 @@ public class EnvironmentMap {
     }
 
 
-    /**
-     * This method makes agents explore the map randomly avoiding last position and obstacles.
-     * When resource is next to the agent he pick up it.
-     */
-    public void agentsExplorationStep () {
+    public void agentsStep () {
         for (int i = 0; i < agents.size(); i++) {
             Agent agent = agents.get(i);
             Tuple<Integer, Integer> pos = agent.getPosition();
             removeAt(pos.getX(), pos.getY());
 
-            ArrayList<Directions> allowedActions = new ArrayList<>();
-            Directions mostProbableAction = null;
+            ArrayList<Directions> allowedActions = agent.getAllowedActions();
+            ArrayList<Directions> resources = new ArrayList<>();
 
-            Tuple<Integer, Integer> nextPos1 = new Tuple<>(pos.getX(), pos.getY() - 1);
-            Tuple<Integer, Integer> nextPos2 = new Tuple<>(pos.getX() + 1, pos.getY());
-            Tuple<Integer, Integer> nextPos3 = new Tuple<>(pos.getX(), pos.getY() + 1);
-            Tuple<Integer, Integer> nextPos4 = new Tuple<>(pos.getX() - 1, pos.getY());
+            for (Directions dir : Directions.values())
+                // Check if the agent is next to a resource in the given direction.
+                if (resourceAtPos(Position.getInDirection(pos, dir)))
+                    resources.add(dir);
 
-            ArrayList<Tuple<Integer, Integer>> nextPositions = new ArrayList<>();
 
-            nextPositions.add(nextPos1);
-            nextPositions.add(nextPos2);
-            nextPositions.add(nextPos3);
-            nextPositions.add(nextPos4);
-
-            boolean nextToResource = false;
-
-            System.out.println ("--------------------NEXT MOVEMENT");
-
-            int j = 0;
-            for (Directions nextAction : Directions.values()) {
-                if (resourceAtPos(nextPositions.get(j))) {
-                    nextToResource = true;
-                    lastActions.add(i, nextAction);
-                    System.out.println ("Next to resource at " + nextAction);
-                    performAction(agent, pos, nextAction);
-                    break;
-                }
-                if (!nextToResource && checkAllowedPos(nextPositions.get(j++), agent)) {
-                    allowedActions.add(nextAction);
-                    if (lastActions.size() > 0 && lastActions.get(i) == nextAction)
-                        mostProbableAction = nextAction;
-                }
-            }
-
-            for (Directions dirs : allowedActions) {
-                System.out.println ("Allowed Action: " + dirs);
-            }
-
-            if (!nextToResource) {
+            if (resources.size() > 0)
+                lastActions.add(i, resources.get((int) (Math.random() * resources.size())));
+            else {
                 Integer action = (int) (Math.random() * allowedActions.size());
-                if (mostProbableAction != null && action > (0.4 * allowedActions.size())) {  // 60 % to take the most probable action.
-                    System.out.println("The most probable action is taken: " + mostProbableAction);
-                    lastActions.add(i, mostProbableAction);
-                    performAction(agent, pos, mostProbableAction);
-                } else {
-                    if (allowedActions.size() > 0) {
-                        System.out.println("The action " + allowedActions.get(action) + " is taken");
-                        lastActions.add(i, allowedActions.get(action));
-                        performAction(agent, pos, allowedActions.get(action));
-                    }
+                if (action > (0.25 * allowedActions.size())) {  // 75 % to take the most probable action.
+                    // We dont modify lastActions array because we will perform the same action.
+                    if (lastActions.get(i) != null && !checkAllowedPos(Position.getInDirection(pos, lastActions.get(i)), agent))
+                        lastActions.add(i, allowedActions.get((int) (Math.random() * allowedActions.size())));
+
+
+
+                }
+                else {
+                    lastActions.add(i, allowedActions.get((int) (Math.random() * allowedActions.size())));
                 }
             }
+            performAction(agent, lastActions.get(i));
         }
     }
+
+
+
+    /**
+     * This method makes agents explore the map randomly avoiding last position and obstacles.
+     * When resource is next to the agent he pick up it.
+     */
+
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
         return (
                 (!get(nextPos).isPresent() ||
                         get(nextPos).get().getType() != TypeObject.Obstacle));
+    }
+
+    private void performAction (Agent agent, Directions dir) {
+        performAction(agent, agent.getPosition(), dir);
     }
 
     private void performAction (Agent agent, Tuple<Integer, Integer> pos, Directions dir) {

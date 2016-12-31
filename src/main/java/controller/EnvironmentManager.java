@@ -46,7 +46,7 @@ public class EnvironmentManager {
             public void run()
             {
                 Platform.runLater(() -> {
-                    map.agentsExplorationStep();
+                    map.agentsStep();
                     mapView.updateMap();
                 });
             }

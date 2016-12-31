@@ -15,6 +15,4 @@ public class Algorithm {
         return new ArrayList<>();
     }
 
-
-
 }
