@@ -21,7 +21,7 @@ public class EnvironmentManager {
     private EnvironmentView mapView;
     private EnvironmentMap map;
     private static Timer timer = null;
-    private int interval = 200;
+    private int interval = 10;
 
     public EnvironmentManager (EnvironmentView mapView) {
 
@@ -46,8 +46,8 @@ public class EnvironmentManager {
             public void run()
             {
                 Platform.runLater(() -> {
-                    map.agentsStep();
-                    mapView.updateMap();
+                    map.agentsStep(mapView);
+                    //mapView.updateMap();
                 });
             }
         }, 10, interval);

@@ -21,4 +21,17 @@ public class Position {
 
     }
 
+    public static Directions getDirectionFromPositions (Tuple<Integer, Integer> from, Tuple<Integer, Integer> to) {
+        if (from.getFst() == to.getFst() && from.getSnd() - 1 == to.getSnd())
+            return Directions.UP;
+        else if (from.getFst() == to.getFst() && from.getSnd() + 1 == to.getSnd())
+            return Directions.DOWN;
+        else if (from.getFst() + 1 == to.getFst() && from.getSnd()  == to.getSnd())
+            return Directions.RIGHT;
+        else if (from.getFst() - 1 == to.getFst() && from.getSnd() == to.getSnd())
+            return Directions.LEFT;
+        else
+            return null;
+    }
+
 }

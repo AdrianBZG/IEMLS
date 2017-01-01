@@ -15,11 +15,13 @@ import model.object.agent.Agent;
 import util.Directions;
 import util.Position;
 import util.Tuple;
+import view.EnvironmentView;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Vector;
 
 
 /**
@@ -46,12 +48,12 @@ public class EnvironmentMap {
 
     Optional<IGenerator> generator = Optional.empty();
 
-
+    EnvironmentView mapView = null;
 
     /**
      * List of Agents
      */
-    ArrayList<Agent> agents = new ArrayList<>();
+    ArrayList<Agent> agents = new ArrayList<Agent>();
 
     ArrayList<Directions> lastActions = new ArrayList<>();
 
@@ -155,7 +157,6 @@ public class EnvironmentMap {
         else {
             return chunk.get(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
         }
-
     }
 
     /**
@@ -178,6 +179,8 @@ public class EnvironmentMap {
                 addAgent(agent);
             }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
+            if (mapView != null)
+                mapView.updateMap();
         }
     }
 
@@ -232,11 +235,19 @@ public class EnvironmentMap {
         this.generator = generator;
     }
 
+    public void agentsStep (EnvironmentView mapView) {
+        if (this.mapView == null) this.mapView = mapView;
+        // Check if this will be the first step of the agents.
+        boolean firstAction = true;
 
-    public void agentsStep () {
-        for (int i = 0; i < agents.size(); i++) {
-            Agent agent = agents.get(i);
+        if (!agents.isEmpty())
+            firstAction = agents.get(0).getLastAction() == null;
+
+        for (Agent agent : agents) {
+            Directions nextAction = null;
+            boolean mustChangeAction = false;  // Check if the agent can perform same action as before.
             Tuple<Integer, Integer> pos = agent.getPosition();
+            System.out.println("Agent : " + agent.toString());
             removeAt(pos.getX(), pos.getY());
 
             ArrayList<Directions> allowedActions = agent.getAllowedActions();
@@ -248,23 +259,26 @@ public class EnvironmentMap {
                     resources.add(dir);
 
 
-            if (resources.size() > 0)
-                lastActions.add(i, resources.get((int) (Math.random() * resources.size())));
+            if (resources.size() > 0) // If there are resources near.
+                nextAction = resources.get((int) (Math.random() * resources.size()));
             else {
                 Integer action = (int) (Math.random() * allowedActions.size());
-                if (action > (0.25 * allowedActions.size())) {  // 75 % to take the most probable action.
-                    // We dont modify lastActions array because we will perform the same action.
-                    if (lastActions.get(i) != null && !checkAllowedPos(Position.getInDirection(pos, lastActions.get(i)), agent))
-                        lastActions.add(i, allowedActions.get((int) (Math.random() * allowedActions.size())));
 
-
-
+                if (!firstAction && action > ((1 - 0.9) * allowedActions.size())) {  // 90 % to take the same action as previous step.
+                    if (checkAllowedPos(Position.getInDirection(pos, agent.getLastAction()), agent))
+                        nextAction = agent.getLastAction();
+                    else
+                        mustChangeAction = true;
                 }
                 else {
-                    lastActions.add(i, allowedActions.get((int) (Math.random() * allowedActions.size())));
+                    mustChangeAction = true;
                 }
             }
-            performAction(agent, lastActions.get(i));
+            if (mustChangeAction)
+                nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
+
+            if (nextAction != null)
+                performAction(agent, nextAction);
         }
     }
 

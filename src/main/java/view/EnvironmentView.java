@@ -19,7 +19,11 @@ import javafx.scene.shape.Rectangle;
 import model.map.EnvironmentMap;
 import model.map.generator.IGenerator;
 import model.map.generator.SimplexNoise;
+import model.object.Block;
 import model.object.MapObject;
+import model.object.Resource;
+import model.object.TypeObject;
+import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
 import util.Tuple;
 
@@ -120,17 +124,24 @@ public class EnvironmentView extends Pane {
      */
     private void drawObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
-                .filter(mouseEvent -> mouseEvent.getButton().equals(MouseButton.PRIMARY))
-                .subscribe(mouseEvent -> {
-                    getPencil().ifPresent(pencil -> {
-                        getEnvironmentMap().set(
-                                (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
-                                (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()),
-                                pencil);
-                        paintEnvironmentMap();
-                    });
+            .filter(mouseEvent -> mouseEvent.getButton().equals(MouseButton.PRIMARY))
+            .subscribe(mouseEvent -> {
+                getPencil().ifPresent(pencil -> {
+                    getEnvironmentMap().set(
+                            (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
+                            (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()),
+                            createNewObjectByPencil(pencil));
+                    paintEnvironmentMap();
                 });
+            });
 
+    }
+
+    private MapObject createNewObjectByPencil (MapObject pencil) {
+        if (pencil.getType() == TypeObject.Agent)
+            return new Agent();
+        else
+            return pencil;
     }
 
     /**
@@ -142,8 +153,7 @@ public class EnvironmentView extends Pane {
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
                             (int)((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
-                            (int)((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize())
-                            );
+                            (int)((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()));
                     paintEnvironmentMap();
                 });
     }

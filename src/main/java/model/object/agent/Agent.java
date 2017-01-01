@@ -45,6 +45,8 @@ public class Agent extends MapObject {
 
     private Tuple<Integer, Integer> lastPosition = null;
 
+    private Directions lastAction = null;
+
     /**
      * Reference to map
      */
@@ -63,7 +65,9 @@ public class Agent extends MapObject {
             setLastPosition(new Tuple<>(0, 0));
         }
         else {
+            setLastAction(Position.getDirectionFromPositions(getLastPosition(), position));
             setLastPosition(position);
+
         }
         position = pos;
     }
@@ -71,6 +75,10 @@ public class Agent extends MapObject {
     public void setLastPosition (Tuple<Integer, Integer> pos) {
         lastPosition = pos;
     }
+
+    public void setLastAction (Directions action) { lastAction = action; }
+
+    public Directions getLastAction () { return lastAction; }
 
     public Tuple<Integer, Integer> getPosition () { return position; }
     public Tuple<Integer, Integer> getLastPosition () { return lastPosition; }
@@ -178,9 +186,7 @@ public class Agent extends MapObject {
      * @return an array with all allowed actions.
      */
     public ArrayList<Directions> getAllowedActions () {
-
         ArrayList<Directions> allowedDirections = new ArrayList<>();
-
         for (Directions dir : Directions.values())
             if (checkAllowedPos(Position.getInDirection(getPosition(), dir)))
                 allowedDirections.add(dir);
@@ -189,7 +195,11 @@ public class Agent extends MapObject {
     }
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos) {
-        return ((!map.get(nextPos).isPresent() || map.get(nextPos).get().getType() != TypeObject.Obstacle));
+        if (map.get(nextPos).isPresent())
+            System.out.println ("Next pos object: " + map.get(nextPos).get().getType());
+        return ((!map.get(nextPos).isPresent() ||
+                (map.get(nextPos).get().getType() != TypeObject.Obstacle &&
+                map.get(nextPos).get().getType() != TypeObject.Agent)));
     }
 
     /**
