@@ -15,13 +15,6 @@ import java.util.HashMap;
  */
 public class Explorer extends Algorithm {
 
-    /**
-     * Initialize algorithm, it could run in background
-     */
-    @Override
-    public void start() {
-
-
     public Directions execStep (Agent agent) {
         boolean firstStep = agent.getLastAction() == null;
         System.out.println("First step?= : " + firstStep);
@@ -41,7 +34,7 @@ public class Explorer extends Algorithm {
 
 
         if (resources.size() > 0) {// If there are resources near.
-                nextAction = resources.get((int) (Math.random() * resources.size()));
+            nextAction = resources.get((int) (Math.random() * resources.size()));
         }
         else {
             Integer action = (int) (Math.random() * allowedActions.size());
@@ -63,6 +56,13 @@ public class Explorer extends Algorithm {
         return nextAction;
     }
 
+    /**
+     * Initialize algorithm, it could run in background
+     */
+    @Override
+    public void start() {
+    }
+    
     /**
      * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
      * function by all agents.

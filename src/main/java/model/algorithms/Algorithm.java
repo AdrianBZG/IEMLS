@@ -1,5 +1,8 @@
 package model.algorithms;
 
+import model.object.agent.Agent;
+import util.Directions;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,12 +16,14 @@ public abstract class Algorithm {
     private static ArrayList<Algorithm> algorithms = new ArrayList<>();
 
     static {
-    }
         algorithms.add(new Explorer());
+    }
 
     public static ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
+
+    public abstract Directions execStep (Agent agent);
 
     /**
      * Initialize algorithm, it could run in background
