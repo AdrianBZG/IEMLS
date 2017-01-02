@@ -1,6 +1,10 @@
 # IEMLS: Interactive Environment & Machine Learning Simulator
 Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject
 
+## Preview (Version 1, not finished)
+
+![IEMLS v1](https://campusvirtual.ull.es/1617/pluginfile.php/153972/mod_wiki/attachments/303//IEMLS-Interfaz-v2-Resize.png "IEMLS v1")
+
 ## Requirements
 
 - Java 8
