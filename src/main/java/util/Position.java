@@ -4,6 +4,7 @@ package util;
  * Created by rudy on 31/12/16.
  */
 public class Position {
+
     /* Returns the position in the given direction */
     public static Tuple<Integer, Integer> getInDirection (Tuple<Integer, Integer> pos, Directions dir) {
         switch (dir) {

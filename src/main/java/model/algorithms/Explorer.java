@@ -15,9 +15,11 @@ import java.util.HashMap;
  */
 public class Explorer extends Algorithm {
 
-    public Explorer() {
-        addAlgorithms(this);
-    }
+    /**
+     * Initialize algorithm, it could run in background
+     */
+    @Override
+    public void start() {
 
 
     public Directions execStep (Agent agent) {
@@ -59,5 +61,27 @@ public class Explorer extends Algorithm {
 
 
         return nextAction;
+    }
+
+    /**
+     * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
+     * function by all agents.
+     */
+    @Override
+    public void update() {
+
+    }
+
+    /**
+     * Stop algorithm, especially when its used threads with ourselves resources.
+     */
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Explorer";
     }
 }

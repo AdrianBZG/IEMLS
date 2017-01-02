@@ -12,26 +12,24 @@ import model.algorithms.Algorithm;
 import model.algorithms.Explorer;
 import model.map.Chunk;
 import model.map.EnvironmentMap;
-import model.map.Sector;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
-import org.kordamp.ikonli.javafx.FontIcon;
 import model.object.MapObject;
 import model.object.TypeObject;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.jruby.embed.EvalFailedException;
+import org.jruby.embed.ScriptingContainer;
+import org.jruby.exceptions.RaiseException;
+import org.kordamp.ikonli.fontawesome.FontAwesome;
+import org.kordamp.ikonli.javafx.FontIcon;
 import util.Directions;
 import util.Position;
 import util.Tuple;
 import view.AgentView;
 import view.ObjectView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-
-
-
-
 
 
 /**
@@ -141,8 +139,13 @@ public class Agent extends MapObject {
         ButtonType applyChanges = new ButtonType("Apply", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
+        CodeArea codeArea = new CodeArea();
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        VirtualizedScrollPane virtualizedScrollPane = new VirtualizedScrollPane<>(codeArea);
+
         ChoiceBox<Algorithm> algorithmChoiceBox = new ChoiceBox<>();
         algorithmChoiceBox.setItems(FXCollections.observableArrayList(Algorithm.getAlgorithms()));
+        System.out.println(Algorithm.getAlgorithms().size());
         algorithmChoiceBox.getSelectionModel().selectFirst();
 
         dialog.getDialogPane().setContent(algorithmChoiceBox);

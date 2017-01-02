@@ -6,22 +6,15 @@
 
 package view;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.map.EnvironmentMap;
 import model.map.generator.IGenerator;
-import model.map.generator.SimplexNoise;
-import model.object.Block;
 import model.object.MapObject;
-import model.object.Resource;
 import model.object.TypeObject;
 import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
@@ -207,13 +200,11 @@ public class EnvironmentView extends Pane {
 
     /**
      * Paint EnvironmentMap
-     * TODO: Paint object out screen to avoid false white, it happen on translating on borders of map
-     * TODO: Adjust the mouse to different values of translation?
      */
     private void paintEnvironmentMap() {
         getChildren().clear();
-        for (int i = 0; i < getWidth() / getTileSize(); i++) {
-            for (int j = 0; j < getHeight() / getTileSize(); j++) {
+        for (int i = 0; i < getWidth() / getTileSize() + 5; i++) {
+            for (int j = 0; j < getHeight() / getTileSize() + 5; j++) {
                 Optional<MapObject> iObjectOptional;
                 if (getTranslation().getX() >= 0 && getTranslation().getY() >= 0) {
                     iObjectOptional = getEnvironmentMap().get(

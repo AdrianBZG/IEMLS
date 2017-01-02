@@ -1,9 +1,5 @@
 package model.algorithms;
 
-import model.object.agent.Agent;
-import util.Directions;
-import util.Tuple;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,15 +12,27 @@ public abstract class Algorithm {
 
     private static ArrayList<Algorithm> algorithms = new ArrayList<>();
 
+    static {
+    }
+        algorithms.add(new Explorer());
+
     public static ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
 
-    public static void addAlgorithms(Algorithm algorithm) {
-        algorithms.add(algorithm);
-    }
+    /**
+     * Initialize algorithm, it could run in background
+     */
+    public abstract void start();
 
+    /**
+     * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
+     * function by all agents.
+     */
+    public abstract void update();
 
-    public abstract Directions execStep (Agent agent);
-
+    /**
+     * Stop algorithm, especially when its used threads with ourselves resources.
+     */
+    public abstract void stop();
 }
