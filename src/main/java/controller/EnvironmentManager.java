@@ -2,13 +2,8 @@ package controller;
 
 import javafx.application.Platform;
 import model.map.EnvironmentMap;
-import model.object.agent.Agent;
-import util.Directions;
-import util.Tuple;
 import view.EnvironmentView;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 

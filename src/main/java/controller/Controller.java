@@ -6,9 +6,6 @@
 
 package controller;
 
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,13 +18,11 @@ import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
 import model.object.agent.Agent;
-import rx.observables.JavaFxObservable;
 import view.CellObjectView;
 import view.EnvironmentView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -65,10 +60,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ObservableList<MapObject> list = FXCollections.observableArrayList(
-                new Agent(), new Resource(10, "Food"), new Block());
-
-        listObjects.setItems(list);
+        listObjects.setItems(FXCollections.observableArrayList(MapObject.getMapObjects()));
         listObjects.setCellFactory(value -> new CellObjectView());
         listObjects.getSelectionModel()
                 .selectedItemProperty()
