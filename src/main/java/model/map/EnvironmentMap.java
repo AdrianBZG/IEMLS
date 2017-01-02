@@ -291,9 +291,9 @@ public class EnvironmentMap {
 
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
-        return (
-                (!get(nextPos).isPresent() ||
-                        get(nextPos).get().getType() != TypeObject.Obstacle));
+        return ((!get(nextPos).isPresent() ||
+                (get(nextPos).get().getType() != TypeObject.Obstacle &&
+                        get(nextPos).get().getType() != TypeObject.Agent)));
     }
 
     private void performAction (Agent agent, Directions dir) {
