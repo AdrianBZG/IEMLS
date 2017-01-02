@@ -51,12 +51,16 @@ public class Agent extends MapObject {
      */
     private EnvironmentMap map;
 
+
     /**
      * Algorithm into Agent
      */
     Algorithm algorithm;
 
+    static Algorithm templateAlgorithm = null;
+
     public Agent() {
+        algorithm = templateAlgorithm;
     }
 
     public void setPosition (Tuple<Integer, Integer> pos) {
@@ -65,6 +69,7 @@ public class Agent extends MapObject {
         }
         else {
             setLastAction(Position.getDirectionFromPositions(getLastPosition(), position));
+            System.out.println("Setting last action to: " + Position.getDirectionFromPositions(getLastPosition(), position));
             setLastPosition(position);
 
         }
@@ -151,7 +156,7 @@ public class Agent extends MapObject {
         dialog.getDialogPane().setContent(algorithmChoiceBox);
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyChanges) {
-                setAlgorithm( algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                setTemplateAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
                 return null;
             }
             return null;
@@ -217,10 +222,11 @@ public class Agent extends MapObject {
         this.algorithm = algorithm;
     }
 
+    public void setTemplateAlgorithm(Algorithm algor) { templateAlgorithm = algor; }
+
     public Directions execStep () {
         if (algorithm != null) {
             return algorithm.execStep(this);
-
         }
         else {
             System.out.println("Without algorithm");

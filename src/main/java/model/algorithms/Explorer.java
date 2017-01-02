@@ -17,7 +17,6 @@ public class Explorer extends Algorithm {
 
     public Directions execStep (Agent agent) {
         boolean firstStep = agent.getLastAction() == null;
-        System.out.println("First step?= : " + firstStep);
         boolean mustChangeAction = false;
 
         Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
@@ -39,9 +38,12 @@ public class Explorer extends Algorithm {
         else {
             Integer action = (int) (Math.random() * allowedActions.size());
 
-            if (!firstStep && action > ((1 - 0.9) * allowedActions.size())) {  // 90 % to take the same action as previous step.
-                if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), agent.getLastAction())))
+            if (!firstStep && action < ((1 - 0.8) * allowedActions.size())) {  // 90 % to take the same action as previous step.
+                if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), agent.getLastAction()))) {
+                    System.out.println("Same action like before " + agent.getLastAction());
                     nextAction = agent.getLastAction();
+
+                }
                 else
                     mustChangeAction = true;
             }

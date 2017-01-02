@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  *
  */
 public class Main extends Application {
-    public static String TITLE = "IEMLS";
+    private static String TITLE = "IEMLS";
 
 
     public static void main(String[] args) {
