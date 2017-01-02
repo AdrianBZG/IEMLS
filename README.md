@@ -1,9 +1,9 @@
 # IEMLS: Interactive Environment & Machine Learning Simulator
 Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject
 
-## Preview (Version 1, not finished)
+## Preview (Version 2, not finished)
 
-![IEMLS v1](https://campusvirtual.ull.es/1617/pluginfile.php/153972/mod_wiki/attachments/303//IEMLS-Interfaz-v2-Resize.png "IEMLS v1")
+![IEMLS v2](http://i.imgur.com/pXctCYk.png "IEMLS v2")
 
 ## Requirements
 
