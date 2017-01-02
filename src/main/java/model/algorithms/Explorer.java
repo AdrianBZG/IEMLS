@@ -12,6 +12,9 @@ import java.util.ArrayList;
  */
 public class Explorer extends Algorithm {
 
+    public Explorer() {
+        Algorithm.addAlgorithms(this);
+    }
     public static void execStep (Agent agent) {
 
     }

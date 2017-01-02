@@ -7,6 +7,26 @@ Interactive Environment & Machine Learning Simulator for the Intelligent Systems
 - On Ubuntu systems you need **openjfx**
 
 
+## Documentation
+
+Configuration of Agents
+- Using JRuby
+  + Tutorial (TODO:Link)
+  + API      (TODO: Generate JavaAPI expose to embed ruby)
+  + Examples (TODO: Do it)
+
+
+IEMLS API docs
+- TODO: URL
+
+
+## Contributing
+   
+Understanding embed JRuby into IEMLS
+
+- https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
+- https://github.com/jruby/jruby/wiki/JRubyAndJavaCodeExamples
+
 ## FAQs
 
 - ¿What editor I should use to develop in it?

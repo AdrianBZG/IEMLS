@@ -11,8 +11,13 @@ import java.util.ArrayList;
  */
 public class Algorithm {
 
+    private static ArrayList<Algorithm> algorithms = new ArrayList<>();
+
     public static ArrayList<Algorithm> getAlgorithms() {
-        return new ArrayList<>();
+        return algorithms;
     }
 
+    public static void addAlgorithms(Algorithm algorithm) {
+        algorithms.add(algorithm);
+    }
 }

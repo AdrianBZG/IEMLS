@@ -9,9 +9,13 @@ package model.object.agent;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import model.algorithms.Algorithm;
-import model.map.Chunk;
 import model.map.EnvironmentMap;
-import model.map.Sector;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.jruby.embed.EvalFailedException;
+import org.jruby.embed.ScriptingContainer;
+import org.jruby.exceptions.RaiseException;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import model.object.MapObject;
@@ -22,14 +26,8 @@ import util.Tuple;
 import view.AgentView;
 import view.ObjectView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-
-
-
 
 
 
@@ -139,14 +137,29 @@ public class Agent extends MapObject {
         ButtonType applyChanges = new ButtonType("Apply", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
+        CodeArea codeArea = new CodeArea();
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        VirtualizedScrollPane virtualizedScrollPane = new VirtualizedScrollPane<>(codeArea);
+
         ChoiceBox<Algorithm> algorithmChoiceBox = new ChoiceBox<>();
         algorithmChoiceBox.setItems(FXCollections.observableArrayList(Algorithm.getAlgorithms()));
         algorithmChoiceBox.getSelectionModel().selectFirst();
 
-        dialog.getDialogPane().setContent(algorithmChoiceBox);
+        dialog.getDialogPane().setContent(virtualizedScrollPane);
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyChanges) {
                 setAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                String code = codeArea.getText();
+                ScriptingContainer scriptingContainer = new ScriptingContainer();
+                try {
+                    scriptingContainer.runScriptlet(code);
+                }
+                catch (RaiseException err) {
+                    System.out.println(err.getMessage());
+                }
+                catch (EvalFailedException err) {
+
+                }
                 return null;
             }
             return null;
