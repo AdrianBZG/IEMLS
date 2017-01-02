@@ -6,6 +6,7 @@
 
 package model.map;
 
+import javafx.util.Pair;
 import model.map.generator.IGenerator;
 import model.object.Block;
 import model.object.MapObject;
@@ -18,10 +19,7 @@ import util.Tuple;
 import view.EnvironmentView;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Vector;
+import java.util.*;
 
 
 /**
@@ -53,7 +51,7 @@ public class EnvironmentMap {
     /**
      * List of Agents
      */
-    ArrayList<Agent> agents = new ArrayList<Agent>();
+    volatile ArrayList<Agent> agents = new ArrayList<Agent>();
 
     ArrayList<Directions> lastActions = new ArrayList<>();
 
@@ -236,49 +234,68 @@ public class EnvironmentMap {
     }
 
     public void agentsStep (EnvironmentView mapView) {
+        if (this.mapView == null)
+            this.mapView = mapView;
+        // Check if this will be the first step of the agents
+
+        for (Agent agent : agents) {
+            Directions nextAction = agent.execStep();
+            if (nextAction != null) {
+                removeAt(agent.getPosition().getX(), agent.getPosition().getY());
+                performAction(agent, agent.execStep());
+            }
+        }
+    }
+
+    public void agentsStep2 (EnvironmentView mapView) {
         if (this.mapView == null) this.mapView = mapView;
         // Check if this will be the first step of the agents.
-        boolean firstAction = true;
+        boolean firstStep = true;
 
         if (!agents.isEmpty())
-            firstAction = agents.get(0).getLastAction() == null;
+            firstStep = agents.get(0).getLastAction() == null;
 
         for (Agent agent : agents) {
             Directions nextAction = null;
             boolean mustChangeAction = false;  // Check if the agent can perform same action as before.
             Tuple<Integer, Integer> pos = agent.getPosition();
-            System.out.println("Agent : " + agent.toString());
-            removeAt(pos.getX(), pos.getY());
 
             ArrayList<Directions> allowedActions = agent.getAllowedActions();
-            ArrayList<Directions> resources = new ArrayList<>();
 
-            for (Directions dir : Directions.values())
-                // Check if the agent is next to a resource in the given direction.
-                if (resourceAtPos(Position.getInDirection(pos, dir)))
-                    resources.add(dir);
+            if (!allowedActions.isEmpty()) {
+                removeAt(pos.getX(), pos.getY());
+                ArrayList<Directions> resources = new ArrayList<>();
+
+                for (Directions dir : Directions.values())
+                    // Check if the agent is next to a resource in the given direction.
+                    if (resourceAtPos(Position.getInDirection(pos, dir)))
+                        resources.add(dir);
 
 
-            if (resources.size() > 0) // If there are resources near.
-                nextAction = resources.get((int) (Math.random() * resources.size()));
-            else {
-                Integer action = (int) (Math.random() * allowedActions.size());
-
-                if (!firstAction && action > ((1 - 0.9) * allowedActions.size())) {  // 90 % to take the same action as previous step.
-                    if (checkAllowedPos(Position.getInDirection(pos, agent.getLastAction()), agent))
-                        nextAction = agent.getLastAction();
-                    else
-                        mustChangeAction = true;
-                }
+                if (resources.size() > 0) // If there are resources near.
+                    nextAction = resources.get((int) (Math.random() * resources.size()));
                 else {
-                    mustChangeAction = true;
-                }
-            }
-            if (mustChangeAction)
-                nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
+                    Integer action = (int) (Math.random() * allowedActions.size());
 
-            if (nextAction != null)
-                performAction(agent, nextAction);
+                    if (!firstStep && action > ((1 - 0.9) * allowedActions.size())) {  // 90 % to take the same action as previous step.
+                        if (checkAllowedPos(Position.getInDirection(pos, agent.getLastAction()), agent))
+                            nextAction = agent.getLastAction();
+                        else
+                            mustChangeAction = true;
+                    }
+                    else {
+                        mustChangeAction = true;
+                    }
+                }
+                if (mustChangeAction)
+                    nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
+
+                if (nextAction != null)
+                    performAction(agent, nextAction);
+            }
+            else {
+                // This agent will not move.
+            }
         }
     }
 
@@ -293,11 +310,11 @@ public class EnvironmentMap {
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
         return ((!get(nextPos).isPresent() ||
                 (get(nextPos).get().getType() != TypeObject.Obstacle &&
-                        get(nextPos).get().getType() != TypeObject.Agent)));
+                 get(nextPos).get().getType() != TypeObject.Agent)));
     }
 
     private void performAction (Agent agent, Directions dir) {
-        performAction(agent, agent.getPosition(), dir);
+            performAction(agent, agent.getPosition(), dir);
     }
 
     private void performAction (Agent agent, Tuple<Integer, Integer> pos, Directions dir) {
@@ -319,7 +336,7 @@ public class EnvironmentMap {
         }
     }
 
-    private boolean resourceAtPos (Tuple<Integer, Integer> pos) {
+    public boolean resourceAtPos (Tuple<Integer, Integer> pos) {
         return get(pos).isPresent() && get(pos).get().getType() == TypeObject.Resource;
     }
 

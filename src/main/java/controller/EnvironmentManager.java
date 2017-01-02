@@ -21,7 +21,7 @@ public class EnvironmentManager {
     private EnvironmentView mapView;
     private EnvironmentMap map;
     private static Timer timer = null;
-    private int interval = 10;
+    private int interval = 50;
 
     public EnvironmentManager (EnvironmentView mapView) {
 

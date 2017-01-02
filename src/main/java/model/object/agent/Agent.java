@@ -9,6 +9,7 @@ package model.object.agent;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import model.algorithms.Algorithm;
+import model.algorithms.Explorer;
 import model.map.Chunk;
 import model.map.EnvironmentMap;
 import model.map.Sector;
@@ -86,6 +87,7 @@ public class Agent extends MapObject {
     public void setMap(EnvironmentMap map) {
         this.map = map;
     }
+    public EnvironmentMap getMap () { return map; }
 
     public ArrayList<MapObject> getArounds() {
         ArrayList<MapObject> ret = new ArrayList<>();
@@ -146,7 +148,7 @@ public class Agent extends MapObject {
         dialog.getDialogPane().setContent(algorithmChoiceBox);
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyChanges) {
-                setAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                setAlgorithm( algorithmChoiceBox.getSelectionModel().getSelectedItem());
                 return null;
             }
             return null;
@@ -181,6 +183,7 @@ public class Agent extends MapObject {
 
     }
 
+
     /**
      * Get all allowed actions for the actual position of the agent.
      * @return an array with all allowed actions.
@@ -194,9 +197,7 @@ public class Agent extends MapObject {
         return allowedDirections;
     }
 
-    private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos) {
-        if (map.get(nextPos).isPresent())
-            System.out.println ("Next pos object: " + map.get(nextPos).get().getType());
+    public boolean checkAllowedPos (Tuple<Integer, Integer> nextPos) {
         return ((!map.get(nextPos).isPresent() ||
                 (map.get(nextPos).get().getType() != TypeObject.Obstacle &&
                 map.get(nextPos).get().getType() != TypeObject.Agent)));
@@ -209,8 +210,18 @@ public class Agent extends MapObject {
         return algorithm;
     }
 
-    public Agent setAlgorithm(Algorithm algorithm) {
+    public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
-        return this;
+    }
+
+    public Directions execStep () {
+        if (algorithm != null) {
+            return algorithm.execStep(this);
+
+        }
+        else {
+            System.out.println("Without algorithm");
+            return null;
+        }
     }
 }
