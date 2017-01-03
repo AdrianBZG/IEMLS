@@ -57,10 +57,13 @@ public class Agent extends MapObject {
      */
     Algorithm algorithm;
 
-    static Algorithm templateAlgorithm = null;
-
     public Agent() {
-        algorithm = templateAlgorithm;
+    }
+
+
+    public Agent(Agent agent) {
+        setAlgorithm(agent.getAlgorithm());
+        setMap(agent.getMap());
     }
 
     public void setPosition (Tuple<Integer, Integer> pos) {
@@ -156,7 +159,9 @@ public class Agent extends MapObject {
         dialog.getDialogPane().setContent(algorithmChoiceBox);
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyChanges) {
-                setTemplateAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                System.out.println(algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                setAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
+                System.out.println(algorithm);
                 return null;
             }
             return null;
@@ -222,8 +227,6 @@ public class Agent extends MapObject {
         this.algorithm = algorithm;
     }
 
-    public void setTemplateAlgorithm(Algorithm algor) { templateAlgorithm = algor; }
-
     public Directions execStep () {
         if (algorithm != null) {
             return algorithm.execStep(this);
@@ -232,5 +235,15 @@ public class Agent extends MapObject {
             System.out.println("Without algorithm");
             return null;
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Agent agent = new Agent();
+        agent.setMap(getMap());
+        agent.setAlgorithm(getAlgorithm());
+        // TODO:
+        System.out.println("Called Agent clone");
+        return agent;
     }
 }

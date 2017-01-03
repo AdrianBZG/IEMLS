@@ -120,21 +120,18 @@ public class EnvironmentView extends Pane {
             .filter(mouseEvent -> mouseEvent.getButton().equals(MouseButton.PRIMARY))
             .subscribe(mouseEvent -> {
                 getPencil().ifPresent(pencil -> {
-                    getEnvironmentMap().set(
-                            (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
-                            (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()),
-                            createNewObjectByPencil(pencil));
+                    try {
+                        getEnvironmentMap().set(
+                                (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
+                                (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()),
+                                (MapObject) pencil.clone());
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
                     paintEnvironmentMap();
                 });
             });
 
-    }
-
-    private MapObject createNewObjectByPencil (MapObject pencil) {
-        if (pencil.getType() == TypeObject.Agent)
-            return new Agent();
-        else
-            return pencil;
     }
 
     /**

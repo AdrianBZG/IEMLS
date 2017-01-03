@@ -18,7 +18,7 @@ import java.util.Arrays;
  * TODO: Define more interactions between objects
  *
  */
-public abstract class MapObject {
+public abstract class MapObject implements Cloneable {
 
     /**
      * Internal use to have a "manual" list of all object available
@@ -86,5 +86,11 @@ public abstract class MapObject {
      */
     public static ArrayList<MapObject> getMapObjects() {
         return mapObjects;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        System.out.println("Called MapObject Clone");
+        return super.clone();
     }
 }
