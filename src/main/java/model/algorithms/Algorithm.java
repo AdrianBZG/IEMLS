@@ -22,8 +22,6 @@ public abstract class Algorithm implements Cloneable {
         algorithms.add(new Explorer());
     }
 
-    private Agent agent = null;
-
     public static ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
@@ -31,7 +29,7 @@ public abstract class Algorithm implements Cloneable {
     /**
      * Initialize algorithm, it could run in background
      */
-    public abstract void start();
+    public abstract void start(Agent agent);
 
     /**
      * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
@@ -44,16 +42,5 @@ public abstract class Algorithm implements Cloneable {
      */
     public abstract void stop();
 
-    public Agent getAgent() {
-        return agent;
-    }
-
-    public void setAgent(Agent agent) {
-        this.agent = agent;
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+    public abstract Algorithm clone();
 }

@@ -59,7 +59,7 @@ public class Agent extends MapObject {
      * @param agent
      */
     public Agent(Agent agent) {
-        setAlgorithm(agent.getAlgorithm());
+        setAlgorithm(agent.getAlgorithm().clone());
         setMap(agent.getMap());
         setPosition(agent.getPosition().getX(), agent.getPosition().getY());
     }
@@ -249,7 +249,6 @@ public class Agent extends MapObject {
 
     public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
-        this.algorithm.setAgent(this);
     }
 
     /**

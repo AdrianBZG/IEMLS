@@ -17,11 +17,14 @@ public class Explorer extends Algorithm {
 
     Directions lastDirection = null;
 
+    private Agent agent = null;
+
     /**
      * Initialize algorithm, it could run in background
      */
     @Override
-    public void start() {
+    public void start(Agent agent) {
+        this.agent = agent;
     }
 
     /**
@@ -35,16 +38,17 @@ public class Explorer extends Algorithm {
         boolean mustChangeAction = false;
 
         Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
-        EnvironmentMap map = getAgent().getMap();
+        EnvironmentMap map = agent.getMap();
 
-        ArrayList<Directions> allowedActions = getAgent().getAllowedActions();
+        ArrayList<Directions> allowedActions = agent.getAllowedActions();
         ArrayList<Directions> resources = new ArrayList<>();
 
         for (Directions dir : Directions.values())
             // Check if the agent is next to a resource in the given direction.
-            map.get(Position.getInDirection(getAgent().getPosition(), dir)).ifPresent(mapObject -> {
-                        mapObject.getType().equals(TypeObject.Resource);
-                        resources.add(dir);
+            map.get(Position.getInDirection(agent.getPosition(), dir)).ifPresent(mapObject -> {
+                        if (mapObject.getType().equals(TypeObject.Resource)) {
+                            resources.add(dir);
+                        }
                     }
             );
 
@@ -55,12 +59,13 @@ public class Explorer extends Algorithm {
             Integer action = (int) (Math.random() * allowedActions.size());
 
             if (!firstStep && action < ((1 - 0.8) * allowedActions.size())) {  // 90 % to take the same action as previous step.
-                if (getAgent().checkAllowedPos(Position.getInDirection(getAgent().getPosition(), lastDirection))) {
+                if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
                     System.out.println("Same action like before " + lastDirection);
                     nextAction = lastDirection;
                 }
-                else
+                else {
                     mustChangeAction = true;
+                }
             }
             else {
                 mustChangeAction = true;
@@ -71,8 +76,8 @@ public class Explorer extends Algorithm {
         }
 
         lastDirection = nextAction;
-        getAgent().move(nextAction);
-        map.removeAt(getAgent().getPosition());
+        agent.move(nextAction);
+        map.removeAt(agent.getPosition());
     }
 
     /**
@@ -89,7 +94,7 @@ public class Explorer extends Algorithm {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
+    public Algorithm clone() {
         return new Explorer();
     }
 }

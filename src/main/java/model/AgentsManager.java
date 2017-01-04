@@ -7,13 +7,10 @@
 package model;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import model.object.agent.Agent;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.WeakHashMap;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * All thing relate to agents
@@ -24,6 +21,11 @@ public class AgentsManager {
      * Agents
      */
     private ArrayList<Agent> agents = new ArrayList<>();
+
+    /**
+     * Launch an event each tick
+     */
+    public Consumer<Agent> tickEv = (a) -> {};
 
     /**
      * Delay between updates
@@ -42,14 +44,15 @@ public class AgentsManager {
      */
     public void play() {
         for (Agent agent : agents) {
-            agent.getAlgorithm().start();
+            agent.getAlgorithm().start(agent);
         }
-        timer.schedule(new TimerTask() {
+        getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
                 for (Agent agent : agents) {
                     Platform.runLater(() -> {
                         agent.getAlgorithm().update();
+                        tickEv.accept(agent);
                         System.out.println("Hello evil world");
                     });
                 }

@@ -84,7 +84,7 @@ public class EnvironmentView extends Pane {
      */
     private void setup() {
         agentsManager = new AgentsManager();
-
+        agentsManager.tickEv = (agent) -> { paintEnvironmentMap(); };
         // Event handlers
         clipDraw();
         dragMap();
