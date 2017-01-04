@@ -9,7 +9,7 @@ package model.object;
 import model.object.agent.Agent;
 import model.object.agent.ScriptAgent;
 import util.Tuple;
-import view.ObjectView;
+import view.ObjectView.ObjectView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,27 +29,7 @@ public abstract class MapObject implements Cloneable {
         mapObjects = new ArrayList<>(Arrays.asList(
                 new Block(),
                 new Resource(10, "Food"),
-                new ScriptAgent(),
                 new Agent()));
-    }
-
-    private Tuple<Integer, Integer> position = new Tuple<>(0,0);
-
-    /**
-     * Set position of object.
-     * TODO: Warning this update don't have a really effect.
-     * @param x
-     * @param y
-     */
-    public void setPosition(int x, int y) {
-        position = new Tuple<>(x, y);
-    }
-
-    /**
-     * Current position of object
-     */
-    public Tuple<Integer, Integer> getPosition() {
-        return position;
     }
 
     /**

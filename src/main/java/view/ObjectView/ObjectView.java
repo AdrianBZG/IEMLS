@@ -4,7 +4,7 @@
  * Copyright 20XX Eleazar Díaz Delgado. All rights reserved.
  */
 
-package view;
+package view.ObjectView;
 
 import javafx.scene.Group;
 import model.object.MapObject;

@@ -13,8 +13,9 @@ import org.jruby.embed.ScriptingContainer;
 import org.jruby.exceptions.RaiseException;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
-import view.ObjectView;
-import view.ScriptAgentView;
+import view.ErrorView;
+import view.ObjectView.ObjectView;
+import view.ObjectView.ScriptAgentView;
 
 import java.util.Optional;
 
@@ -90,8 +91,8 @@ public class ScriptAgent extends MapObject {
                 try {
                     scriptingContainer.runScriptlet(code);
                 }
-                catch (RaiseException err) {
-                    System.out.println(err.getMessage());
+                catch (RaiseException err) { // Ruby Errors
+                    new ErrorView(err.getMessage());
                 }
                 catch (EvalFailedException err) {
 

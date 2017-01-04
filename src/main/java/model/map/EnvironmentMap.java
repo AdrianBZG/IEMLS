@@ -51,7 +51,7 @@ public class EnvironmentMap {
     /**
      * List of Agents
      */
-    volatile ArrayList<Agent> agents = new ArrayList<Agent>();
+    private ArrayList<Agent> agents = new ArrayList<Agent>();
 
     ArrayList<Directions> lastActions = new ArrayList<>();
 
@@ -178,7 +178,7 @@ public class EnvironmentMap {
             }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
             if (mapView != null)
-                mapView.updateMap();
+                mapView.paintEnvironmentMap();
         }
     }
 
@@ -231,113 +231,6 @@ public class EnvironmentMap {
 
     public void setGenerator(Optional<IGenerator> generator) {
         this.generator = generator;
-    }
-
-    public void agentsStep (EnvironmentView mapView) {
-        if (this.mapView == null)
-            this.mapView = mapView;
-        // Check if this will be the first step of the agents
-
-        for (Agent agent : agents) {
-            Directions nextAction = agent.execStep();
-            if (nextAction != null) {
-                removeAt(agent.getPosition().getX(), agent.getPosition().getY());
-                performAction(agent, agent.execStep());
-            }
-        }
-    }
-
-    public void agentsStep2 (EnvironmentView mapView) {
-        if (this.mapView == null) this.mapView = mapView;
-        // Check if this will be the first step of the agents.
-        boolean firstStep = true;
-
-        if (!agents.isEmpty())
-            firstStep = agents.get(0).getLastAction() == null;
-
-        for (Agent agent : agents) {
-            Directions nextAction = null;
-            boolean mustChangeAction = false;  // Check if the agent can perform same action as before.
-            Tuple<Integer, Integer> pos = agent.getPosition();
-
-            ArrayList<Directions> allowedActions = agent.getAllowedActions();
-
-            if (!allowedActions.isEmpty()) {
-                removeAt(pos.getX(), pos.getY());
-                ArrayList<Directions> resources = new ArrayList<>();
-
-                for (Directions dir : Directions.values())
-                    // Check if the agent is next to a resource in the given direction.
-                    if (resourceAtPos(Position.getInDirection(pos, dir)))
-                        resources.add(dir);
-
-
-                if (resources.size() > 0) // If there are resources near.
-                    nextAction = resources.get((int) (Math.random() * resources.size()));
-                else {
-                    Integer action = (int) (Math.random() * allowedActions.size());
-
-                    if (!firstStep && action > ((1 - 0.9) * allowedActions.size())) {  // 90 % to take the same action as previous step.
-                        if (checkAllowedPos(Position.getInDirection(pos, agent.getLastAction()), agent))
-                            nextAction = agent.getLastAction();
-                        else
-                            mustChangeAction = true;
-                    }
-                    else {
-                        mustChangeAction = true;
-                    }
-                }
-                if (mustChangeAction)
-                    nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
-
-                if (nextAction != null)
-                    performAction(agent, nextAction);
-            }
-            else {
-                // This agent will not move.
-            }
-        }
-    }
-
-
-
-    /**
-     * This method makes agents explore the map randomly avoiding last position and obstacles.
-     * When resource is next to the agent he pick up it.
-     */
-
-
-    private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent) {
-        return ((!get(nextPos).isPresent() ||
-                (get(nextPos).get().getType() != TypeObject.Obstacle &&
-                 get(nextPos).get().getType() != TypeObject.Agent)));
-    }
-
-    private void performAction (Agent agent, Directions dir) {
-            performAction(agent, agent.getPosition(), dir);
-    }
-
-    private void performAction (Agent agent, Tuple<Integer, Integer> pos, Directions dir) {
-        if (dir != null) {
-            switch(dir) {
-                case UP:
-                    set(pos.getX(), pos.getY() - 1, agent);
-                    break;
-                case RIGHT:
-                    set(pos.getX() + 1, pos.getY(), agent);
-                    break;
-                case LEFT:
-                    set(pos.getX() - 1, pos.getY(), agent);
-                    break;
-                case DOWN:
-                    set(pos.getX(), pos.getY() + 1, agent);
-                    break;
-            }
-        }
-    }
-
-    public boolean resourceAtPos (Tuple<Integer, Integer> pos) {
-        return get(pos).isPresent() && get(pos).get().getType() == TypeObject.Resource;
     }
 
     /**

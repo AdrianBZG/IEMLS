@@ -11,7 +11,9 @@ import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
+ * TODO: Document it
  * Created by eleazardd on 14/11/16.
+ *
  */
 public class CellObjectView extends ListCell<MapObject> {
     HBox box = new HBox();

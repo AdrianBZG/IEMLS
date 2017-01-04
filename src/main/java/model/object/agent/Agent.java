@@ -7,27 +7,20 @@
 package model.object.agent;
 
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import model.algorithms.Algorithm;
-import model.algorithms.Explorer;
-import model.map.Chunk;
 import model.map.EnvironmentMap;
 import model.object.MapObject;
 import model.object.TypeObject;
-import org.fxmisc.flowless.VirtualizedScrollPane;
-import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
-import org.jruby.embed.EvalFailedException;
-import org.jruby.embed.ScriptingContainer;
-import org.jruby.exceptions.RaiseException;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
-import util.Directions;
-import util.Position;
 import util.Tuple;
-import view.AgentView;
-import view.ObjectView;
+import view.ObjectView.AgentView;
+import view.ObjectView.ObjectView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -42,70 +35,42 @@ public class Agent extends MapObject {
      */
     private Tuple<Integer, Integer> position = new Tuple<>(0,0);
 
-    private Tuple<Integer, Integer> lastPosition = null;
-
-    private Directions lastAction = null;
-
     /**
      * Reference to map
      */
     private EnvironmentMap map;
 
-
     /**
      * Algorithm into Agent
      */
-    Algorithm algorithm;
+    private Algorithm algorithm;
 
-    public Agent() {
-    }
+    /**
+     * A simple constructor
+     */
+    public Agent() {}
 
-
+    /**
+     * Copy constructor
+     * @param agent
+     */
     public Agent(Agent agent) {
         setAlgorithm(agent.getAlgorithm());
         setMap(agent.getMap());
+        setPosition(agent.getPosition().getX(), agent.getPosition().getY());
     }
-
-    public void setPosition (Tuple<Integer, Integer> pos) {
-        if (getLastPosition() == null) {
-            setLastPosition(new Tuple<>(0, 0));
-        }
-        else {
-            setLastAction(Position.getDirectionFromPositions(getLastPosition(), position));
-            System.out.println("Setting last action to: " + Position.getDirectionFromPositions(getLastPosition(), position));
-            setLastPosition(position);
-
-        }
-        position = pos;
-    }
-
-    public void setLastPosition (Tuple<Integer, Integer> pos) {
-        lastPosition = pos;
-    }
-
-    public void setLastAction (Directions action) { lastAction = action; }
-
-    public Directions getLastAction () { return lastAction; }
-
-    public Tuple<Integer, Integer> getPosition () { return position; }
-    public Tuple<Integer, Integer> getLastPosition () { return lastPosition; }
-
-    public void setMap(EnvironmentMap map) {
-        this.map = map;
-    }
-    public EnvironmentMap getMap () { return map; }
 
     public ArrayList<MapObject> getArounds() {
-        ArrayList<MapObject> ret = new ArrayList<>();
+        ArrayList<MapObject> list = new ArrayList<>();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if (!(i == 1 && j == 1)) {
                     map.get(getPosition().getX() + i, getPosition().getY() + j)
-                        .ifPresent((mapObject -> ret.add(mapObject)));
+                        .ifPresent(list::add);
                 }
             }
         }
-        return ret;
+        return list;
     }
 
     @Override
@@ -139,81 +104,34 @@ public class Agent extends MapObject {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Agent Configuration");
         dialog.setHeaderText("You can edit: \n - appearance, \n - internal algorithm, \n - objectives, \n - and export and import agents");
+        dialog.getDialogPane().setPrefSize(500, 600);
 
         FontIcon icon = new FontIcon(FontAwesome.COGS);
         icon.setIconSize(64);
         dialog.setGraphic(icon);
-
         ButtonType applyChanges = new ButtonType("Apply", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
-        CodeArea codeArea = new CodeArea();
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-        VirtualizedScrollPane virtualizedScrollPane = new VirtualizedScrollPane<>(codeArea);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("AgentConfiguration.fxml"));
 
-        ChoiceBox<Algorithm> algorithmChoiceBox = new ChoiceBox<>();
-        algorithmChoiceBox.setItems(FXCollections.observableArrayList(Algorithm.getAlgorithms()));
-        System.out.println(Algorithm.getAlgorithms().size());
-        algorithmChoiceBox.getSelectionModel().selectFirst();
+            Parent root = fxmlLoader.load();
 
-        dialog.getDialogPane().setContent(algorithmChoiceBox);
+            dialog.getDialogPane().setContent(root);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == applyChanges) {
-                System.out.println(algorithmChoiceBox.getSelectionModel().getSelectedItem());
-                setAlgorithm(algorithmChoiceBox.getSelectionModel().getSelectedItem());
-                System.out.println(algorithm);
                 return null;
             }
             return null;
         });
 
         Optional<String> result = dialog.showAndWait();
-    }
-
-    public void move (Directions dir) {
-        switch (dir) {
-            case UP:
-                map.removeAt(position.getX(), position.getY());
-                position.setSnd(position.getSnd() + 1);
-                map.set(position.getX(), position.getY(), this);
-                break;
-            case RIGHT:
-                map.removeAt(position.getX(), position.getY());
-                position.setFst(position.getFst() + 1);
-                map.set(position.getX(), position.getY(), this);
-                break;
-            case LEFT:
-                map.removeAt(position.getX(), position.getY());
-                position.setFst(position.getFst() - 1);
-                map.set(position.getX(), position.getY(), this);
-                break;
-            case DOWN:
-                map.removeAt(position.getX(), position.getY());
-                position.setFst(position.getSnd() - 1);
-                map.set(position.getX(), position.getY(), this);
-                break;
-        }
-
-    }
-
-
-    /**
-     * Get all allowed actions for the actual position of the agent.
-     * @return an array with all allowed actions.
-     */
-    public ArrayList<Directions> getAllowedActions () {
-        ArrayList<Directions> allowedDirections = new ArrayList<>();
-        for (Directions dir : Directions.values())
-            if (checkAllowedPos(Position.getInDirection(getPosition(), dir)))
-                allowedDirections.add(dir);
-
-        return allowedDirections;
-    }
-
-    public boolean checkAllowedPos (Tuple<Integer, Integer> nextPos) {
-        return ((!map.get(nextPos).isPresent() ||
-                (map.get(nextPos).get().getType() != TypeObject.Obstacle &&
-                map.get(nextPos).get().getType() != TypeObject.Agent)));
     }
 
     /**
@@ -227,23 +145,34 @@ public class Agent extends MapObject {
         this.algorithm = algorithm;
     }
 
-    public Directions execStep () {
-        if (algorithm != null) {
-            return algorithm.execStep(this);
-        }
-        else {
-            System.out.println("Without algorithm");
-            return null;
-        }
+    /**
+     * Set position of agent
+     * @param x
+     * @param y
+     */
+    public void setPosition(Integer x, Integer y) {
+        position.setFst(x);
+        position.setSnd(y);
     }
+
+    /**
+     *
+     * @param pos
+     */
+    public void setPosition(Tuple<Integer, Integer> pos) {
+        position = pos;
+    }
+
+    public Tuple<Integer, Integer> getPosition () { return position; }
+
+    public void setMap(EnvironmentMap map) {
+        this.map = map;
+    }
+
+    public EnvironmentMap getMap () { return map; }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        Agent agent = new Agent();
-        agent.setMap(getMap());
-        agent.setAlgorithm(getAlgorithm());
-        // TODO:
-        System.out.println("Called Agent clone");
-        return agent;
+        return new Agent(this);
     }
 }

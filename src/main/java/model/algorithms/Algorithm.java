@@ -11,7 +11,7 @@ import java.util.HashMap;
  * @email: alu0100824780@ull.edu.es
  * @description: Main class of algorithms
  */
-public abstract class Algorithm {
+public abstract class Algorithm implements Cloneable {
 
     private static ArrayList<Algorithm> algorithms = new ArrayList<>();
 
@@ -40,4 +40,9 @@ public abstract class Algorithm {
      * Stop algorithm, especially when its used threads with ourselves resources.
      */
     public abstract void stop();
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

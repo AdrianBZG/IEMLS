@@ -16,6 +16,7 @@ import java.util.HashMap;
 public class Explorer extends Algorithm {
 
     public Directions execStep (Agent agent) {
+        /*
         boolean firstStep = agent.getLastAction() == null;
         boolean mustChangeAction = false;
 
@@ -56,6 +57,8 @@ public class Explorer extends Algorithm {
 
 
         return nextAction;
+        */
+        return null;
     }
 
     /**
@@ -64,7 +67,7 @@ public class Explorer extends Algorithm {
     @Override
     public void start() {
     }
-    
+
     /**
      * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
      * function by all agents.
@@ -85,5 +88,10 @@ public class Explorer extends Algorithm {
     @Override
     public String toString() {
         return "Explorer";
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new Explorer();
     }
 }

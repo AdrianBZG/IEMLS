@@ -1,10 +1,10 @@
-package view;
+package view.ObjectView;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
+import view.ObjectView.ObjectView;
 
 /**
  * Created by eleazardd on 2/01/17.

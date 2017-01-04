@@ -4,9 +4,8 @@
  * Copyright 20XX Eleazar Díaz Delgado. All rights reserved.
  */
 
-package view;
+package view.ObjectView;
 
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

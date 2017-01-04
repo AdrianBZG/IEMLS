@@ -30,7 +30,6 @@ import java.util.ResourceBundle;
  *
  */
 public class Controller implements Initializable {
-    EnvironmentManager environmentManager;
     EnvironmentView environmentView;
 
     @FXML
@@ -90,12 +89,12 @@ public class Controller implements Initializable {
 
     @FXML
     public void onPlayButton () {
-        environmentManager.play();
+        environmentView.getAgentsManager().play();
     }
 
     @FXML
     public void onStopButton () {
-        environmentManager.stop();
+        environmentView.getAgentsManager().stop();
     }
 
 
@@ -106,7 +105,6 @@ public class Controller implements Initializable {
     public void generateMap() {
         if (xDim.getText().equals("") && yDim.getText().equals("")) {
             environmentView = new EnvironmentView(noiseChoose.getSelectionModel().getSelectedItem());
-            environmentManager = new EnvironmentManager(environmentView);
             centralPane.setCenter(environmentView);
         }
         else {
@@ -114,7 +112,6 @@ public class Controller implements Initializable {
                 int width = Math.abs(Integer.parseInt(xDim.getText()));
                 int height = Math.abs(Integer.parseInt(yDim.getText()));
                 environmentView = new EnvironmentView(width, height, noiseChoose.getSelectionModel().getSelectedItem());
-                environmentManager = new EnvironmentManager(environmentView);
                 centralPane.setCenter(environmentView);
             } catch (Exception e) {
                 errorDialog("Fail To build a map with " + xDim.getText() + " x " + yDim.getText());
