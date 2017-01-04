@@ -104,10 +104,10 @@ public class Agent extends MapObject {
     public void move(Directions directions) {
         switch (directions) {
             case DOWN:
-                this.getPosition().chgSnd((y) -> y - 1);
+                this.getPosition().chgSnd((y) -> y + 1);
                 break;
             case UP:
-                this.getPosition().chgSnd((y) -> y + 1);
+                this.getPosition().chgSnd((y) -> y - 1);
                 break;
             case LEFT:
                 this.getPosition().chgFst((x) -> x - 1);
@@ -139,7 +139,7 @@ public class Agent extends MapObject {
      * @return
      */
     public MapObject down() {
-        return map.get(getPosition().getX(), getPosition().getY() - 1).get();
+        return map.get(getPosition().getX(), getPosition().getY() + 1).get();
     }
 
     /**
@@ -147,7 +147,7 @@ public class Agent extends MapObject {
      * @return
      */
     public MapObject up() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() + 1).get();
+        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
     }
 
     /**
@@ -155,7 +155,7 @@ public class Agent extends MapObject {
      * @return
      */
     public MapObject upLeft() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() + 1).get();
+        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
     }
 
     /*
@@ -163,7 +163,7 @@ public class Agent extends MapObject {
      * @return
      */
     public MapObject upRight() {
-        return map.get(getPosition().getX() + 1, getPosition().getY() + 1).get();
+        return map.get(getPosition().getX() + 1, getPosition().getY() - 1).get();
     }
 
     /**
@@ -171,7 +171,7 @@ public class Agent extends MapObject {
      * @return
      */
     public MapObject downRight() {
-        return map.get(getPosition().getX() + 1, getPosition().getY() - 1).get();
+        return map.get(getPosition().getX() + 1, getPosition().getY() + 1).get();
     }
 
     /**
@@ -179,7 +179,7 @@ public class Agent extends MapObject {
      * @return
      */
     public MapObject downLeft() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
+        return map.get(getPosition().getX() - 1, getPosition().getY() + 1).get();
     }
 
     @Override

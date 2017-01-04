@@ -53,7 +53,7 @@ public class AgentsManager {
                     Platform.runLater(() -> {
                         agent.getAlgorithm().update();
                         tickEv.accept(agent);
-                        System.out.println("Hello evil world");
+                        //System.out.println("Hello evil world");
                     });
                 }
             }
