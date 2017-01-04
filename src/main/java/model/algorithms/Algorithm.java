@@ -13,17 +13,20 @@ import java.util.HashMap;
  */
 public abstract class Algorithm implements Cloneable {
 
+    /**
+     * All available algorithms
+     */
     private static ArrayList<Algorithm> algorithms = new ArrayList<>();
 
     static {
         algorithms.add(new Explorer());
     }
 
+    private Agent agent = null;
+
     public static ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
-
-    public abstract Directions execStep (Agent agent);
 
     /**
      * Initialize algorithm, it could run in background
@@ -40,6 +43,14 @@ public abstract class Algorithm implements Cloneable {
      * Stop algorithm, especially when its used threads with ourselves resources.
      */
     public abstract void stop();
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

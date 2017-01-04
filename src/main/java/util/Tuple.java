@@ -1,5 +1,7 @@
 package util;
 
+import java.util.function.Function;
+
 /**
  * Util class, add a parametric tuple type
  * Created by eleazardd on 29/11/16.
@@ -43,6 +45,14 @@ public class Tuple<A, B> {
 
     public void setSnd(B snd) {
         this.snd = snd;
+    }
+
+    public void chgFst(Function<A, A> fun) {
+        fst = fun.apply(getFst());
+    }
+
+    public void chgSnd(Function<B, B> fun) {
+        snd = fun.apply(getSnd());
     }
 
     @Override

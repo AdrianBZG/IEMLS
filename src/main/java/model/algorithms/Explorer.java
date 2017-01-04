@@ -15,51 +15,7 @@ import java.util.HashMap;
  */
 public class Explorer extends Algorithm {
 
-    public Directions execStep (Agent agent) {
-        /*
-        boolean firstStep = agent.getLastAction() == null;
-        boolean mustChangeAction = false;
-
-        Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
-        EnvironmentMap map = agent.getMap();
-
-        ArrayList<Directions> allowedActions = agent.getAllowedActions();
-        ArrayList<Directions> resources = new ArrayList<>();
-
-
-        for (Directions dir : Directions.values())
-            // Check if the agent is next to a resource in the given direction.
-            if (map.resourceAtPos(Position.getInDirection(agent.getPosition(), dir)))
-                resources.add(dir);
-
-
-        if (resources.size() > 0) {// If there are resources near.
-            nextAction = resources.get((int) (Math.random() * resources.size()));
-        }
-        else {
-            Integer action = (int) (Math.random() * allowedActions.size());
-
-            if (!firstStep && action < ((1 - 0.8) * allowedActions.size())) {  // 90 % to take the same action as previous step.
-                if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), agent.getLastAction()))) {
-                    System.out.println("Same action like before " + agent.getLastAction());
-                    nextAction = agent.getLastAction();
-
-                }
-                else
-                    mustChangeAction = true;
-            }
-            else {
-                mustChangeAction = true;
-            }
-        }
-        if (mustChangeAction)
-            nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
-
-
-        return nextAction;
-        */
-        return null;
-    }
+    Directions lastDirection = null;
 
     /**
      * Initialize algorithm, it could run in background
@@ -75,6 +31,48 @@ public class Explorer extends Algorithm {
     @Override
     public void update() {
 
+        boolean firstStep = lastDirection == null;
+        boolean mustChangeAction = false;
+
+        Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
+        EnvironmentMap map = getAgent().getMap();
+
+        ArrayList<Directions> allowedActions = getAgent().getAllowedActions();
+        ArrayList<Directions> resources = new ArrayList<>();
+
+        for (Directions dir : Directions.values())
+            // Check if the agent is next to a resource in the given direction.
+            map.get(Position.getInDirection(getAgent().getPosition(), dir)).ifPresent(mapObject -> {
+                        mapObject.getType().equals(TypeObject.Resource);
+                        resources.add(dir);
+                    }
+            );
+
+        if (resources.size() > 0) {// If there are resources near.
+            nextAction = resources.get((int) (Math.random() * resources.size()));
+        }
+        else {
+            Integer action = (int) (Math.random() * allowedActions.size());
+
+            if (!firstStep && action < ((1 - 0.8) * allowedActions.size())) {  // 90 % to take the same action as previous step.
+                if (getAgent().checkAllowedPos(Position.getInDirection(getAgent().getPosition(), lastDirection))) {
+                    System.out.println("Same action like before " + lastDirection);
+                    nextAction = lastDirection;
+                }
+                else
+                    mustChangeAction = true;
+            }
+            else {
+                mustChangeAction = true;
+            }
+        }
+        if (mustChangeAction) {
+            nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
+        }
+
+        lastDirection = nextAction;
+        getAgent().move(nextAction);
+        map.removeAt(getAgent().getPosition());
     }
 
     /**

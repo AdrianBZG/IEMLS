@@ -21,5 +21,10 @@ public class ConfigurationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choiceAlgorithm.setItems(FXCollections.observableArrayList(Algorithm.getAlgorithms()));
+        choiceAlgorithm.getSelectionModel().selectFirst();
+    }
+
+    public Algorithm getAlgorithm() {
+        return (Algorithm) choiceAlgorithm.getSelectionModel().getSelectedItem();
     }
 }

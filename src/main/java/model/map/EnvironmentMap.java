@@ -202,6 +202,14 @@ public class EnvironmentMap {
     }
 
     /**
+     * Remove objects with a position passed as tuple
+     * @param position
+     */
+    public void removeAt(Tuple<Integer,Integer> position) {
+        removeAt(position.getX(), position.getY());
+    }
+
+    /**
      * Generate a image, where each point represent a object into map
      * TODO: Implement
      * @return

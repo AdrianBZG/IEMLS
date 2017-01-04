@@ -13,6 +13,7 @@ import model.object.agent.Agent;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.WeakHashMap;
 
 /**
  * All thing relate to agents
@@ -29,28 +30,28 @@ public class AgentsManager {
      */
     private int delay = 1000;
 
+    private static Timer timer = null;
+
     public AgentsManager() {
         // TODO: The agent can call to controller to remove them from scene, use events!
-
+        timer = new Timer();
     }
 
     /**
      * Initialize all agents from environment. Each one in a independent thread
      */
-    public void startAgents() {
-        Timer timer = new Timer();
+    public void play() {
+        for (Agent agent : agents) {
+            agent.getAlgorithm().start();
+        }
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 for (Agent agent : agents) {
-                    Task task = new Task() {
-                        @Override
-                        protected Object call() throws Exception {
-                            // agent.execStep();
-                            return null;
-                        }
-                    };
-                    Platform.runLater(task);
+                    Platform.runLater(() -> {
+                        agent.getAlgorithm().update();
+                        System.out.println("Hello evil world");
+                    });
                 }
             }
         },0, delay);
@@ -59,16 +60,22 @@ public class AgentsManager {
     /**
      *
      */
-    public void play() {
-
-    }
-
-    /**
-     *
-     */
     public void stop() {
-
+        if (timer != null) {
+            for (Agent agent : agents) {
+                agent.getAlgorithm().stop();
+            }
+            timer.cancel();
+            timer = null;
+        }
     }
+
+    public Timer getTimer () {
+        if (timer == null)  {
+            timer = new Timer ();
+        }
+        return timer;
+    };
 
     public ArrayList<Agent> getAgents() {
         return agents;
