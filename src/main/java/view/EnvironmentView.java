@@ -11,7 +11,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import model.AgentsManager;
@@ -25,9 +24,7 @@ import util.Tuple;
 import java.util.Optional;
 
 /**
- * TODO: Implement a Timer, each tick of clock update all environment, with agent algorithms in independents threads.
- * TODO: The Threads could wait for ticks, or define a path to follow(but the main idea is work in real time with
- * TODO: dynamic environments, leaks of resources, agents blocking pass)
+ * Control visualization of map model, it let add resources and interact with map.
  */
 public class EnvironmentView extends Pane {
     public final double TILE_SIZE = 20; // Normal tile size
@@ -133,25 +130,6 @@ public class EnvironmentView extends Pane {
                 .subscribe(mouseEvent -> {
                     getPencil().ifPresent(pencil -> {
                         try {
-                            /*
-                            if (getTranslation().getX() >= 0 && getTranslation().getY() >= 0) {
-                                iObjectOptional = getEnvironmentMap().get(
-                                        (int) (Math.floor(getTranslation().getX() / getTileSize() + i)),
-                                        (int) (Math.floor(getTranslation().getY() / getTileSize() + j)));
-                            } else if (getTranslation().getX() < 0 && getTranslation().getY() >= 0) {
-                                iObjectOptional = getEnvironmentMap().get(
-                                        (int) (Math.ceil(getTranslation().getX() / getTileSize() + i)),
-                                        (int) (Math.floor(getTranslation().getY() / getTileSize() + j)));
-                            } else if (getTranslation().getX() >= 0 && getTranslation().getY() < 0) {
-                                iObjectOptional = getEnvironmentMap().get(
-                                        (int) (Math.floor(getTranslation().getX() / getTileSize() + i)),
-                                        (int) (Math.ceil(getTranslation().getY() / getTileSize() + j)));
-                            } else {//if (getTranslation().getX() > 0 && getTranslation().getY() >= 0) {
-                                iObjectOptional = getEnvironmentMap().get(
-                                        (int) (Math.ceil(getTranslation().getX() / getTileSize() + i)),
-                                        (int) (Math.ceil(getTranslation().getY() / getTileSize() + j)));
-                            }
-                            */
                             int posX = (int) Math.floor((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize());
                             int posY = (int) Math.floor((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize());
 
@@ -160,8 +138,6 @@ public class EnvironmentView extends Pane {
                                 agent.setPosition(posX, posY);
                                 agent.setMap(getEnvironmentMap());
                                 getAgentsManager().getAgents().add(agent);
-                                System.out.println(getAgentsManager().getAgents().size());
-                                System.out.println("Position" +  posX + "  " + posY);
                             } else {
                                 getEnvironmentMap().set(posX, posY, (MapObject) pencil.clone());
                             }
@@ -261,20 +237,6 @@ public class EnvironmentView extends Pane {
                 if (iObjectOptional.isPresent()) {
                     paintObject(iObjectOptional.get(), i, j);
                 }
-                /*
-                Line line = new Line();
-                line.setStartX(-1000);
-                line.setStartY(getTranslation().getY() + getTileSize() * j);
-                line.setEndX(+1000);
-                line.setEndY(getTranslation().getY() + getTileSize() * j);
-
-                Line line2 = new Line();
-                line2.setStartX(getTranslation().getX() + getTileSize() * i);
-                line2.setStartY(+10000);
-                line2.setEndX(getTranslation().getX() + getTileSize() * i);
-                line2.setEndY(-10000);
-                getChildren().addAll(line,line2);
-                */
             }
         }
         paintAgents();
