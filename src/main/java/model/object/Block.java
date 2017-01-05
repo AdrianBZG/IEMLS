@@ -6,10 +6,8 @@
 
 package model.object;
 
-import view.BlockView;
-import view.ObjectView;
-
-import java.io.Serializable;
+import view.ObjectView.BlockView;
+import view.ObjectView.ObjectView;
 
 
 /**

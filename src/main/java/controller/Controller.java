@@ -6,9 +6,6 @@
 
 package controller;
 
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,17 +14,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import model.map.generator.IGenerator;
 import model.map.generator.SimplexNoise;
+import model.map.generator.DisplacementFractalNoise;
 import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
 import model.object.agent.Agent;
-import rx.observables.JavaFxObservable;
 import view.CellObjectView;
 import view.EnvironmentView;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -35,7 +31,6 @@ import java.util.ResourceBundle;
  *
  */
 public class Controller implements Initializable {
-    EnvironmentManager environmentManager;
     EnvironmentView environmentView;
 
     @FXML
@@ -65,10 +60,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ObservableList<MapObject> list = FXCollections.observableArrayList(
-                new Agent(), new Resource(10, "Food"), new Block());
-
-        listObjects.setItems(list);
+        listObjects.setItems(FXCollections.observableArrayList(MapObject.getMapObjects()));
         listObjects.setCellFactory(value -> new CellObjectView());
         listObjects.getSelectionModel()
                 .selectedItemProperty()
@@ -80,7 +72,7 @@ public class Controller implements Initializable {
         accordion.setExpandedPane(mapTitledPane);
 
         // Noise methods available
-        noiseChoose.setItems(FXCollections.observableArrayList(new SimplexNoise()));  // TODO: Add more methods
+        noiseChoose.setItems(FXCollections.observableArrayList(new SimplexNoise(), new DisplacementFractalNoise()));  // TODO: Add more methods
         noiseChoose.getSelectionModel().selectFirst();
     }
 
@@ -98,12 +90,12 @@ public class Controller implements Initializable {
 
     @FXML
     public void onPlayButton () {
-        environmentManager.play();
+        environmentView.getAgentsManager().play();
     }
 
     @FXML
     public void onStopButton () {
-        environmentManager.stop();
+        environmentView.getAgentsManager().stop();
     }
 
 
@@ -114,7 +106,6 @@ public class Controller implements Initializable {
     public void generateMap() {
         if (xDim.getText().equals("") && yDim.getText().equals("")) {
             environmentView = new EnvironmentView(noiseChoose.getSelectionModel().getSelectedItem());
-            environmentManager = new EnvironmentManager(environmentView);
             centralPane.setCenter(environmentView);
         }
         else {
@@ -122,9 +113,9 @@ public class Controller implements Initializable {
                 int width = Math.abs(Integer.parseInt(xDim.getText()));
                 int height = Math.abs(Integer.parseInt(yDim.getText()));
                 environmentView = new EnvironmentView(width, height, noiseChoose.getSelectionModel().getSelectedItem());
-                environmentManager = new EnvironmentManager(environmentView);
                 centralPane.setCenter(environmentView);
             } catch (Exception e) {
+                System.out.println(e);
                 errorDialog("Fail To build a map with " + xDim.getText() + " x " + yDim.getText());
             }
         }

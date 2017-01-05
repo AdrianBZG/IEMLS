@@ -14,26 +14,35 @@ public class DisplacementFractalNoise implements IGenerator {
     /** Plasma fractal grid */
     private float[][] grid_;
 
+    private float[][] normalizedGrid_;
+
+    private boolean generated_ = false;
+
     public DisplacementFractalNoise() {
-        float roughness = (float) 0.5;
-        roughness_ = roughness / EnvironmentMap.getDimensions().get().getWidth();
-        grid_ = new float[EnvironmentMap.getDimensions().get().getWidth()][EnvironmentMap.getDimensions().get().getHeight()];
-        rand_ = new Random();
-        initialize();
     }
 
     private void initialize() {
+        //roughness_ = (float)0.5 / EnvironmentMap.getDimensions().get().getWidth();
+        roughness_ = 0.8f;
+        //grid_ = new float[EnvironmentMap.getDimensions().get().getWidth()][EnvironmentMap.getDimensions().get().getHeight()];
+        grid_ = new float[1000][1000];
+        rand_ = new Random();
+
         int xh = grid_.length - 1;
         int yh = grid_[0].length - 1;
 
         // set the corner points
-        grid_[0][0] = rand_.nextFloat() - 0.5f;
-        grid_[0][yh] = rand_.nextFloat() - 0.5f;
-        grid_[xh][0] = rand_.nextFloat() - 0.5f;
-        grid_[xh][yh] = rand_.nextFloat() - 0.5f;
+        grid_[0][0] = rand_.nextFloat() - 0.05f;
+        grid_[0][yh] = rand_.nextFloat() - 0.05f;
+        grid_[xh][0] = rand_.nextFloat() - 0.05f;
+        grid_[xh][yh] = rand_.nextFloat() - 0.05f;
 
         // generate the fractal
         generate(0, 0, xh, yh);
+
+        normalizedGrid_ = this.toNormalized();
+
+        generated_ = true;
     }
 
     // Add a suitable amount of random displacement to a point
@@ -67,9 +76,27 @@ public class DisplacementFractalNoise implements IGenerator {
         generate(xm, ym, xh, yh);
     }
 
+    public float[][] toNormalized() {
+        int w = grid_.length;
+        int h = grid_[0].length;
+        float[][] ret = new float[w][h];
+        for(int i = 0;i < w;i++) {
+            for(int j = 0;j < h;j++) {
+                if(grid_[i][j] > 0 && grid_[i][j] < 2) {
+                    ret[i][j] = (float)0.6;
+                } else if ((grid_[i][j] > 2 && grid_[i][j] < 6) || grid_[i][j] < 0) {
+                    ret[i][j] = (float)0.1;
+                }
+            }
+        }
+        return ret;
+    }
+
     @Override
     public double generateAtPoint(double x, double y) {
-        return grid_[(int)x][(int)y];
+        if(!generated_) initialize();
+        //System.out.println("Retorno:" + grid_[(int)x][(int)y]);
+        return normalizedGrid_[(int)x][(int)y];
     }
 
     @Override

@@ -1,22 +1,6 @@
 package model.algorithms;
 
-import es.usc.citius.hipster.model.Transition;
-import es.usc.citius.hipster.model.function.ActionFunction;
-import es.usc.citius.hipster.model.function.ActionStateTransitionFunction;
-import es.usc.citius.hipster.model.function.CostFunction;
-import es.usc.citius.hipster.model.function.HeuristicFunction;
-import es.usc.citius.hipster.model.impl.WeightedNode;
-import es.usc.citius.hipster.model.problem.ProblemBuilder;
-
-import es.usc.citius.hipster.model.problem.SearchProblem;
 import model.map.EnvironmentMap;
-import model.object.TypeObject;
-import model.object.agent.Agent;
-import util.Directions;
-import util.Tuple;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 ;
@@ -28,7 +12,7 @@ import java.util.Arrays;
 public class AStar  {
 
     private static EnvironmentMap map;
-
+/*
     SearchProblem<Directions, Tuple<Integer, Integer>, WeightedNode<Directions, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, Agent agent) {
 
         this.map = map;
@@ -43,8 +27,8 @@ public class AStar  {
 
                     }
                 })
-                .useTransitionFunction(new ActionStateTransitionFunction<Directions, Tuple<Integer,Integer>>() {
-                    @Override
+                .useTransitionFunction(new ActionStateTransitionFunction<util.Directions, Tuple<Integer,Integer>>() {
+
                     public Tuple<Integer, Integer> apply(Object o, Tuple<Integer, Integer> integerIntegerTuple) {
                         return null;
                     }
@@ -87,8 +71,9 @@ public class AStar  {
     }
 
     private boolean checkAllowedPos (Tuple<Integer, Integer> nextPos, Agent agent, EnvironmentMap map) {
-        return (!agent.getLastPos().equals(nextPos) &&
+        return (!agent.getLastPosition().equals(nextPos) &&
                 (!map.get(nextPos).isPresent() ||
                         map.get(nextPos).get().getType() != TypeObject.Obstacle));
     }
+    */
 }

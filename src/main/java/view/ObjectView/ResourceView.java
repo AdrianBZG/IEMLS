@@ -1,8 +1,9 @@
-package view;
+package view.ObjectView;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import view.ObjectView.ObjectView;
 
 /**
  * Created by eleazardd on 13/11/16.
