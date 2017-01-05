@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import model.map.generator.IGenerator;
 import model.map.generator.SimplexNoise;
 import model.map.generator.DisplacementFractalNoise;
+import model.map.generator.VoronoiNoise;
 import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
@@ -72,7 +73,7 @@ public class Controller implements Initializable {
         accordion.setExpandedPane(mapTitledPane);
 
         // Noise methods available
-        noiseChoose.setItems(FXCollections.observableArrayList(new SimplexNoise(), new DisplacementFractalNoise()));  // TODO: Add more methods
+        noiseChoose.setItems(FXCollections.observableArrayList(new SimplexNoise(), new DisplacementFractalNoise(), new VoronoiNoise()));  // TODO: Add more methods
         noiseChoose.getSelectionModel().selectFirst();
     }
 
