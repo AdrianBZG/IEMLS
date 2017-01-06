@@ -52,14 +52,13 @@ public class Explorer extends Algorithm {
                     }
             );
 
-        if (resources.size() > 0) {// If there are resources near.
+        if (resources.size() > 0) { // If there are resources near.
             System.out.println("Next to resource");
             nextAction = resources.get((int) (Math.random() * resources.size()));
         }
         else {
             Integer action = (int) (Math.random() * allowedActions.size());
-
-            if (!firstStep && action < ((0.9) * allowedActions.size())) {  // 80 % to take the same action as previous step.
+            if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 80 % to take the same action as previous step.
                 if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
                     System.out.println("Same action like before " + lastDirection);
                     nextAction = lastDirection;
