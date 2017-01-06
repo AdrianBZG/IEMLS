@@ -48,4 +48,10 @@ dependencies {
     // http://aalmiray.github.io/ikonli/
     compile group: 'org.kordamp.ikonli', name: 'ikonli-javafx', version:'1.8.0'
     compile group: 'org.kordamp.ikonli', name: 'ikonli-fontawesome-pack', version:'1.8.0'
+
+    // https://mvnrepository.com/artifact/org.jruby/jruby-complete
+    compile group: 'org.jruby', name: 'jruby-complete', version: '9.1.6.0'
+
+    // https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx
+    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.7-M3'
 }

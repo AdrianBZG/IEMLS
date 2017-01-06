@@ -6,37 +6,40 @@
 
 package view;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
+import model.AgentsManager;
 import model.map.EnvironmentMap;
 import model.map.generator.IGenerator;
-import model.map.generator.SimplexNoise;
 import model.object.MapObject;
+import model.object.agent.Agent;
 import rx.observables.JavaFxObservable;
 import util.Tuple;
 
 import java.util.Optional;
 
 /**
- * TODO: Implement a Timer, each tick of clock update all environment, with agent algorithms in independents threads.
- * TODO: The Threads could wait for ticks, or define a path to follow(but the main idea is work in real time with
- * TODO: dynamic environments, leaks of resources, agents blocking pass)
- *
+ * Control visualization of map model, it let add resources and interact with map.
  */
 public class EnvironmentView extends Pane {
-    public static double TILE_SIZE = 20; // Normal tile size
-    private static double MAX_ZOOM = 3.0;
-    private static double MIN_ZOOM = 0.3; // Min Multiplier zoom
+    public final double TILE_SIZE = 20; // Normal tile size
+    private final double MAX_ZOOM = 3.0;
+    private final double MIN_ZOOM = 0.3; // Min Multiplier zoom
 
+    /**
+     * Model with map representation
+     */
     private EnvironmentMap environmentMap;
+
+    /**
+     * Manager with all agents available in map
+     */
+    private AgentsManager agentsManager;
 
     /**
      * Determine the size of tiled, by default 1.0x resize the tiled
@@ -52,7 +55,7 @@ public class EnvironmentView extends Pane {
     /**
      * Auxiliary click variable
      */
-    private Tuple<Double, Double> lastDragPos = new Tuple<>(0.0,0.0);
+    private Tuple<Double, Double> lastDragPos = new Tuple<>(0.0, 0.0);
 
     /**
      * Paint map object
@@ -80,6 +83,8 @@ public class EnvironmentView extends Pane {
      * Setup map
      */
     private void setup() {
+        agentsManager = new AgentsManager();
+        agentsManager.tickEv = (agent) -> { paintEnvironmentMap(); };
         // Event handlers
         clipDraw();
         dragMap();
@@ -97,11 +102,11 @@ public class EnvironmentView extends Pane {
      */
     private void zoomMap() {
         JavaFxObservable.fromNodeEvents(this, ScrollEvent.ANY)
-            .subscribe(scrollEvent -> {
-                System.out.println(scrollEvent.getDeltaY());
-                setZoom(scrollEvent.getDeltaY() / 1000 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
-                paintEnvironmentMap();
-            });
+                .subscribe(scrollEvent -> {
+                    System.out.println(scrollEvent.getDeltaY());
+                    setZoom(scrollEvent.getDeltaY() / 1000 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
+                    paintEnvironmentMap();
+                });
     }
 
     /**
@@ -116,21 +121,33 @@ public class EnvironmentView extends Pane {
     }
 
     /**
-     * Draw Objects
+     * Draw objects into map, the passive objects stay in EnvironmentMap but active objects like agents are saved into
+     * "Agent Manager".
      */
     private void drawObjects() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_CLICKED)
                 .filter(mouseEvent -> mouseEvent.getButton().equals(MouseButton.PRIMARY))
                 .subscribe(mouseEvent -> {
                     getPencil().ifPresent(pencil -> {
-                        getEnvironmentMap().set(
-                                (int) ((mouseEvent.getX() + (getTranslation().getX()) + getTileSize()) / getTileSize()),
-                                (int) ((mouseEvent.getY() + (getTranslation().getY()) + getTileSize()) / getTileSize()),
-                                pencil);
+                        try {
+                            int posX = (int) Math.floor((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize());
+                            int posY = (int) Math.floor((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize());
+
+                            if (pencil instanceof Agent) {
+                                Agent agent = (Agent) pencil.clone();
+                                agent.setPosition(posX, posY);
+                                agent.setMap(getEnvironmentMap());
+                                getAgentsManager().getAgents().add(agent);
+                            } else {
+                                getEnvironmentMap().set(posX, posY, (MapObject) pencil.clone());
+                            }
+                        } catch (CloneNotSupportedException e) {
+                            System.out.println("DrawObjects Object NO CLONEABLE");
+                            e.printStackTrace();
+                        }
                         paintEnvironmentMap();
                     });
                 });
-
     }
 
     /**
@@ -141,28 +158,26 @@ public class EnvironmentView extends Pane {
                 .filter(nodeEvent -> nodeEvent.getButton().equals(MouseButton.SECONDARY) && nodeEvent.isControlDown())
                 .subscribe(mouseEvent -> {
                     getEnvironmentMap().removeAt(
-                            (int)((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
-                            (int)((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize())
-                            );
+                            (int) ((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize()),
+                            (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()));
                     paintEnvironmentMap();
                 });
     }
 
     /**
      * Avoid draw outside of this Pane
-     * TODO: Change pencil to draw chars
      */
     private void clipDraw() {
         Rectangle clipRect = new Rectangle(getWidth(), getHeight());
         JavaFxObservable.fromObservableValue(widthProperty())
-            .subscribe(width -> {
-                clipRect.setWidth(width.intValue());
-            });
+                .subscribe(width -> {
+                    clipRect.setWidth(width.intValue());
+                });
 
         JavaFxObservable.fromObservableValue(heightProperty())
-            .subscribe(height -> {
-                clipRect.setHeight(height.intValue());
-            });
+                .subscribe(height -> {
+                    clipRect.setHeight(height.intValue());
+                });
 
         setClip(clipRect);
     }
@@ -172,77 +187,93 @@ public class EnvironmentView extends Pane {
      */
     private void dragMap() {
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_PRESSED)
-            .filter(MouseEvent::isMiddleButtonDown)
-            .subscribe(mouseEvent -> {
-                lastDragPos.setFst(mouseEvent.getX());
-                lastDragPos.setSnd(mouseEvent.getY());
-            });
+                .filter(MouseEvent::isMiddleButtonDown)
+                .subscribe(mouseEvent -> {
+                    lastDragPos.setFst(mouseEvent.getX());
+                    lastDragPos.setSnd(mouseEvent.getY());
+                });
 
         JavaFxObservable.fromNodeEvents(this, MouseEvent.MOUSE_DRAGGED)
-            .filter(MouseEvent::isMiddleButtonDown)
-            .subscribe(nodeEvent -> {
-                setTranslation(new Tuple<>(
-                    - nodeEvent.getX() + lastDragPos.getX() + getTranslation().getX(),
-                    - nodeEvent.getY() + lastDragPos.getY() + getTranslation().getY()));
-                lastDragPos.setFst(nodeEvent.getX());
-                lastDragPos.setSnd(nodeEvent.getY());
-                paintEnvironmentMap();
-            });
+                .filter(MouseEvent::isMiddleButtonDown)
+                .subscribe(nodeEvent -> {
+                    setTranslation(new Tuple<>(
+                            -nodeEvent.getX() + lastDragPos.getX() + getTranslation().getX(),
+                            -nodeEvent.getY() + lastDragPos.getY() + getTranslation().getY()));
+                    lastDragPos.setFst(nodeEvent.getX());
+                    lastDragPos.setSnd(nodeEvent.getY());
+                    paintEnvironmentMap();
+                });
 
-    }
-
-    public void updateMap () {
-        paintEnvironmentMap();
     }
 
     /**
      * Paint EnvironmentMap
-     * TODO: Paint object out screen to avoid false white, it happen on translating on borders of map
-     * TODO: Adjust the mouse to different values of translation?
+     * TODO: Improve this loop, only iterate over objects, use a good size of chunk to improve the performance
      */
-    private void paintEnvironmentMap() {
+    public void paintEnvironmentMap() {
         getChildren().clear();
-        for (int i = 0; i < getWidth() / getTileSize(); i++) {
-            for (int j = 0; j < getHeight() / getTileSize(); j++) {
+
+        for (int i = 0; i < getWidth() / getTileSize() + 5; i++) {
+            for (int j = 0; j < getHeight() / getTileSize() + 5; j++) {
                 Optional<MapObject> iObjectOptional;
                 if (getTranslation().getX() >= 0 && getTranslation().getY() >= 0) {
                     iObjectOptional = getEnvironmentMap().get(
-                            (int)(Math.floor(getTranslation().getX() / getTileSize() + i)),
-                            (int)(Math.floor(getTranslation().getY() / getTileSize() + j)));
-                }
-                else if (getTranslation().getX() < 0 && getTranslation().getY() >= 0) {
+                            (int) (Math.floor(getTranslation().getX() / getTileSize() + i)),
+                            (int) (Math.floor(getTranslation().getY() / getTileSize() + j)));
+                } else if (getTranslation().getX() < 0 && getTranslation().getY() >= 0) {
                     iObjectOptional = getEnvironmentMap().get(
-                            (int)(Math.ceil(getTranslation().getX() / getTileSize() + i)),
-                            (int)(Math.floor(getTranslation().getY() / getTileSize() + j)));
-                }
-                else if (getTranslation().getX() >= 0 && getTranslation().getY() < 0) {
+                            (int) (Math.ceil(getTranslation().getX() / getTileSize() + i)),
+                            (int) (Math.floor(getTranslation().getY() / getTileSize() + j)));
+                } else if (getTranslation().getX() >= 0 && getTranslation().getY() < 0) {
                     iObjectOptional = getEnvironmentMap().get(
-                            (int)(Math.floor(getTranslation().getX() / getTileSize() + i)),
-                            (int)(Math.ceil(getTranslation().getY() / getTileSize() + j)));
-                }
-                else {//if (getTranslation().getX() > 0 && getTranslation().getY() >= 0) {
+                            (int) (Math.floor(getTranslation().getX() / getTileSize() + i)),
+                            (int) (Math.ceil(getTranslation().getY() / getTileSize() + j)));
+                } else {//if (getTranslation().getX() > 0 && getTranslation().getY() >= 0) {
                     iObjectOptional = getEnvironmentMap().get(
-                            (int)(Math.ceil(getTranslation().getX() / getTileSize() + i)),
-                            (int)(Math.ceil(getTranslation().getY() / getTileSize() + j)));
+                            (int) (Math.ceil(getTranslation().getX() / getTileSize() + i)),
+                            (int) (Math.ceil(getTranslation().getY() / getTileSize() + j)));
                 }
 
                 if (iObjectOptional.isPresent()) {
-                    Node node = iObjectOptional.get().getVisualObject();
-                    node.setScaleX(getZoom());
-                    node.setScaleY(getZoom());
-                    node.setTranslateX(i * getTileSize() - getTranslation().getX() % getTileSize());
-                    node.setTranslateY(j * getTileSize() - getTranslation().getY() % getTileSize());
-                    getChildren().add(node);
+                    paintObject(iObjectOptional.get(), i, j);
                 }
             }
+        }
+        paintAgents();
+
+    }
+
+    /**
+     * Paint agents
+     */
+    public void paintAgents() {
+        for (Agent agent : getAgentsManager().getAgents()) {
+            Node node = agent.getVisualObject();
+            Scale scale = new Scale();
+            scale.setX(getZoom());
+            scale.setY(getZoom());
+            node.getTransforms().add(scale);
+            node.setTranslateX(-getTranslation().getX() + agent.getPosition().getX() * getTileSize());
+            node.setTranslateY(-getTranslation().getY() + agent.getPosition().getY() * getTileSize());
+            getChildren().add(node);
         }
     }
 
     /**
-     * Set Pencil
+     * Paint a object given a position
+     * @param mapObject
+     * @param x
+     * @param y
      */
-    public void setPencil(MapObject mapObject) {
-        pencil = Optional.of(mapObject);
+    private void paintObject(MapObject mapObject, double x, double y) {
+        Node node = mapObject.getVisualObject();
+        Scale scale = new Scale();
+        scale.setX(getZoom());
+        scale.setY(getZoom());
+        node.getTransforms().add(scale);
+        node.setTranslateX(x * getTileSize() - (getTranslation().getX()) % getTileSize());
+        node.setTranslateY(y * getTileSize() - (getTranslation().getY()) % getTileSize());
+        getChildren().add(node);
     }
 
     /**
@@ -257,7 +288,14 @@ public class EnvironmentView extends Pane {
     }
 
     /**
-     *
+     * Set Pencil
+     */
+    public void setPencil(MapObject mapObject) {
+        pencil = Optional.of(mapObject);
+    }
+
+    /**
+     * Get EnvironmentMap
      */
     public EnvironmentMap getEnvironmentMap() {
         return environmentMap;
@@ -273,6 +311,7 @@ public class EnvironmentView extends Pane {
 
     /**
      * Set zoom over a zone
+     *
      * @param zoom
      * @param x
      * @param y
@@ -280,15 +319,18 @@ public class EnvironmentView extends Pane {
     public void setZoom(double zoom, double x, double y) {
         if (zoom > MAX_ZOOM) {
             this.zoom = MAX_ZOOM;
-        }
-        else if (zoom < MIN_ZOOM) {
+        } else if (zoom < MIN_ZOOM) {
             this.zoom = MIN_ZOOM;
-        }
-        else {
-            double xOffset = x / (zoom * TILE_SIZE);
-            double yOffset = y / (zoom * TILE_SIZE);
+        } else {
+            double xOffset = x / (zoom * TILE_SIZE) * ((zoom - this.zoom) * TILE_SIZE);
+            double yOffset = y / (zoom * TILE_SIZE) * ((zoom - this.zoom) * TILE_SIZE);
             // TODO: Adjust the translation on zoom
-            setTranslation(new Tuple<>(getTranslation().getX(), getTranslation().getY()));
+            if (zoom > 0) {
+                setTranslation(new Tuple<>(getTranslation().getX() + xOffset, getTranslation().getY() + yOffset));
+            }
+            else {
+                setTranslation(new Tuple<>(getTranslation().getX() + xOffset, getTranslation().getY() + yOffset));
+            }
             this.zoom = zoom;
         }
     }
@@ -299,5 +341,13 @@ public class EnvironmentView extends Pane {
 
     public void setTranslation(Tuple<Double, Double> translation) {
         this.translation = translation;
+    }
+
+    public AgentsManager getAgentsManager() {
+        return agentsManager;
+    }
+
+    public void setAgentsManager(AgentsManager agentsManager) {
+        this.agentsManager = agentsManager;
     }
 }

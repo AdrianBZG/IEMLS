@@ -10,11 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
-import view.ObjectView;
-import view.ResourceView;
-
-import java.io.Serializable;
-import java.util.Optional;
+import view.ObjectView.ObjectView;
+import view.ObjectView.ResourceView;
 
 /**
  * Represent a unit visual of a resource, but it can be consumed partiality

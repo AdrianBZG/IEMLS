@@ -26,9 +26,9 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
-        <MenuBar>
+        <MenuBar prefHeight="15.0" prefWidth="843.0">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -125,7 +125,7 @@
                                     <RowConstraints vgrow="SOMETIMES" />
                                     <RowConstraints vgrow="SOMETIMES" />
                                     <RowConstraints vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="50.0" vgrow="ALWAYS" />
+                                    <RowConstraints minHeight="100.0" vgrow="ALWAYS" />
                                     <RowConstraints vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
@@ -139,7 +139,7 @@
                                     <Button mnemonicParsing="false" onAction="#generateMap" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                                     <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="7" />
                                     <Label text="Objects" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
-                                    <ListView fx:id="listObjects" prefHeight="100.0" prefWidth="249.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="10" GridPane.vgrow="ALWAYS" />
+                                    <ListView fx:id="listObjects" prefHeight="244.0" prefWidth="249.0" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.vgrow="ALWAYS" />
                                     <Button layoutX="79.0" layoutY="134.0" mnemonicParsing="false" onAction="#clearMap" text="Clear Map" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                  </children>
                                  <FlowPane.margin>
@@ -157,7 +157,7 @@
                 </TitledPane>
               </panes>
             </Accordion>
-            <BorderPane fx:id="centralPane" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <BorderPane fx:id="centralPane" prefHeight="640.0" prefWidth="646.0" HBox.hgrow="ALWAYS">
                <center>
                   <Label fx:id="initialMessage" text="Select a new Map to simulate a enviroment with agents" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                      <font>

@@ -1,4 +1,4 @@
-package view;
+package view.ObjectView;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
