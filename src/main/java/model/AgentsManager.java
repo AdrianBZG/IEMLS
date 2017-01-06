@@ -16,21 +16,20 @@ import java.util.function.Consumer;
  * All thing relate to agents
  */
 public class AgentsManager {
-
     /**
      * Agents
      */
     private ArrayList<Agent> agents = new ArrayList<>();
-
     /**
      * Launch an event each tick
      */
-    public Consumer<Agent> tickEv = (a) -> {};
 
+    public Consumer<Agent> tickEv = (a) -> {};
     /**
      * Delay between updates
      */
-    private int delay = 1000;
+
+    private int delay = 100;
 
     private static Timer timer = null;
 
@@ -83,15 +82,12 @@ public class AgentsManager {
     public ArrayList<Agent> getAgents() {
         return agents;
     }
-
     public void setAgents(ArrayList<Agent> agents) {
         this.agents = agents;
     }
-
     public int getDelay() {
         return delay;
     }
-
     public void setDelay(int delay) {
         this.delay = delay;
     }
