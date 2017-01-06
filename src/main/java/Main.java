@@ -28,6 +28,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(ClassLoader.getSystemClassLoader().getResource("Main.fxml"));
 
         Scene scene = new Scene(root);
+        //scene.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource("ruby-highlighting.css").toExternalForm());
         primaryStage.setTitle(TITLE);
         primaryStage.setScene(scene);
         primaryStage.show();
