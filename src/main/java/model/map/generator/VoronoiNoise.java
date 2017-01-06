@@ -97,7 +97,7 @@ public class VoronoiNoise implements IGenerator {
                                             (int)(Math.floor (xCandidate)),
                                             (int)(Math.floor (zCandidate)), seed));
 
-        System.out.println("Voronoi: " + returnValue);
+        //System.out.println("Voronoi: " + returnValue);
         return returnValue;
     }
 
