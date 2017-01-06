@@ -35,7 +35,6 @@ public class AStarOld extends Algorithm {
     public void start(Agent agent) {
         this.agent = agent;
         this.map = agent.getMap();
-        openedList.add
     }
 
     public void setObjective (Tuple<Integer, Integer> objective) {

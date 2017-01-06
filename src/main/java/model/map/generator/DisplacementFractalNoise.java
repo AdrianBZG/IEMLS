@@ -9,7 +9,7 @@ import java.util.Random;
  * TODO: Improve
  * TODO: Touch gradients to get special walls
  */
-public class SimplexNoise implements IGenerator {
+public class DisplacementFractalNoise implements IGenerator {
     public int[][] grad3 = {{1,1,0},{-1,1,0}, {1,-1,0}, {-1,-1,0},
                      {1,0,1}, {-1,0,1}, {1,0,-1}, {-1,0,-1},
                      {0,1,1}, {0,-1,1}, {0,1,-1}, {0,-1,-1}};
@@ -20,7 +20,7 @@ public class SimplexNoise implements IGenerator {
     private short perm[] = new short[512];
     private short permMod12[] = new short[512];
 
-    public SimplexNoise() {
+    public DisplacementFractalNoise() {
         Random rand = new Random();
         for(int i=0; i<512; i++)
         {
@@ -99,7 +99,7 @@ public class SimplexNoise implements IGenerator {
 
     @Override
     public String getGeneratorName() {
-        return "Simplex Noise";
+        return "Displacement Fractal Noise";
     }
 
     @Override
