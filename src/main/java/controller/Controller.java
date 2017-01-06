@@ -85,6 +85,11 @@ public class Controller implements Initializable {
         environmentView.getEnvironmentMap().loadMap();
     }
 
+    @FXML
+    public void onOpenSpeciesManager () throws IOException, ClassNotFoundException {
+        System.out.println("test");
+    }
+
 
     @FXML
     public void onPlayButton () {
