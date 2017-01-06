@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import model.species.Specie;
 import view.SpecieItemView;
 
@@ -14,7 +16,7 @@ import java.util.ResourceBundle;
 public class SpeciesController implements Initializable {
 
     @FXML
-    public ChoiceBox choiceSpecie;
+    public TextArea inputText;
 
     @FXML
     public ListView<Specie> listSpecies;
@@ -22,14 +24,13 @@ public class SpeciesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        choiceSpecie.setItems(FXCollections.observableArrayList(Specie.getSpecies()));
-        choiceSpecie.getSelectionModel().selectFirst();
-
         listSpecies.setItems(FXCollections.observableArrayList(Specie.getSpecies()));
+        System.out.println(Specie.getSpecies().size());
         listSpecies.setCellFactory(value -> new SpecieItemView());
         listSpecies.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observableValue, mapObject, newMapObject) -> {
+                    // Selected item
                     System.out.println("wtf");
                 });
 
@@ -37,6 +38,6 @@ public class SpeciesController implements Initializable {
     }
 
     public Specie getSpecie() {
-        return (Specie) choiceSpecie.getSelectionModel().getSelectedItem();
+        return listSpecies.getSelectionModel().getSelectedItem();
     }
 }

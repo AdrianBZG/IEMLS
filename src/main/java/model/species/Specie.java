@@ -1,6 +1,7 @@
 package model.species;
 
 import controller.ConfigurationController;
+import controller.SpeciesController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
@@ -24,6 +25,10 @@ public class Specie implements Cloneable {
      * All available algorithms
      */
     private static ArrayList<Specie> species = new ArrayList<>();
+
+    static {
+        species.add(new Specie());
+    }
 
     public Specie() {
         this.specieName = new String("No name");
@@ -54,12 +59,13 @@ public class Specie implements Cloneable {
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("AgentConfiguration.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("SpeciesConfiguration.fxml"));
             Parent root = fxmlLoader.load();
             dialog.getDialogPane().setContent(root);
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
-                    ConfigurationController configurationController = fxmlLoader.getController();
+                    SpeciesController speciesController = fxmlLoader.getController();
+
                     return null;
                 }
                 return null;
