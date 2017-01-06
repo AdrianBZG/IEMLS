@@ -17,6 +17,7 @@ import model.object.Block;
 import model.object.MapObject;
 import model.object.Resource;
 import model.object.agent.Agent;
+import model.species.Specie;
 import view.CellObjectView;
 import view.EnvironmentView;
 
@@ -87,7 +88,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void onOpenSpeciesManager () throws IOException, ClassNotFoundException {
-        System.out.println("test");
+        Specie.showSpeciesManager();
     }
 
 
