@@ -45,6 +45,11 @@
                   <MenuItem mnemonicParsing="false" text="Paste" />
               </items>
             </Menu>
+                <Menu mnemonicParsing="false" text="Tools">
+                    <items>
+                        <MenuItem fx:id="speciesManagerMenuItem" mnemonicParsing="false" onAction="#onOpenSpeciesManager" text="Species Manager" />
+                    </items>
+                </Menu>
             <Menu mnemonicParsing="false" text="View">
                <items>
                   <RadioMenuItem mnemonicParsing="false" text="Left Panel" />

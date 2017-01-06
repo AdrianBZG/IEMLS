@@ -2,7 +2,7 @@ package model.species;
 
 import java.util.ArrayList;
 
-public class Specie {
+public class Specie implements Cloneable {
 
     private String specieName = new String("");
     private int specieId = -1;
@@ -27,6 +27,8 @@ public class Specie {
     public static ArrayList<Specie> getSpecies() {
         return species;
     }
+
+    public static void deleteSpecie(Specie specie) { species.remove(specie); }
 
     public String getSpecieName() {
         return specieName;
