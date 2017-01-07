@@ -26,7 +26,7 @@ public class OpenSet implements IOpenSet {
 
     }
 
-    @Override
+    @Override  // retrieve and remove the head of this queue, or returns null if this queue is empty.
     public ISearchNode poll() {
         return this.Q.poll();
     }

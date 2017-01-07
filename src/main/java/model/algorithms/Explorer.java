@@ -58,7 +58,7 @@ public class Explorer extends Algorithm {
         }
         else {
             Integer action = (int) (Math.random() * allowedActions.size());
-            if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 80 % to take the same action as previous step.
+            if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 75 % to take the same action as previous step.
                 if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
                     System.out.println("Same action like before " + lastDirection);
                     nextAction = lastDirection;

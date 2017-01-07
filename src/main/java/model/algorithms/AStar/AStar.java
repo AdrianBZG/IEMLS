@@ -161,6 +161,7 @@ public class AStar extends Algorithm {
 
     @Override
     public void start(Agent agent) {
+
         this.agent = agent;
     }
 
