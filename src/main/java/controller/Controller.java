@@ -73,6 +73,8 @@ public class Controller implements Initializable {
         // Noise methods available
         noiseChoose.setItems(FXCollections.observableArrayList(new NullNoise(), new SimplexNoise(), new DisplacementFractalNoise(), new VoronoiNoise()));
         noiseChoose.getSelectionModel().selectFirst();
+
+        new Specie("Default specie");
     }
 
 

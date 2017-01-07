@@ -12,7 +12,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class SpecieItemView extends ListCell<Specie> {
     HBox box = new HBox();
-    Button options = new Button();
+    Button delete = new Button();
     Pane spacer = new Pane();
     Label tag = new Label();
 
@@ -21,7 +21,7 @@ public class SpecieItemView extends ListCell<Specie> {
         box.getChildren().addAll(tag, spacer);
         box.setHgrow(spacer, Priority.ALWAYS);
         box.setSpacing(5.0);
-        options.setGraphic(new FontIcon(FontAwesome.GEARS));
+        delete.setGraphic(new FontIcon(FontAwesome.TIMES));
     }
 
     @Override
@@ -31,12 +31,11 @@ public class SpecieItemView extends ListCell<Specie> {
             setGraphic(null);
         } else {
             if (item != null) {
-                options.setOnMouseClicked(mouseEvent -> Specie.deleteSpecie(item));
+                delete.setOnMouseClicked(mouseEvent -> Specie.deleteSpecie(item));
                 tag.setText(item.getSpecieName());
+                box.getChildren().add(delete);
             }
             setGraphic(box);
         }
     }
-
-
 }

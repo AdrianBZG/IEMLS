@@ -24,17 +24,12 @@ public class SpeciesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         listSpecies.setItems(FXCollections.observableArrayList(Specie.getSpecies()));
         System.out.println(Specie.getSpecies().size());
         listSpecies.setCellFactory(value -> new SpecieItemView());
         listSpecies.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((observableValue, mapObject, newMapObject) -> {
-                    // Selected item
-                    System.out.println("wtf");
-                });
-
-        Specie.getSpecies().add(new Specie("Default specie"));
+                .selectedItemProperty();
     }
 
     public Specie getSpecie() {

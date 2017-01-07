@@ -2,7 +2,9 @@ package model.species;
 
 import controller.ConfigurationController;
 import controller.SpeciesController;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -11,10 +13,13 @@ import model.object.agent.Agent;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import view.ErrorView;
+import view.SpecieItemView;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class Specie implements Cloneable {
 
@@ -25,10 +30,6 @@ public class Specie implements Cloneable {
      * All available algorithms
      */
     private static ArrayList<Specie> species = new ArrayList<>();
-
-    static {
-        species.add(new Specie());
-    }
 
     public Specie() {
         this.specieName = new String("No name");
@@ -48,8 +49,8 @@ public class Specie implements Cloneable {
 
     public static void showSpeciesManager() {
         Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Agent Configuration");
-        dialog.setHeaderText("You can edit: \n - appearance, \n - internal algorithm, \n - objectives, \n - and export and import agents");
+        dialog.setTitle("Species Manager");
+        dialog.setHeaderText("You can manage environment species with the following options: \n - create specie, \n - delete specie");
         dialog.getDialogPane().setPrefSize(500, 600);
 
         FontIcon icon = new FontIcon(FontAwesome.COGS);
