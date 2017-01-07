@@ -48,9 +48,10 @@ public class AgentsManager {
         getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
+
                 for (Agent agent : agents) {
                     Platform.runLater(() -> {
-                        agent.getAlgorithm().update();
+                        agent.getAlgorithm().update(agent);
                         tickEv.accept(agent);
                         //System.out.println("Hello evil world");
                     });

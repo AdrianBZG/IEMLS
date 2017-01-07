@@ -35,7 +35,7 @@ public abstract class Algorithm implements Cloneable {
      * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
      * function by all agents.
      */
-    public abstract void update();
+    public abstract void update(Agent agent);
 
     /**
      * Stop algorithm, especially when its used threads with ourselves resources.

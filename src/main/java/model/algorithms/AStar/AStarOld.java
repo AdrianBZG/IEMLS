@@ -59,7 +59,7 @@ public class AStarOld extends Algorithm {
     }
 
     @Override
-    public void update() {
+    public void update(Agent agent) {
 
         if (ready && checkObjectiveExists()) {
 

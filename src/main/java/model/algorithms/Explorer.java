@@ -32,52 +32,55 @@ public class Explorer extends Algorithm {
      * function by all agents.
      */
     @Override
-    public void update() {
+    public void update(Agent agent) {
 
-        boolean firstStep = lastDirection == null;
-        boolean mustChangeAction = false;
 
-        Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
-        EnvironmentMap map = agent.getMap();
+        if (this.agent != null) {
+            boolean firstStep = lastDirection == null;
+            boolean mustChangeAction = false;
 
-        ArrayList<Directions> allowedActions = agent.getAllowedActions();
-        ArrayList<Directions> resources = new ArrayList<>();
+            Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
+            EnvironmentMap map = agent.getMap();
 
-        for (Directions dir : Directions.values())
-            // Check if the agent is next to a resource in the given direction.
-            map.get(Position.getInDirection(agent.getPosition(), dir)).ifPresent(mapObject -> {
-                        if (mapObject.getType().equals(TypeObject.Resource)) {
-                            resources.add(dir);
+            ArrayList<Directions> allowedActions = agent.getAllowedActions();
+            ArrayList<Directions> resources = new ArrayList<>();
+
+            for (Directions dir : Directions.values())
+                // Check if the agent is next to a resource in the given direction.
+                map.get(Position.getInDirection(agent.getPosition(), dir)).ifPresent(mapObject -> {
+                            if (mapObject.getType().equals(TypeObject.Resource)) {
+                                resources.add(dir);
+                            }
                         }
-                    }
-            );
+                );
 
-        if (resources.size() > 0) { // If there are resources near.
-            System.out.println("Next to resource");
-            nextAction = resources.get((int) (Math.random() * resources.size()));
-        }
-        else {
-            Integer action = (int) (Math.random() * allowedActions.size());
-            if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 75 % to take the same action as previous step.
-                if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
-                    System.out.println("Same action like before " + lastDirection);
-                    nextAction = lastDirection;
-                }
-                else {
+            if (resources.size() > 0) { // If there are resources near.
+                //System.out.println("Next to resource");
+                nextAction = resources.get((int) (Math.random() * resources.size()));
+            } else {
+                Integer action = (int) (Math.random() * allowedActions.size());
+                if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 75 % to take the same action as previous step.
+                    if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
+                        //System.out.println("Same action like before " + lastDirection);
+                        nextAction = lastDirection;
+                    } else {
+                        mustChangeAction = true;
+                    }
+                } else {
                     mustChangeAction = true;
                 }
             }
-            else {
-                mustChangeAction = true;
+            if (mustChangeAction) {
+                nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
             }
-        }
-        if (mustChangeAction) {
-            nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
-        }
 
-        lastDirection = nextAction;
-        agent.move(nextAction);
-        map.removeAt(agent.getPosition());
+            lastDirection = nextAction;
+            agent.move(nextAction);
+            map.removeAt(agent.getPosition());
+        }
+        else {
+            start(agent);
+        }
     }
 
     /**

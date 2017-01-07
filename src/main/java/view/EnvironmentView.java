@@ -103,7 +103,6 @@ public class EnvironmentView extends Pane {
     private void zoomMap() {
         JavaFxObservable.fromNodeEvents(this, ScrollEvent.ANY)
                 .subscribe(scrollEvent -> {
-                    System.out.println(scrollEvent.getDeltaY());
                     setZoom(scrollEvent.getDeltaY() / 1000 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
                     paintEnvironmentMap();
                 });

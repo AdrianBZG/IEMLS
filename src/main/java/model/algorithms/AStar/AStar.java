@@ -2,6 +2,7 @@ package model.algorithms.AStar;
 
 import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
+import model.map.EnvironmentMap;
 import model.object.agent.Agent;
 import util.Directions;
 import util.Position;
@@ -23,6 +24,7 @@ public class AStar extends Algorithm {
         private int numSearchSteps;
 
         private Agent agent;
+        private EnvironmentMap map;
 
         public ISearchNode bestNodeAfterSearch;
 
@@ -161,8 +163,8 @@ public class AStar extends Algorithm {
 
     @Override
     public void start(Agent agent) {
-
         this.agent = agent;
+        map = agent.getMap();
     }
 
     public void setObjective (Tuple<Integer, Integer> objective) {
@@ -170,8 +172,8 @@ public class AStar extends Algorithm {
     }
 
     @Override
-    public void update() {
-
+    public void update(Agent agent) {
+        
     }
 
     @Override
