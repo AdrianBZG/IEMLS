@@ -95,4 +95,9 @@ public class Specie implements Cloneable {
     public void setSpecieId(int specieId) {
         this.specieId = specieId;
     }
+
+    @Override
+    public String toString() {
+        return this.specieName;
+    }
 }

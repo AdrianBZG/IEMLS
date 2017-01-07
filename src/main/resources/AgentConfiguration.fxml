@@ -56,6 +56,15 @@
                   </VBox>
                </content>
           </TitledPane>
+            <TitledPane animated="false" text="Species Management">
+                <content>
+                    <BorderPane>
+                        <top>
+                            <ChoiceBox fx:id="choiceSpecie" prefWidth="150.0" BorderPane.alignment="CENTER" />
+                        </top>
+                    </BorderPane>
+                </content>
+            </TitledPane>
         </panes>
       </Accordion>
    </children>
