@@ -56,19 +56,13 @@ public class Specie implements Cloneable {
         FontIcon icon = new FontIcon(FontAwesome.COGS);
         icon.setIconSize(64);
         dialog.setGraphic(icon);
-        ButtonType applyChanges = new ButtonType("Apply", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CLOSE);
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("SpeciesConfiguration.fxml"));
             Parent root = fxmlLoader.load();
             dialog.getDialogPane().setContent(root);
             dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == applyChanges) {
-                    SpeciesController speciesController = fxmlLoader.getController();
-
-                    return null;
-                }
                 return null;
             });
 

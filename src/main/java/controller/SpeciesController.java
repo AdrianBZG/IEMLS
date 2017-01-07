@@ -11,6 +11,7 @@ import view.SpecieItemView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SpeciesController implements Initializable {
@@ -39,7 +40,17 @@ public class SpeciesController implements Initializable {
 
     @FXML
     public void onClickCreateSpecie () throws IOException, ClassNotFoundException {
-        System.out.println("hola");
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Create a new specie");
+        dialog.setHeaderText("");
+        dialog.setContentText("Write a name for the new specie:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(name -> {
+            System.out.println("Your name: " + name);
+            new Specie(name);
+        });
     }
 
     public Specie getSpecie() {
