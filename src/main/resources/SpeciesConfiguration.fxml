@@ -3,9 +3,11 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
 
 <VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SpeciesController">
    <children>
       <ListView fx:id="listSpecies" prefHeight="200.0" prefWidth="200.0" />
+      <Button fx:id="createSpecieButton" text="Create specie" onAction="#onClickCreateSpecie"/>
    </children>
 </VBox>
