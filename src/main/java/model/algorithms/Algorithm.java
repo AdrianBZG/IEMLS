@@ -1,10 +1,8 @@
 package model.algorithms;
 
 import model.object.agent.Agent;
-import util.Directions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Rudolf Cicko on 7/11/16.
@@ -19,7 +17,7 @@ public abstract class Algorithm implements Cloneable {
     private static ArrayList<Algorithm> algorithms = new ArrayList<>();
 
     static {
-        algorithms.add(new Explorer());
+        algorithms.add(new CustomExplorer());
     }
 
     public static ArrayList<Algorithm> getAlgorithms() {

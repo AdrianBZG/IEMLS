@@ -5,15 +5,13 @@ import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Directions;
 import util.Position;
-import util.Tuple;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by rudy on 31/12/16.
  */
-public class Explorer extends Algorithm {
+public class CustomExplorer extends Algorithm {
 
     Directions lastDirection = null;
 
@@ -93,11 +91,11 @@ public class Explorer extends Algorithm {
 
     @Override
     public String toString() {
-        return "Explorer";
+        return "CustomExplorer";
     }
 
     @Override
     public Algorithm clone() {
-        return new Explorer();
+        return new CustomExplorer();
     }
 }
