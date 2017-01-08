@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
 import model.object.MapObject;
+import model.object.Resource;
 import model.object.TypeObject;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -38,6 +39,8 @@ public class Agent extends MapObject {
      * Position Agent
      */
     private Tuple<Integer, Integer> position = new Tuple<>(0,0);
+
+    private ArrayList<Resource> resources = new ArrayList<>();
 
     /**
      * Reference to map
@@ -79,6 +82,32 @@ public class Agent extends MapObject {
             }
         }
         return list;
+    }
+
+
+    /**
+     * Add resource to the picked resources.
+     * @param res is the picked resource
+     */
+    public void addResource (Resource res) {
+        resources.add(res);
+        System.out.println("Adding new resource. Size: " + resources.size());
+    }
+
+    /**
+     * Get the array of resources
+     * @return the resources.
+     */
+    public ArrayList<Resource> getResources () {
+        return resources;
+    }
+
+    /**
+     * Get the last picked resource.
+     * @return the last picked resource.
+     */
+    public Resource getLastResource () {
+        return resources.get(resources.size() - 1);
     }
 
     /**

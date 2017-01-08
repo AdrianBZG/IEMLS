@@ -173,7 +173,12 @@ public class AStar extends Algorithm {
 
     @Override
     public void update(Agent agent) {
-        
+        if (agent != null) {
+
+        }
+        else {
+            start(agent);
+        }
     }
 
     @Override

@@ -202,6 +202,19 @@ public class EnvironmentMap {
     }
 
     /**
+     * Remove at the position of the agent. If is a resource then add it to his known resources.
+     * @param agent
+     */
+    public void removeAt (Agent agent) {
+        get(agent.getPosition()).ifPresent(mapObject -> {
+            if (mapObject.getType() == TypeObject.Resource) {
+                agent.addResource((Resource)mapObject);
+                removeAt(agent.getPosition().getX(), agent.getPosition().getY());
+            }
+        });
+    }
+
+    /**
      * Remove objects with a position passed as tuple
      * @param position
      */

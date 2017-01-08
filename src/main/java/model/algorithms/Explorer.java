@@ -76,7 +76,7 @@ public class Explorer extends Algorithm {
 
             lastDirection = nextAction;
             agent.move(nextAction);
-            map.removeAt(agent.getPosition());
+            map.removeAt(agent);
         }
         else {
             start(agent);
