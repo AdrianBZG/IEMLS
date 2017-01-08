@@ -6,8 +6,12 @@
 
 package view.ObjectView;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Defines visual aspect of a agent with different showOptions to change in function of type of agent
@@ -23,14 +27,18 @@ import javafx.scene.shape.Circle;
  * TODO: REMOVE
  *
  */
-public class AgentView extends ObjectView {
+public class CollectorAgentView extends ObjectView {
 
-    public AgentView() {
+    public CollectorAgentView() {
         Circle right = new Circle(10);
         right.setTranslateX(-10);
         right.setTranslateY(-10);
         right.setFill(Color.BLUE);
-        getChildren().addAll(right);
+        Circle littleCircle = new Circle(3);
+        littleCircle.setFill(Color.YELLOW);
+        littleCircle.setTranslateX(-10);
+        littleCircle.setTranslateY(-10);
+        getChildren().addAll(right,littleCircle);
     }
 
 }

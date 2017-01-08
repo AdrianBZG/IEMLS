@@ -8,14 +8,14 @@ import es.usc.citius.hipster.model.impl.WeightedNode;
 import es.usc.citius.hipster.model.problem.ProblemBuilder;
 import es.usc.citius.hipster.model.problem.SearchProblem;
 import model.map.EnvironmentMap;
-import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import util.Tuple;
 
 /**
  * Created by rudy on 17/12/16.
  */
 public class BFS {
-    SearchProblem<Object, Tuple<Integer, Integer>, WeightedNode<Object, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, Agent agent) {
+    SearchProblem<Object, Tuple<Integer, Integer>, WeightedNode<Object, Tuple<Integer, Integer>, Double>> buildProblem(EnvironmentMap map, ExplorerAgent agent) {
 
         return ProblemBuilder.create()
                 .initialState(new Tuple<Integer, Integer>(0,0))

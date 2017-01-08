@@ -4,6 +4,7 @@ import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
 import model.object.TypeObject;
 import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import util.Tuple;
 
 
@@ -15,7 +16,7 @@ import java.util.LinkedList;
  *  This method is offline. First it calculate the solution and then it have the full solution path to be traveled.
  */
 public class AStarOld extends Algorithm {
-    private Agent agent;
+    private ExplorerAgent agent;
     private EnvironmentMap map;
     private Tuple<Integer, Integer> objective;
     private boolean ready = false;
@@ -33,8 +34,9 @@ public class AStarOld extends Algorithm {
 
     @Override
     public void start(Agent agent) {
-        this.agent = agent;
-        this.map = agent.getMap();
+        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+        this.agent = castedAgent;
+        map = castedAgent.getMap();
     }
 
     public void setObjective (Tuple<Integer, Integer> objective) {
@@ -59,7 +61,7 @@ public class AStarOld extends Algorithm {
     }
 
     @Override
-    public void update() {
+    public void update(Agent agent) {
 
         if (ready && checkObjectiveExists()) {
 
@@ -79,5 +81,10 @@ public class AStarOld extends Algorithm {
     @Override
     public String toString() {
         return "A*";
+    }
+
+    @Override
+    public int getAlgorithmType() {
+        return 0;
     }
 }

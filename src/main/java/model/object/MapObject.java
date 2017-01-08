@@ -6,7 +6,8 @@
 
 package model.object;
 
-import model.object.agent.Agent;
+import model.object.agent.CollectorAgent;
+import model.object.agent.ExplorerAgent;
 import model.object.agent.ScriptAgent;
 import util.Tuple;
 import view.ObjectView.ObjectView;
@@ -25,11 +26,14 @@ public abstract class MapObject implements Cloneable {
      */
     private static ArrayList<MapObject> mapObjects = new ArrayList<>();
 
+    private Tuple<Integer, Integer> objectPosition = null;
+
     static {
         mapObjects = new ArrayList<>(Arrays.asList(
                 new Block(),
                 new Resource(10, "Food"),
-                new Agent()));
+                new ExplorerAgent(),
+                new CollectorAgent()));
     }
 
     /**
@@ -72,5 +76,13 @@ public abstract class MapObject implements Cloneable {
     public Object clone() throws CloneNotSupportedException {
         System.out.println("Called MapObject Clone");
         return super.clone();
+    }
+
+    public Tuple<Integer, Integer> getObjectPosition() {
+        return objectPosition;
+    }
+
+    public void setObjectPosition(Tuple<Integer, Integer> objectPosition) {
+        objectPosition = objectPosition;
     }
 }

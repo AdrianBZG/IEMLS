@@ -13,6 +13,7 @@ import model.object.MapObject;
 import model.object.Resource;
 import model.object.TypeObject;
 import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import util.Directions;
 import util.Position;
 import util.Tuple;
@@ -94,7 +95,13 @@ public class EnvironmentMap {
      */
     private void removeAgent(Agent agent) {
         int i = 0;
-        while (agents.size() > i && !agent.getPosition().equals(agents.get(i).getPosition())) i++;
+        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+        ExplorerAgent dummy;
+        while (agents.size() > i) {
+            dummy = (ExplorerAgent)agents.get(i);
+            if(castedAgent.getPosition().equals((dummy.getPosition()))) break;
+            else i++;
+        }
         agents.remove(i);
     }
 
@@ -171,7 +178,7 @@ public class EnvironmentMap {
         if (chunk != null) {
             removeAt(x,y);
             if (object.getType() == TypeObject.Agent) {
-                Agent agent = (Agent)object;
+                ExplorerAgent agent = (ExplorerAgent)object;
                 agent.setPosition(new Tuple<>(x,y));
                 agent.setMap(this);
                 addAgent(agent);
@@ -195,9 +202,23 @@ public class EnvironmentMap {
     public void removeAt (int x, int y) {
         get(x, y).ifPresent(mapObject -> {
             if (mapObject.getType() == TypeObject.Agent) {
-                removeAgent((Agent) mapObject);
+                removeAgent((ExplorerAgent) mapObject);
             }
             getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
+        });
+    }
+
+    /**
+     * Remove at the position of the agent. If is a resource then add it to his known resources.
+     * @param agent
+     */
+    public void removeAt (Agent agent) {
+        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+        get(castedAgent.getPosition()).ifPresent(mapObject -> {
+            if (mapObject.getType() == TypeObject.Resource) {
+                castedAgent.addResource((Resource)mapObject);
+                removeAt(castedAgent.getPosition().getX(), castedAgent.getPosition().getY());
+            }
         });
     }
 

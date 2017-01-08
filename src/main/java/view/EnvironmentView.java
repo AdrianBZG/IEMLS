@@ -18,6 +18,7 @@ import model.map.EnvironmentMap;
 import model.map.generator.IGenerator;
 import model.object.MapObject;
 import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import rx.observables.JavaFxObservable;
 import util.Tuple;
 
@@ -103,7 +104,6 @@ public class EnvironmentView extends Pane {
     private void zoomMap() {
         JavaFxObservable.fromNodeEvents(this, ScrollEvent.ANY)
                 .subscribe(scrollEvent -> {
-                    System.out.println(scrollEvent.getDeltaY());
                     setZoom(scrollEvent.getDeltaY() / 1000 + getZoom(), scrollEvent.getX(), scrollEvent.getY());
                     paintEnvironmentMap();
                 });
@@ -133,8 +133,8 @@ public class EnvironmentView extends Pane {
                             int posX = (int) Math.floor((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize());
                             int posY = (int) Math.floor((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize());
 
-                            if (pencil instanceof Agent) {
-                                Agent agent = (Agent) pencil.clone();
+                            if (pencil instanceof ExplorerAgent) {
+                                ExplorerAgent agent = (ExplorerAgent) pencil.clone();
                                 agent.setPosition(posX, posY);
                                 agent.setMap(getEnvironmentMap());
                                 getAgentsManager().getAgents().add(agent);
@@ -248,13 +248,14 @@ public class EnvironmentView extends Pane {
      */
     public void paintAgents() {
         for (Agent agent : getAgentsManager().getAgents()) {
+            ExplorerAgent castedAgent = (ExplorerAgent)agent;
             Node node = agent.getVisualObject();
             Scale scale = new Scale();
             scale.setX(getZoom());
             scale.setY(getZoom());
             node.getTransforms().add(scale);
-            node.setTranslateX(-getTranslation().getX() + agent.getPosition().getX() * getTileSize());
-            node.setTranslateY(-getTranslation().getY() + agent.getPosition().getY() * getTileSize());
+            node.setTranslateX(-getTranslation().getX() + castedAgent.getPosition().getX() * getTileSize());
+            node.setTranslateY(-getTranslation().getY() + castedAgent.getPosition().getY() * getTileSize());
             getChildren().add(node);
         }
     }

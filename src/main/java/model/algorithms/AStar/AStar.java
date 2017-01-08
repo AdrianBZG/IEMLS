@@ -1,6 +1,13 @@
 package model.algorithms.AStar;
 
 import model.algorithms.AStar.datastructures.*;
+import model.algorithms.Algorithm;
+import model.map.EnvironmentMap;
+import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
+import util.Directions;
+import util.Position;
+import util.Tuple;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,7 +15,7 @@ import java.util.Comparator;
 /**
  * Created by rudy on 6/01/17.
  */
-public class AStar {
+public class AStar extends Algorithm {
         // Amount of debug output 0, 1, 2.
         private int verbose = 0;
         // The maximum number of completed nodes. After that number the algorithm returns null.
@@ -17,7 +24,12 @@ public class AStar {
         // Number of search steps the AStar will perform before null is returned.
         private int numSearchSteps;
 
+        private ExplorerAgent agent;
+        private EnvironmentMap map;
+
         public ISearchNode bestNodeAfterSearch;
+
+        private Tuple<Integer, Integer> objective = null;
 
         public AStar() {
         }
@@ -33,6 +45,15 @@ public class AStar {
                 return null;
             //return shortest path according to AStar heuristics
             return AStar.path(endNode);
+        }
+
+        public ArrayList<Tuple<Integer, Integer>> getChildrens (Tuple<Integer ,Integer> pos) {
+            ArrayList<Tuple<Integer, Integer>> childs = new ArrayList<>();
+
+            for (Directions dir : Directions.values()) {
+                childs.add(Position.getInDirection(pos, dir));
+            }
+            return childs;
         }
 
 
@@ -141,9 +162,45 @@ public class AStar {
             this.maxSteps = maxSteps;
         }
 
-static class SearchNodeComparator implements Comparator<ISearchNode> {
-    public int compare(ISearchNode node1, ISearchNode node2) {
+    @Override
+    public void start(Agent agent) {
+        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+        this.agent = castedAgent;
+        map = castedAgent.getMap();
+    }
+
+    public void setObjective (Tuple<Integer, Integer> objective) {
+        this.objective = objective;
+    }
+
+    @Override
+    public void update(Agent agent) {
+        if (agent != null) {
+
+        }
+        else {
+            start(agent);
+        }
+    }
+
+    @Override
+    public void stop() {
+
+    }
+
+    @Override
+    public Algorithm clone() {
+        return null;
+    }
+
+    @Override
+    public int getAlgorithmType() {
+        return 0;
+    }
+
+    static class SearchNodeComparator implements Comparator<ISearchNode> {
+        public int compare(ISearchNode node1, ISearchNode node2) {
         return Double.compare(node1.f(), node2.f());
     }
-}
+    }
 }

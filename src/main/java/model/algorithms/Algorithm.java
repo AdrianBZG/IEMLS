@@ -1,10 +1,9 @@
 package model.algorithms;
 
+import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
 import model.object.agent.Agent;
-import util.Directions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Rudolf Cicko on 7/11/16.
@@ -19,7 +18,16 @@ public abstract class Algorithm implements Cloneable {
     private static ArrayList<Algorithm> algorithms = new ArrayList<>();
 
     static {
-        algorithms.add(new Explorer());
+        algorithms.add(new CustomExplorer());
+
+        /* Genetic algorithm for explorer using the follow default parameters:
+            - 100 Population size
+            - 0.05 Mutation rate
+            - 0.9 Crossover Rate
+            - 2 ElitismCount
+            - 10 Tournament size
+         */
+        algorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
     }
 
     public static ArrayList<Algorithm> getAlgorithms() {
@@ -35,7 +43,7 @@ public abstract class Algorithm implements Cloneable {
      * Get an update from algorithm, the environment uses ticks to update its "world" each unit of time its called this
      * function by all agents.
      */
-    public abstract void update();
+    public abstract void update(Agent agent);
 
     /**
      * Stop algorithm, especially when its used threads with ourselves resources.
@@ -43,4 +51,7 @@ public abstract class Algorithm implements Cloneable {
     public abstract void stop();
 
     public abstract Algorithm clone();
+
+    // 0 = Explorer, 1 = Collector
+    public abstract int getAlgorithmType();
 }
