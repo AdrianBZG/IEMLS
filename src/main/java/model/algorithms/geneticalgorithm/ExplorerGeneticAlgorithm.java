@@ -320,7 +320,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
 
     @Override
     public String toString() {
-        return "Genetic Algorithm Collector";
+        return "Explorer with Genetic Algorithm";
     }
 
     @Override
