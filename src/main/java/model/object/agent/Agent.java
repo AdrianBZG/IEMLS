@@ -43,6 +43,8 @@ public class Agent extends MapObject {
 
     private ArrayList<Resource> resources = new ArrayList<>();
 
+    private ArrayList<Tuple<Integer, Integer>> visitedPoints = new ArrayList<>();
+
     /**
      * Reference to map
      */
@@ -323,5 +325,13 @@ public class Agent extends MapObject {
 
     public void setSpecie(Specie specie) {
         this.specie = specie;
+    }
+
+    public ArrayList<Tuple<Integer, Integer>> getVisitedPoints() {
+        return visitedPoints;
+    }
+
+    public void setVisitedPoints(ArrayList<Tuple<Integer, Integer>> visitedPoints) {
+        this.visitedPoints = visitedPoints;
     }
 }
