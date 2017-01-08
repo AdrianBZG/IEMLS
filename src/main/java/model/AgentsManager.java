@@ -8,6 +8,7 @@ package model;
 
 import javafx.application.Platform;
 import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -43,7 +44,8 @@ public class AgentsManager {
      */
     public void play() {
         for (Agent agent : agents) {
-            agent.getAlgorithm().start(agent);
+            ExplorerAgent castedAgent = (ExplorerAgent)agent;
+            castedAgent.getAlgorithm().start(castedAgent);
         }
         getTimer().schedule(new TimerTask() {
             @Override
@@ -51,7 +53,8 @@ public class AgentsManager {
 
                 for (Agent agent : agents) {
                     Platform.runLater(() -> {
-                        agent.getAlgorithm().update(agent);
+                        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+                        castedAgent.getAlgorithm().update(castedAgent);
                         tickEv.accept(agent);
                         //System.out.println("Hello evil world");
                     });
@@ -66,7 +69,8 @@ public class AgentsManager {
     public void stop() {
         if (timer != null) {
             for (Agent agent : agents) {
-                agent.getAlgorithm().stop();
+                ExplorerAgent castedAgent = (ExplorerAgent)agent;
+                castedAgent.getAlgorithm().stop();
             }
             timer.cancel();
             timer = null;

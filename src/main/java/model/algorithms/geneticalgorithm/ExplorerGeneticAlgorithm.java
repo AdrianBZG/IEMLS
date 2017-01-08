@@ -4,6 +4,7 @@ import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
 import model.object.TypeObject;
 import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import util.Directions;
 import util.Position;
 import util.Tuple;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class ExplorerGeneticAlgorithm extends Algorithm {
     public static int maxGenerations = 50;
 
-    private Agent agent = null;
+    private ExplorerAgent agent = null;
     Directions lastDirection = null;
 
     private int populationSize;
@@ -63,7 +64,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
      *            the individual to evaluate
      * @return double The fitness value for individual
      */
-    public double calcFitness(Individual individual, EnvironmentMap map, Agent agent) {
+    public double calcFitness(Individual individual, EnvironmentMap map, ExplorerAgent agent) {
         int score = 0;
 
         // Loop over route and score each move
@@ -253,7 +254,8 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
      */
     @Override
     public void start(Agent agent) {
-        this.agent = agent;
+        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+        this.agent = castedAgent;
     }
 
     /**
@@ -263,18 +265,19 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
     @Override
     public void update(Agent agent) {
         if (this.agent != null) {
+            ExplorerAgent castedAgent = (ExplorerAgent)agent;
             boolean firstStep = lastDirection == null;
             boolean mustChangeAction = false;
 
             Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
-            EnvironmentMap map = agent.getMap();
+            EnvironmentMap map = castedAgent.getMap();
 
-            ArrayList<Directions> allowedActions = agent.getAllowedActions();
+            ArrayList<Directions> allowedActions = castedAgent.getAllowedActions();
             ArrayList<Directions> resources = new ArrayList<>();
 
             for (Directions dir : Directions.values())
                 // Check if the agent is next to a resource in the given direction.
-                map.get(Position.getInDirection(agent.getPosition(), dir)).ifPresent(mapObject -> {
+                map.get(Position.getInDirection(castedAgent.getPosition(), dir)).ifPresent(mapObject -> {
                             if (mapObject.getType().equals(TypeObject.Resource)) {
                                 resources.add(dir);
                             }
@@ -287,7 +290,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
             } else {
                 Integer action = (int) (Math.random() * allowedActions.size());
                 if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 75 % to take the same action as previous step.
-                    if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
+                    if (castedAgent.checkAllowedPos(Position.getInDirection(castedAgent.getPosition(), lastDirection))) {
                         //System.out.println("Same action like before " + lastDirection);
                         nextAction = lastDirection;
                     } else {
@@ -302,7 +305,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
             }
 
             lastDirection = nextAction;
-            agent.move(nextAction);
+            castedAgent.move(nextAction);
             map.removeAt(agent);
         }
         else {
@@ -340,4 +343,8 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
         ExplorerGeneticAlgorithm.maxGenerations = maxGenerations;
     }
 
+    @Override
+    public int getAlgorithmType() {
+        return 0;
+    }
 }

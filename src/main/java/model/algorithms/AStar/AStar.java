@@ -4,6 +4,7 @@ import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
 import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import util.Directions;
 import util.Position;
 import util.Tuple;
@@ -23,7 +24,7 @@ public class AStar extends Algorithm {
         // Number of search steps the AStar will perform before null is returned.
         private int numSearchSteps;
 
-        private Agent agent;
+        private ExplorerAgent agent;
         private EnvironmentMap map;
 
         public ISearchNode bestNodeAfterSearch;
@@ -163,8 +164,9 @@ public class AStar extends Algorithm {
 
     @Override
     public void start(Agent agent) {
-        this.agent = agent;
-        map = agent.getMap();
+        ExplorerAgent castedAgent = (ExplorerAgent)agent;
+        this.agent = castedAgent;
+        map = castedAgent.getMap();
     }
 
     public void setObjective (Tuple<Integer, Integer> objective) {
@@ -191,9 +193,14 @@ public class AStar extends Algorithm {
         return null;
     }
 
+    @Override
+    public int getAlgorithmType() {
+        return 0;
+    }
+
     static class SearchNodeComparator implements Comparator<ISearchNode> {
-    public int compare(ISearchNode node1, ISearchNode node2) {
+        public int compare(ISearchNode node1, ISearchNode node2) {
         return Double.compare(node1.f(), node2.f());
     }
-}
+    }
 }

@@ -6,7 +6,7 @@
 
 package model.object;
 
-import model.object.agent.Agent;
+import model.object.agent.ExplorerAgent;
 import model.object.agent.ScriptAgent;
 import util.Tuple;
 import view.ObjectView.ObjectView;
@@ -31,7 +31,7 @@ public abstract class MapObject implements Cloneable {
         mapObjects = new ArrayList<>(Arrays.asList(
                 new Block(),
                 new Resource(10, "Food"),
-                new Agent()));
+                new ExplorerAgent()));
     }
 
     /**

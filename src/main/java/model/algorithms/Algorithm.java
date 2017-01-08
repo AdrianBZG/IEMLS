@@ -51,4 +51,7 @@ public abstract class Algorithm implements Cloneable {
     public abstract void stop();
 
     public abstract Algorithm clone();
+
+    // 0 = Explorer, 1 = Collector
+    public abstract int getAlgorithmType();
 }
