@@ -8,10 +8,13 @@ package model.object;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import model.species.Specie;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import view.ObjectView.ObjectView;
 import view.ObjectView.ResourceView;
+
+import java.util.ArrayList;
 
 /**
  * Represent a unit visual of a resource, but it can be consumed partiality
@@ -21,6 +24,9 @@ public class Resource extends MapObject {
      * Represent a available quantity of resource
      */
     private int quantity;
+
+    private ArrayList<Specie> discoveredBy = new ArrayList<>();     // Species that have discovered this Resource
+
     /**
      * A identifier of resource, that let to agents determine if useful for them
      */
@@ -117,5 +123,13 @@ public class Resource extends MapObject {
         });
 
         dialog.showAndWait();
+    }
+
+    public ArrayList<Specie> getDiscoveredBy() {
+        return discoveredBy;
+    }
+
+    public void setDiscoveredBy(ArrayList<Specie> discoveredBy) {
+        this.discoveredBy = discoveredBy;
     }
 }

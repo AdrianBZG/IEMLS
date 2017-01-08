@@ -16,6 +16,7 @@ import model.map.EnvironmentMap;
 import model.object.MapObject;
 import model.object.Resource;
 import model.object.TypeObject;
+import model.species.Specie;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import util.Directions;
@@ -51,6 +52,11 @@ public class Agent extends MapObject {
      * Algorithm into Agent
      */
     private Algorithm algorithm;
+
+    /**
+     * The agent specie
+     */
+    private Specie specie;
 
     /**
      * A simple constructor
@@ -309,5 +315,13 @@ public class Agent extends MapObject {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return new Agent(this);
+    }
+
+    public Specie getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(Specie specie) {
+        this.specie = specie;
     }
 }
