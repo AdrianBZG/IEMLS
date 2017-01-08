@@ -45,7 +45,6 @@ public class ScriptEditorView extends CodeArea {
 
     public ScriptEditorView() {
         setParagraphGraphicFactory(LineNumberFactory.get(this));
-        setStyle(ClassLoader.getSystemClassLoader().getResource("ruby-highlighting.css").toExternalForm());
 
         richChanges()
                 .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX

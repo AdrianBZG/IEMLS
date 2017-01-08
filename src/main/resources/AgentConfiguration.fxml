@@ -23,7 +23,7 @@
                   </BorderPane>
             </content>
           </TitledPane>
-          <TitledPane animated="false" text="Use a Script to control agent">
+          <TitledPane animated="false" stylesheets="@ruby-highlighting.css" text="Use a Script to control agent">
                <content>
                   <VBox fx:id="vBoxScript">
                      <children>
