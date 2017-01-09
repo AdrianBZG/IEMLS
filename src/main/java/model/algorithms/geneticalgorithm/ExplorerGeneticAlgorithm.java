@@ -93,11 +93,6 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
      * population's fitness may or may not be important, but what is important
      * here is making sure that each individual gets evaluated.
      *
-     * The difference between this method and the one in chapter2 is that this
-     * method requires the maze itself as a parameter; unlike the All Ones
-     * problem in chapter2, we can't determine a fitness just by looking at the
-     * chromosome -- we need to evaluate each member against the maze.
-     *
      * @param population
      *            the population to evaluate
      */
