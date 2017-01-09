@@ -8,6 +8,7 @@ package model.object;
 
 import model.object.agent.CollectorAgent;
 import model.object.agent.ExplorerAgent;
+import model.object.agent.PerceptionActionAgent;
 import model.object.agent.ScriptAgent;
 import util.Tuple;
 import view.ObjectView.ObjectView;
@@ -33,6 +34,7 @@ public abstract class MapObject implements Cloneable {
                 new Block(),
                 new Resource(10, "Food"),
                 new ExplorerAgent(),
+                new PerceptionActionAgent(),
                 new CollectorAgent()));
     }
 

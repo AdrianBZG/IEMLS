@@ -1,5 +1,6 @@
 package model.algorithms;
 
+import javafx.scene.Node;
 import model.algorithms.AStar.AStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
 import model.object.agent.Agent;
