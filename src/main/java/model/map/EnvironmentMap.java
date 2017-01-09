@@ -105,6 +105,40 @@ public class EnvironmentMap {
         agents.remove(i);
     }
 
+
+    /**
+     * This method returns a random agent explorer that picked up at least one resource.
+     * @return an explorer that picked at least one resource.
+     */
+    public Agent getRandomExplorer () {
+        ArrayList<Agent> explorers = new ArrayList<>();
+
+        for (Agent agent : agents) {
+            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
+                explorers.add(agent);
+            }
+        }
+
+        if (!explorers.isEmpty())
+            return explorers.get((int)(Math.random() * explorers.size()));
+        else {
+            return null;
+        }
+    }
+
+    public boolean existsExplorers () {
+        System.out.println ("Number of agents: " + agents.size());
+        for (Agent agent : agents) {
+            System.out.println ("Agent: " + agent.getAlgorithm().toString() + " with resources size: " + agent.getResources().size());
+            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
+                System.out.println ("Now exists explorers");
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Add agent
      * @param agent

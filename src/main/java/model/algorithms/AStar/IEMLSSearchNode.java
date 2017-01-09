@@ -1,5 +1,8 @@
 package model.algorithms.AStar;
 
+import model.map.EnvironmentMap;
+import model.object.TypeObject;
+
 import java.util.ArrayList;
 
 /**
@@ -10,23 +13,31 @@ public class IEMLSSearchNode extends ASearchNode {
     private int y;
     private IEMLSSearchNode parent;
     private GoalPosition goal;
+    private EnvironmentMap map;
 
-    public IEMLSSearchNode(int x, int y, IEMLSSearchNode parent, GoalPosition goal){
+    public IEMLSSearchNode(int x, int y, IEMLSSearchNode parent, GoalPosition goal, EnvironmentMap map){
         this.x = x;
         this.y = y;
         this.parent = parent;
         this.goal = goal;
-
+        this.map = map;
     }
     public IEMLSSearchNode getParent(){
         return this.parent;
     }
+
     public ArrayList<ISearchNode> getSuccessors() {
         ArrayList<ISearchNode> successors = new ArrayList<ISearchNode>();
-        successors.add(new IEMLSSearchNode(this.x-1, this.y, this, this.goal));
-        successors.add(new IEMLSSearchNode(this.x+1, this.y, this, this.goal));
-        successors.add(new IEMLSSearchNode(this.x, this.y+1, this, this.goal));
-        successors.add(new IEMLSSearchNode(this.x, this.y-1, this, this.goal));
+
+        if (!map.get(x-1, y).isPresent() || map.get(x-1, y).get().getType() != TypeObject.Obstacle)
+            successors.add(new IEMLSSearchNode(this.x-1, this.y, this, this.goal, map));
+        if (!map.get(x+1, y).isPresent() || map.get(x+1, y).get().getType() != TypeObject.Obstacle)
+            successors.add(new IEMLSSearchNode(this.x+1, this.y, this, this.goal, map));
+        if (!map.get(x, y+1).isPresent() || map.get(x, y+1).get().getType() != TypeObject.Obstacle)
+            successors.add(new IEMLSSearchNode(this.x, this.y+1, this, this.goal, map));
+        if (!map.get(x, y-1).isPresent() || map.get(x, y-1).get().getType() != TypeObject.Obstacle)
+            successors.add(new IEMLSSearchNode(this.x, this.y-1, this, this.goal, map));
+
         return successors;
     }
     public double h() {

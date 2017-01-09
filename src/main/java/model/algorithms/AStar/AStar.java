@@ -31,6 +31,10 @@ public class AStar extends Algorithm {
 
         private Tuple<Integer, Integer> objective = null;
 
+        private boolean objectiveSet = false;
+
+        private ArrayList<ISearchNode> path = null;
+
         public AStar() {
         }
 
@@ -176,7 +180,24 @@ public class AStar extends Algorithm {
     @Override
     public void update(Agent agent) {
         if (agent != null) {
+            GoalPosition goal;
+            if (!objectiveSet && agent.getMap().existsExplorers()) {
 
+                goal = new GoalPosition(agent.getMap().getRandomExplorer().getLastResource().getObjectPosition());
+                if (goal != null && goal.isValidPos()) {
+                    objectiveSet = true;
+                    IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
+                    path = shortestPath(initialPos, goal);
+                    System.out.println(path.size());
+                }
+                else {
+                    System.out.println ("Aun no se ha recolectado ningun recurso");
+                }
+            }
+            if (path != null) {
+
+
+            }
         }
         else {
             start(agent);

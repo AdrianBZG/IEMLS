@@ -3,6 +3,7 @@ package model.object.agent;
 import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
 import model.object.MapObject;
+import model.object.Resource;
 import model.object.TypeObject;
 import util.Directions;
 import util.Position;
@@ -18,6 +19,8 @@ public abstract class Agent extends MapObject {
      * Position Agent
      */
     private Tuple<Integer, Integer> position = new Tuple<>(0,0);
+
+    private ArrayList<Resource> resources = new ArrayList<>();
 
     /**
      * Reference to map
@@ -46,6 +49,30 @@ public abstract class Agent extends MapObject {
         return ((!getMap().get(nextPos).isPresent() ||
                 (getMap().get(nextPos).get().getType() != TypeObject.Obstacle &&
                         getMap().get(nextPos).get().getType() != TypeObject.Agent)));
+    }
+
+    /**
+     * Add resource to the picked resources.
+     * @param res is the picked resource
+     */
+    public void addResource (Resource res) {
+        resources.add(res);
+    }
+
+    /**
+     * Get the array of resources
+     * @return the resources.
+     */
+    public ArrayList<Resource> getResources () {
+        return resources;
+    }
+
+    /**
+     * Get the last picked resource.
+     * @return the last picked resource.
+     */
+    public Resource getLastResource () {
+        return resources.get(resources.size() - 1);
     }
 
 
