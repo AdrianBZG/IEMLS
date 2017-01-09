@@ -3,7 +3,6 @@ package model.algorithms.AStar;
 import model.AgentsManager;
 import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
-import model.algorithms.CustomExplorer;
 import model.map.EnvironmentMap;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
@@ -51,7 +50,7 @@ public class AStar extends Algorithm {
             if (endNode == null)
                 return null;
             //return shortest path according to AStar heuristics
-            return AStar.path(endNode);
+            return path(endNode);
         }
 
         public ArrayList<Tuple<Integer, Integer>> getChildrens (Tuple<Integer ,Integer> pos) {
@@ -145,7 +144,7 @@ public class AStar extends Algorithm {
          *              have been properly set in preprocessing (f.e. AStar.search)
          * @return path to the node in the argument
          */
-        public static ArrayList<ISearchNode> path(ISearchNode node) {
+        public ArrayList<ISearchNode> path(ISearchNode node) {
             ArrayList<ISearchNode> path = new ArrayList<>();
             path.add(node);
             ISearchNode currentNode = node;
@@ -182,7 +181,7 @@ public class AStar extends Algorithm {
 
     @Override
     public void update(Agent agent) {
-        if (agent != null) {
+        if (this.agent != null) {
             GoalPosition goal;
             if (!objectiveSet && AgentsManager.existsExplorers()) {
 
@@ -192,7 +191,6 @@ public class AStar extends Algorithm {
                     if (goal != null && goal.isValidPos()) {
                         objectiveSet = true;
                         IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
-                        System.out.println("Lets create new path");
                         path = shortestPath(initialPos, goal);
                         movement = 0;
                     } else {
@@ -201,20 +199,19 @@ public class AStar extends Algorithm {
 
                 }
 
-            } else {
-                start(agent);
-            }
-            if (path != null && movement < path.size()) {
+            } else if (path != null && movement < path.size()) {
                 Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement++)).getPosition();
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
                 agent.move (dir);
                 agent.getMap().removeAt(agent);
-                System.out.println("Path size: " + path.size() + " while movement: " + movement);
+                //System.out.println("Path size: " + path.size() + " while movement: " + movement);
                 if (path.size() == movement) {
-                    System.out.println("Limit path");
+                  //  System.out.println("Limit path");
                     objectiveSet = false;   // Lets go to another goal.
                 }
             }
+        } else {
+            start(agent);
         }
     }
 

@@ -30,7 +30,6 @@ public class ResourcesManager {
      */
     public static void addResource (Resource res) {
         resources.add(res);
-        System.out.println("Adding new resource. Size: " + resources.size());
     }
 
     /**

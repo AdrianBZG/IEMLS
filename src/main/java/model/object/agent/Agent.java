@@ -123,7 +123,7 @@ public abstract class Agent extends MapObject {
         }
         if (getMap().get(getPosition()).isPresent() && getMap().get(getPosition()).get().getType().equals(TypeObject.Resource)) {
             visitedPoints.add(new Tuple<>(getPosition().getX(), getPosition().getY()));
-            System.out.println ("Added point: " + visitedPoints.get(visitedPoints.size() - 1));
+           // System.out.println ("Added point: " + visitedPoints.get(visitedPoints.size() - 1));
         }
     }
 

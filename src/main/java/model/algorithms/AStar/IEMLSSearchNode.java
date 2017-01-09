@@ -30,6 +30,8 @@ public class IEMLSSearchNode extends ASearchNode {
     public ArrayList<ISearchNode> getSuccessors() {
         ArrayList<ISearchNode> successors = new ArrayList<ISearchNode>();
 
+        if (map == null) System.out.println("No mapa");
+
         if (!map.get(x-1, y).isPresent() || map.get(x-1, y).get().getType() != TypeObject.Obstacle)
             successors.add(new IEMLSSearchNode(this.x-1, this.y, this, this.goal, map));
         if (!map.get(x+1, y).isPresent() || map.get(x+1, y).get().getType() != TypeObject.Obstacle)

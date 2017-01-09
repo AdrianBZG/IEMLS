@@ -52,11 +52,6 @@ public class CustomExplorer extends Algorithm {
             for (Directions dir : Directions.values())
                 // Check if the agent is next to a resource in the given direction.
                 map.get(Position.getInDirection(castedAgent.getPosition(), dir)).ifPresent(mapObject -> {
-                            agent.showVisitedPoints();
-                            if (agent.containsVisitedPoint(Position.getInDirection(castedAgent.getPosition(), dir)))
-                                System.out.println(Position.getInDirection(castedAgent.getPosition(), dir) + " ilegal position.");
-                            else
-                                System.out.println(Position.getInDirection(castedAgent.getPosition(), dir) + " legal position.");
                             if (mapObject.getType().equals(TypeObject.Resource) && !agent.containsVisitedPoint(Position.getInDirection(castedAgent.getPosition(), dir))) {
                                 resources.add(dir);
                             }
