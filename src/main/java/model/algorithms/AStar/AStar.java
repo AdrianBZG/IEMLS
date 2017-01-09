@@ -214,6 +214,7 @@ public class AStar extends Algorithm {
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
                 System.out.println(dir);
                 agent.move (dir);
+                agent.getMap().removeAt(agent);
             }
         }
     }
