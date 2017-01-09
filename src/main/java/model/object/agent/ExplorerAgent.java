@@ -56,7 +56,9 @@ public class ExplorerAgent extends Agent {
      * @param agent
      */
     public ExplorerAgent(ExplorerAgent agent) {
-        setAlgorithm(agent.getAlgorithm().clone());
+        if (agent.getAlgorithm() != null) {
+            setAlgorithm(agent.getAlgorithm().clone());
+        }
         setMap(agent.getMap());
         setPosition(agent.getPosition().getX(), agent.getPosition().getY());
     }

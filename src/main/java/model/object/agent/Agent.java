@@ -169,4 +169,9 @@ public abstract class Agent extends MapObject {
     public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

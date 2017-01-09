@@ -133,8 +133,8 @@ public class EnvironmentView extends Pane {
                             int posX = (int) Math.floor((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize());
                             int posY = (int) Math.floor((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize());
 
-                            if (pencil instanceof ExplorerAgent) {
-                                ExplorerAgent agent = (ExplorerAgent) pencil.clone();
+                            if (pencil instanceof Agent) {
+                                Agent agent = (Agent) pencil.clone();
                                 agent.setPosition(posX, posY);
                                 agent.setMap(getEnvironmentMap());
                                 getAgentsManager().getAgents().add(agent);

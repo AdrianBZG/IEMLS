@@ -27,12 +27,11 @@ public class AgentsManager {
     /**
      * Launch an event each tick
      */
-
     public Consumer<Agent> tickEv = (a) -> {};
+
     /**
      * Delay between updates
      */
-
     private int delay = 100;
 
     private static Timer timer = null;
@@ -51,19 +50,21 @@ public class AgentsManager {
         }
 
         for (Agent agent : agents) {
-            ExplorerAgent castedAgent = (ExplorerAgent)agent;
-            castedAgent.getAlgorithm().start(castedAgent);
+            if (agent.getAlgorithm() != null) {
+                agent.getAlgorithm().start(agent);
+            }
         }
         getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
 
                 for (Agent agent : agents) {
-                    Platform.runLater(() -> {
-                        ExplorerAgent castedAgent = (ExplorerAgent)agent;
-                        castedAgent.getAlgorithm().update(castedAgent);
-                        tickEv.accept(agent);
-                    });
+                    if (agent.getAlgorithm() != null) {
+                        Platform.runLater(() -> {
+                            agent.getAlgorithm().update(agent);
+                            tickEv.accept(agent);
+                        });
+                    }
                 }
             }
         },0, delay);
@@ -75,8 +76,7 @@ public class AgentsManager {
     public void stop() {
         if (timer != null) {
             for (Agent agent : agents) {
-                ExplorerAgent castedAgent = (ExplorerAgent)agent;
-                castedAgent.getAlgorithm().stop();
+                agent.getAlgorithm().stop();
             }
             timer.cancel();
             timer = null;
