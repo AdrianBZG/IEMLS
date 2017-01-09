@@ -24,7 +24,7 @@ public class CellAgentView extends ListCell<Agent> {
 
     public CellAgentView() {
         super();
-        box.getChildren().addAll(tag, spacer);
+        box.getChildren().addAll(tag, spacer, options);
         box.setHgrow(spacer, Priority.ALWAYS);
         box.setSpacing(5.0);
         options.setGraphic(new FontIcon(FontAwesome.GEARS));
@@ -38,7 +38,6 @@ public class CellAgentView extends ListCell<Agent> {
         } else {
             if (item != null) {
                 options.setOnMouseClicked(mouseEvent -> item.showOptions());
-                box.getChildren().add(options);
                 tag.setText(item.getName());
                 box.getChildren().add(item.getVisualObject());
             }
