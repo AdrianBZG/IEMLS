@@ -22,6 +22,10 @@ public abstract class Agent extends MapObject {
 
     private ArrayList<Resource> resources = new ArrayList<>();
 
+
+
+    private ArrayList<Tuple<Integer, Integer>> visitedPoints = new ArrayList<>();
+
     /**
      * Reference to map
      */
@@ -49,6 +53,31 @@ public abstract class Agent extends MapObject {
         return ((!getMap().get(nextPos).isPresent() ||
                 (getMap().get(nextPos).get().getType() != TypeObject.Obstacle &&
                         getMap().get(nextPos).get().getType() != TypeObject.Agent)));
+    }
+
+    public ArrayList<Tuple<Integer, Integer>> getVisitedPoints() {
+        return visitedPoints;
+    }
+
+    public void setVisitedPoints(ArrayList<Tuple<Integer, Integer>> visitedPoints) {
+        this.visitedPoints = visitedPoints;
+    }
+
+    public void showVisitedPoints () {
+        System.out.println("Visited POINTS: ");
+        for (Tuple<Integer, Integer> p : visitedPoints) {
+            System.out.println(p);
+        }
+
+        System.out.println("End VISITED POINTS");
+    }
+
+    public boolean containsVisitedPoint (Tuple<Integer, Integer> pos) {
+        for (Tuple<Integer, Integer> p : visitedPoints) {
+            if (pos.getX() == p.getX() && pos.getY() == p.getY())
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -91,6 +120,10 @@ public abstract class Agent extends MapObject {
             case RIGHT:
                 this.getPosition().chgFst((x) -> x + 1);
                 break;
+        }
+        if (getMap().get(getPosition()).isPresent() && getMap().get(getPosition()).get().getType().equals(TypeObject.Resource)) {
+            visitedPoints.add(new Tuple<>(getPosition().getX(), getPosition().getY()));
+            System.out.println ("Added point: " + visitedPoints.get(visitedPoints.size() - 1));
         }
     }
 

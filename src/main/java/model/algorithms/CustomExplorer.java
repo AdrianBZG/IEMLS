@@ -6,6 +6,7 @@ import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
 import util.Directions;
 import util.Position;
+import util.Tuple;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,8 @@ public class CustomExplorer extends Algorithm {
     Directions lastDirection = null;
 
     private Agent agent = null;
+
+
 
     /**
      * Initialize algorithm, it could run in background
@@ -45,10 +48,16 @@ public class CustomExplorer extends Algorithm {
             ArrayList<Directions> allowedActions = castedAgent.getAllowedActions();
             ArrayList<Directions> resources = new ArrayList<>();
 
+
             for (Directions dir : Directions.values())
                 // Check if the agent is next to a resource in the given direction.
                 map.get(Position.getInDirection(castedAgent.getPosition(), dir)).ifPresent(mapObject -> {
-                            if (mapObject.getType().equals(TypeObject.Resource)) {
+                            agent.showVisitedPoints();
+                            if (agent.containsVisitedPoint(Position.getInDirection(castedAgent.getPosition(), dir)))
+                                System.out.println(Position.getInDirection(castedAgent.getPosition(), dir) + " ilegal position.");
+                            else
+                                System.out.println(Position.getInDirection(castedAgent.getPosition(), dir) + " legal position.");
+                            if (mapObject.getType().equals(TypeObject.Resource) && !agent.containsVisitedPoint(Position.getInDirection(castedAgent.getPosition(), dir))) {
                                 resources.add(dir);
                             }
                         }
@@ -59,7 +68,7 @@ public class CustomExplorer extends Algorithm {
                 nextAction = resources.get((int) (Math.random() * resources.size()));
             } else {
                 Integer action = (int) (Math.random() * allowedActions.size());
-                if (!firstStep && action < ((0.75) * allowedActions.size())) {  // 75 % to take the same action as previous step.
+                if (!firstStep && action < ((0.6) * allowedActions.size())) {  // 75 % to take the same action as previous step.
                     if (castedAgent.checkAllowedPos(Position.getInDirection(castedAgent.getPosition(), lastDirection))) {
                         //System.out.println("Same action like before " + lastDirection);
                         nextAction = lastDirection;

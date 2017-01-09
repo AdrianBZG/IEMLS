@@ -55,6 +55,7 @@ public class Tuple<A, B> {
         snd = fun.apply(getSnd());
     }
 
+    /*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,11 +67,27 @@ public class Tuple<A, B> {
         return snd != null ? snd.equals(tuple.snd) : tuple.snd == null;
 
     }
+    */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tuple<?, ?> tuple = (Tuple<?, ?>) o;
+
+        return tuple.getX() == this.getX() && tuple.getY() == this.getY();
+    }
 
     @Override
     public int hashCode() {
         int result = fst != null ? fst.hashCode() : 0;
         result = 31 * result + (snd != null ? snd.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString () {
+        return getX() + ", " + getY();
     }
 }

@@ -29,6 +29,7 @@ public abstract class MapObject implements Cloneable {
 
     private Tuple<Integer, Integer> objectPosition = new Tuple<>(0, 0);
 
+
     static {
         mapObjects = new ArrayList<>(Arrays.asList(
                 new Block(),

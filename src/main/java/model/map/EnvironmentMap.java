@@ -139,7 +139,7 @@ public class EnvironmentMap {
             removeAt(x,y);
             if (object.getType() == TypeObject.Agent) {
                 ExplorerAgent agent = (ExplorerAgent)object;
-                agent.setPosition(new Tuple<>(x,y));
+                agent.setPosition(new Tuple<>(x, y));
                 agent.setMap(this);
             }
             object.setPosition((new Tuple<>(x, y)));
@@ -174,7 +174,8 @@ public class EnvironmentMap {
         get(castedAgent.getPosition()).ifPresent(mapObject -> {
             if (mapObject.getType() == TypeObject.Resource) {
                 castedAgent.addResource((Resource)mapObject);
-                removeAt(castedAgent.getPosition().getX(), castedAgent.getPosition().getY());
+                if (agent.getAlgorithm().toString() == "A*")
+                    removeAt(castedAgent.getPosition().getX(), castedAgent.getPosition().getY());
             }
         });
     }
