@@ -77,6 +77,7 @@ public abstract class Agent extends MapObject {
 
 
     public void move(Directions directions) {
+        if (directions == null) return;
         switch (directions) {
             case DOWN:
                 this.getPosition().chgSnd((y) -> y + 1);

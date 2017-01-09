@@ -33,7 +33,7 @@ public class AgentsManager {
     /**
      * Delay between updates
      */
-    private int delay = 500;
+    private int delay = 200;
 
     private static Timer timer = null;
 

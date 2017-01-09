@@ -185,19 +185,16 @@ public class AStar extends Algorithm {
         if (agent != null) {
             GoalPosition goal;
             if (!objectiveSet && AgentsManager.existsExplorers()) {
+
                 ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
-                System.out.println("RandomExplorer: " + randomExplorer + " with resources: " + randomExplorer.getLastResource().getPosition());
                 if (randomExplorer.getResources().size() > 0) {
                     goal = new GoalPosition(randomExplorer.getLastResource().getPosition());
-                    System.out.println ("Goal position: " + goal.getX() + ", " + goal.getY());
-                    System.out.println ("Initial position: " + agent.getPosition().getX() + ", "+ agent.getPosition().getY());
                     if (goal != null && goal.isValidPos()) {
-                        System.out.println("Lets calculate path");
                         objectiveSet = true;
                         IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
+                        System.out.println("Lets create new path");
                         path = shortestPath(initialPos, goal);
-                        if (path != null)
-                            System.out.println(path.size());
+                        movement = 0;
                     } else {
                         System.out.println("Aun no se ha recolectado ningun recurso");
                     }
@@ -208,13 +205,15 @@ public class AStar extends Algorithm {
                 start(agent);
             }
             if (path != null && movement < path.size()) {
-                System.out.println ("My pos: " + agent.getPosition().getX() + ", " + agent.getPosition().getY());
                 Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement++)).getPosition();
-                System.out.println ("nextPos: " + nextPos.getX() + ", " + nextPos.getY());
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
-                System.out.println(dir);
                 agent.move (dir);
                 agent.getMap().removeAt(agent);
+                System.out.println("Path size: " + path.size() + " while movement: " + movement);
+                if (path.size() == movement) {
+                    System.out.println("Limit path");
+                    objectiveSet = false;   // Lets go to another goal.
+                }
             }
         }
     }
