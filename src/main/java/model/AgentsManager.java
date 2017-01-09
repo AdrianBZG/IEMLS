@@ -45,6 +45,7 @@ public class AgentsManager {
      * Initialize all agents from environment. Each one in a independent thread
      */
     public void play() {
+        stop(); // Little fix for start button
         if (timer != null) { // Avoid play several times
             return;
         }
@@ -76,7 +77,7 @@ public class AgentsManager {
     public void stop() {
         if (timer != null) {
             for (Agent agent : agents) {
-                agent.getAlgorithm().stop();
+                if(agent.getAlgorithm() != null) agent.getAlgorithm().stop();
             }
             timer.cancel();
             timer = null;

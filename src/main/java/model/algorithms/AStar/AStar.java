@@ -210,6 +210,11 @@ public class AStar extends Algorithm {
     }
 
     @Override
+    public String toString() {
+        return "A*";
+    }
+
+    @Override
     public Algorithm clone() {
         return null;
     }

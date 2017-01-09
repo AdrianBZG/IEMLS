@@ -1,5 +1,6 @@
 package model.algorithms;
 
+import model.algorithms.AStar.AStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
 import model.object.agent.Agent;
 
@@ -28,6 +29,7 @@ public abstract class Algorithm implements Cloneable {
             - 10 Tournament size
          */
         algorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
+        algorithms.add(new AStar());
     }
 
     public static ArrayList<Algorithm> getAlgorithms() {
