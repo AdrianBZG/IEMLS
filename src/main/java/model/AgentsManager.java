@@ -23,7 +23,7 @@ public class AgentsManager {
     /**
      * Agents
      */
-    private ObservableList<Agent> agents = FXCollections.observableArrayList(new ArrayList<>());
+    private static ObservableList<Agent> agents = FXCollections.observableArrayList(new ArrayList<>());
     /**
      * Launch an event each tick
      */
@@ -102,5 +102,37 @@ public class AgentsManager {
     }
     public void setDelay(int delay) {
         this.delay = delay;
+    }
+
+    /**
+     * This method returns a random agent explorer that picked up at least one resource.
+     * @return an explorer that picked at least one resource.
+     */
+    public static Agent getRandomExplorer () {
+        ArrayList<Agent> explorers = new ArrayList<>();
+
+        for (Agent agent : agents) {
+            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
+                explorers.add(agent);
+            }
+        }
+
+        if (!explorers.isEmpty())
+            return explorers.get((int)(Math.random() * explorers.size()));
+        else {
+            return null;
+        }
+    }
+
+    public static boolean existsExplorers () {
+        System.out.println ("Number of agents: " + agents.size());
+        for (Agent agent : agents) {
+            System.out.println ("Agent: " + agent.getAlgorithm().toString() + " with resources size: " + agent.getResources().size());
+            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
+                System.out.println ("Now exists explorers");
+                return true;
+            }
+        }
+        return false;
     }
 }

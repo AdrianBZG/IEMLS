@@ -1,5 +1,6 @@
 package model.algorithms.AStar;
 
+import model.AgentsManager;
 import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
@@ -181,9 +182,9 @@ public class AStar extends Algorithm {
     public void update(Agent agent) {
         if (agent != null) {
             GoalPosition goal;
-            if (!objectiveSet && agent.getMap().existsExplorers()) {
+            if (!objectiveSet && AgentsManager.existsExplorers()) {
 
-                goal = new GoalPosition(agent.getMap().getRandomExplorer().getLastResource().getObjectPosition());
+                goal = new GoalPosition(AgentsManager.getRandomExplorer().getLastResource().getObjectPosition());
                 if (goal != null && goal.isValidPos()) {
                     objectiveSet = true;
                     IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
@@ -216,7 +217,7 @@ public class AStar extends Algorithm {
 
     @Override
     public Algorithm clone() {
-        return null;
+        return new AStar();
     }
 
     @Override

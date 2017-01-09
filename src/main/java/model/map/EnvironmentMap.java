@@ -50,13 +50,6 @@ public class EnvironmentMap {
     EnvironmentView mapView = null;
 
     /**
-     * List of Agents
-     */
-    private ArrayList<Agent> agents = new ArrayList<Agent>();
-
-    ArrayList<Directions> lastActions = new ArrayList<>();
-
-    /**
      * Build a empty map
      */
     public EnvironmentMap() {
@@ -88,73 +81,6 @@ public class EnvironmentMap {
                 }
             }
         }
-    }
-
-    /**
-     * Remove a agent
-     */
-    private void removeAgent(Agent agent) {
-        int i = 0;
-        ExplorerAgent castedAgent = (ExplorerAgent)agent;
-        ExplorerAgent dummy;
-        while (agents.size() > i) {
-            dummy = (ExplorerAgent)agents.get(i);
-            if(castedAgent.getPosition().equals((dummy.getPosition()))) break;
-            else i++;
-        }
-        agents.remove(i);
-    }
-
-
-    /**
-     * This method returns a random agent explorer that picked up at least one resource.
-     * @return an explorer that picked at least one resource.
-     */
-    public Agent getRandomExplorer () {
-        ArrayList<Agent> explorers = new ArrayList<>();
-
-        for (Agent agent : agents) {
-            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
-                explorers.add(agent);
-            }
-        }
-
-        if (!explorers.isEmpty())
-            return explorers.get((int)(Math.random() * explorers.size()));
-        else {
-            return null;
-        }
-    }
-
-    public boolean existsExplorers () {
-        System.out.println ("Number of agents: " + agents.size());
-        for (Agent agent : agents) {
-            System.out.println ("Agent: " + agent.getAlgorithm().toString() + " with resources size: " + agent.getResources().size());
-            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
-                System.out.println ("Now exists explorers");
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
-     * Add agent
-     * @param agent
-     * @return
-     */
-    private void addAgent(Agent agent) {
-        agents.add(agent);
-    }
-
-
-    public ArrayList<Agent> getAgents () {
-        return agents;
-    }
-
-    public Agent getAgent (int inx) {
-        return agents.get(inx);
     }
 
     public Optional<MapObject> get(Tuple <Integer, Integer> pos) {
@@ -215,7 +141,6 @@ public class EnvironmentMap {
                 ExplorerAgent agent = (ExplorerAgent)object;
                 agent.setPosition(new Tuple<>(x,y));
                 agent.setMap(this);
-                addAgent(agent);
             }
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
             if (mapView != null)
@@ -235,9 +160,6 @@ public class EnvironmentMap {
      */
     public void removeAt (int x, int y) {
         get(x, y).ifPresent(mapObject -> {
-            if (mapObject.getType() == TypeObject.Agent) {
-                removeAgent((ExplorerAgent) mapObject);
-            }
             getMap().get(makeSector(x, y)).removeAt(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE));
         });
     }
