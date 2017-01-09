@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import model.AgentsManager;
 import model.map.generator.*;
 import model.object.Block;
 import model.object.MapObject;
@@ -135,6 +136,7 @@ public class Controller implements Initializable {
 
     public void clearMap() {
         centralPane.setCenter(initialMessage);
+        environmentView.getAgentsManager().getAgents().clear();
         environmentView = null;
     }
 
