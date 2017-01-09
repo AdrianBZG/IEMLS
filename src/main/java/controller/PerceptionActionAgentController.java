@@ -134,12 +134,10 @@ public class PerceptionActionAgentController implements Initializable {
             cellButton.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent t) {
-                    if (getTableView().getItems().size() < getIndex()) {
-                        // get Selected Item
-                        PerceptionRule currentPerson = DeleteCell.this.getTableView().getItems().get(DeleteCell.this.getIndex());
-                        //remove selected item from the table list
-                        tableContent.remove(currentPerson);
-                    }
+                    // get Selected Item
+                    PerceptionRule currentPerson = DeleteCell.this.getTableView().getItems().get(DeleteCell.this.getIndex());
+                    //remove selected item from the table list
+                    tableContent.remove(currentPerson);
                 }
             });
         }
