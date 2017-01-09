@@ -18,7 +18,7 @@ public abstract class Agent extends MapObject {
     /**
      * Position Agent
      */
-    private Tuple<Integer, Integer> position = new Tuple<>(0,0);
+    //private Tuple<Integer, Integer> position = new Tuple<>(0,0);
 
     private ArrayList<Resource> resources = new ArrayList<>();
 
@@ -163,23 +163,6 @@ public abstract class Agent extends MapObject {
     }
 
 
-    public Tuple<Integer, Integer> getPosition() {
-        return position;
-    }
-
-    public void setPosition(Tuple<Integer, Integer> position) {
-        this.position = position;
-    }
-
-    /**
-     * Set position of agent
-     * @param x
-     * @param y
-     */
-    public void setPosition(Integer x, Integer y) {
-        getPosition().setFst(x);
-        getPosition().setSnd(y);
-    }
 
     public EnvironmentMap getMap() {
         return map;

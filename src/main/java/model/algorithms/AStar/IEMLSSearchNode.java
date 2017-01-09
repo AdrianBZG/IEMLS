@@ -2,6 +2,7 @@ package model.algorithms.AStar;
 
 import model.map.EnvironmentMap;
 import model.object.TypeObject;
+import util.Tuple;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,10 @@ public class IEMLSSearchNode extends ASearchNode {
     }
     public int getY() {
         return this.y;
+    }
+
+    public Tuple<Integer, Integer> getPosition () {
+        return new Tuple<>(x, y);
     }
     public String toString(){
         return "(" + Integer.toString(this.x) + ";" + Integer.toString(this.y)

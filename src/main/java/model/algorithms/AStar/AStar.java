@@ -3,6 +3,7 @@ package model.algorithms.AStar;
 import model.AgentsManager;
 import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
+import model.algorithms.CustomExplorer;
 import model.map.EnvironmentMap;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
@@ -30,11 +31,12 @@ public class AStar extends Algorithm {
 
         public ISearchNode bestNodeAfterSearch;
 
-        private Tuple<Integer, Integer> objective = null;
+        private Tuple<Integer, Integer> objective = new Tuple<>(0,0);
 
         private boolean objectiveSet = false;
 
-        private ArrayList<ISearchNode> path = null;
+        private ArrayList<ISearchNode> path = new ArrayList<>();
+        private int movement = 1;
 
         public AStar() {
         }
@@ -183,25 +185,36 @@ public class AStar extends Algorithm {
         if (agent != null) {
             GoalPosition goal;
             if (!objectiveSet && AgentsManager.existsExplorers()) {
+                ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
+                System.out.println("RandomExplorer: " + randomExplorer + " with resources: " + randomExplorer.getLastResource().getPosition());
+                if (randomExplorer.getResources().size() > 0) {
+                    goal = new GoalPosition(randomExplorer.getLastResource().getPosition());
+                    System.out.println ("Goal position: " + goal.getX() + ", " + goal.getY());
+                    System.out.println ("Initial position: " + agent.getPosition().getX() + ", "+ agent.getPosition().getY());
+                    if (goal != null && goal.isValidPos()) {
+                        System.out.println("Lets calculate path");
+                        objectiveSet = true;
+                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
+                        path = shortestPath(initialPos, goal);
+                        if (path != null)
+                            System.out.println(path.size());
+                    } else {
+                        System.out.println("Aun no se ha recolectado ningun recurso");
+                    }
 
-                goal = new GoalPosition(AgentsManager.getRandomExplorer().getLastResource().getObjectPosition());
-                if (goal != null && goal.isValidPos()) {
-                    objectiveSet = true;
-                    IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
-                    path = shortestPath(initialPos, goal);
-                    System.out.println(path.size());
                 }
-                else {
-                    System.out.println ("Aun no se ha recolectado ningun recurso");
-                }
-            }
-            if (path != null) {
 
-
+            } else {
+                start(agent);
             }
-        }
-        else {
-            start(agent);
+            if (path != null && movement < path.size()) {
+                System.out.println ("My pos: " + agent.getPosition().getX() + ", " + agent.getPosition().getY());
+                Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement++)).getPosition();
+                System.out.println ("nextPos: " + nextPos.getX() + ", " + nextPos.getY());
+                Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
+                System.out.println(dir);
+                agent.move (dir);
+            }
         }
     }
 

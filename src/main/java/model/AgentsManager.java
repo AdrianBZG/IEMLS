@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.algorithms.CustomExplorer;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
 
@@ -32,7 +33,7 @@ public class AgentsManager {
     /**
      * Delay between updates
      */
-    private int delay = 100;
+    private int delay = 500;
 
     private static Timer timer = null;
 
@@ -108,12 +109,12 @@ public class AgentsManager {
      * This method returns a random agent explorer that picked up at least one resource.
      * @return an explorer that picked at least one resource.
      */
-    public static Agent getRandomExplorer () {
-        ArrayList<Agent> explorers = new ArrayList<>();
+    public static ExplorerAgent getRandomExplorer () {
+        ArrayList<ExplorerAgent> explorers = new ArrayList<>();
 
         for (Agent agent : agents) {
-            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
-                explorers.add(agent);
+            if (agent.getAlgorithm().toString() == "CustomExplorer" && agent.getResources().size() > 0) {
+                explorers.add((ExplorerAgent) agent);
             }
         }
 
@@ -125,11 +126,8 @@ public class AgentsManager {
     }
 
     public static boolean existsExplorers () {
-        System.out.println ("Number of agents: " + agents.size());
         for (Agent agent : agents) {
-            System.out.println ("Agent: " + agent.getAlgorithm().toString() + " with resources size: " + agent.getResources().size());
-            if (agent.getAlgorithm().toString() == "Explorer" && agent.getResources().size() > 0) {
-                System.out.println ("Now exists explorers");
+            if (agent.getAlgorithm().toString() == "CustomExplorer" && agent.getResources().size() > 0) {
                 return true;
             }
         }

@@ -69,7 +69,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
 
         // Loop over route and score each move
         for (Tuple<Integer,Integer> routeStep : agent.getVisitedPoints()) {
-            if (!agent.getVisitedPoints().contains(map.get(routeStep.getX(), routeStep.getY()).get().getObjectPosition())) {
+            if (!agent.getVisitedPoints().contains(map.get(routeStep.getX(), routeStep.getY()).get().getPosition())) {
                 // Increase score for correct move
                 score++;
                 // If is a resource, another score point is added
