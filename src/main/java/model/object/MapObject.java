@@ -27,7 +27,7 @@ public abstract class MapObject implements Cloneable {
      */
     private static ArrayList<MapObject> mapObjects = new ArrayList<>();
 
-    private Tuple<Integer, Integer> objectPosition = null;
+    private Tuple<Integer, Integer> objectPosition = new Tuple<>(0, 0);
 
     static {
         mapObjects = new ArrayList<>(Arrays.asList(
@@ -80,11 +80,17 @@ public abstract class MapObject implements Cloneable {
         return super.clone();
     }
 
-    public Tuple<Integer, Integer> getObjectPosition() {
+    public Tuple<Integer, Integer> getPosition() {
         return objectPosition;
     }
 
-    public void setObjectPosition(Tuple<Integer, Integer> objectPosition) {
-        objectPosition = objectPosition;
+    public void setPosition(Tuple<Integer, Integer> objectPosition) {
+
+        this.objectPosition = objectPosition;
+    }
+
+    public void setPosition (int x, int y) {
+
+        objectPosition = new Tuple<>(x, y);
     }
 }

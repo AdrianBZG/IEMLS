@@ -142,6 +142,7 @@ public class EnvironmentMap {
                 agent.setPosition(new Tuple<>(x,y));
                 agent.setMap(this);
             }
+            object.setPosition((new Tuple<>(x, y)));
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
             if (mapView != null)
                 mapView.paintEnvironmentMap();
