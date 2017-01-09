@@ -7,6 +7,9 @@
 package model;
 
 import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
 
@@ -20,7 +23,7 @@ public class AgentsManager {
     /**
      * Agents
      */
-    private ArrayList<Agent> agents = new ArrayList<>();
+    private ObservableList<Agent> agents = FXCollections.observableArrayList(new ArrayList<>());
     /**
      * Launch an event each tick
      */
@@ -43,6 +46,10 @@ public class AgentsManager {
      * Initialize all agents from environment. Each one in a independent thread
      */
     public void play() {
+        if (timer != null) { // Avoid play several times
+            return;
+        }
+
         for (Agent agent : agents) {
             ExplorerAgent castedAgent = (ExplorerAgent)agent;
             castedAgent.getAlgorithm().start(castedAgent);
@@ -83,10 +90,10 @@ public class AgentsManager {
         return timer;
     };
 
-    public ArrayList<Agent> getAgents() {
+    public ObservableList<Agent> getAgents() {
         return agents;
     }
-    public void setAgents(ArrayList<Agent> agents) {
+    public void setAgents(ObservableList<Agent> agents) {
         this.agents = agents;
     }
     public int getDelay() {

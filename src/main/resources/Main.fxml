@@ -15,10 +15,8 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -107,11 +105,11 @@
                   </Button>
               </items>
             </ToolBar>
-            <Accordion fx:id="accordion" prefHeight="471.0" prefWidth="210.0">
+            <Accordion fx:id="accordion" prefHeight="613.0" prefWidth="300.0">
               <panes>
                 <TitledPane fx:id="mapTitledPane" animated="false" prefWidth="388.0" text="Map">
                   <content>
-                        <FlowPane prefHeight="418.0" prefWidth="228.0">
+                        <VBox prefHeight="560.0" prefWidth="249.0">
                            <children>
                               <GridPane hgap="20.0" vgap="10.0">
                                  <columnConstraints>
@@ -130,13 +128,12 @@
                                     <RowConstraints vgrow="SOMETIMES" />
                                     <RowConstraints vgrow="SOMETIMES" />
                                     <RowConstraints vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="100.0" vgrow="ALWAYS" />
                                     <RowConstraints vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <Label prefHeight="16.0" text="Make a new Map" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" />
                                     <Label text="Type Map" GridPane.rowIndex="1" />
-                                    <ChoiceBox fx:id="noiseChoose" prefHeight="26.0" prefWidth="101.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="noiseChoose" prefHeight="26.0" prefWidth="126.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                     <Label text="Dimensions" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                     <TextField fx:id="yDim" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="99.0" promptText="Inf" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                     <TextField nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="83.0" promptText="Inf" GridPane.rowIndex="3" fx:id="xDim" />
@@ -144,20 +141,21 @@
                                     <Button mnemonicParsing="false" onAction="#generateMap" text="Generate Map" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                                     <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="7" />
                                     <Label text="Objects" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
-                                    <ListView fx:id="listObjects" prefHeight="244.0" prefWidth="249.0" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.vgrow="ALWAYS" />
-                                    <Button layoutX="79.0" layoutY="134.0" mnemonicParsing="false" onAction="#clearMap" text="Clear Map" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                                    <Button layoutX="79.0" layoutY="134.0" mnemonicParsing="false" onAction="#clearMap" text="Delete Map" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                                  </children>
-                                 <FlowPane.margin>
-                                    <Insets />
-                                 </FlowPane.margin>
                               </GridPane>
+                              <ListView fx:id="listObjects" prefHeight="244.0" prefWidth="249.0" VBox.vgrow="ALWAYS" />
                            </children>
-                        </FlowPane>
+                        </VBox>
                   </content>
                 </TitledPane>
                 <TitledPane animated="false" expanded="false" text="Agents">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <VBox prefHeight="560.0" prefWidth="239.0">
+                           <children>
+                              <ListView fx:id="agentList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
                   </content>
                 </TitledPane>
               </panes>
@@ -168,6 +166,9 @@
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
+                     <BorderPane.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </BorderPane.margin>
                   </Label>
                </center>
             </BorderPane>

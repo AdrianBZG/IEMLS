@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * Created by eleazardd on 2/01/17.
  */
-public class ScriptAgent extends MapObject {
+public class ScriptAgent extends Agent {
 
     public ScriptAgent() {}
 

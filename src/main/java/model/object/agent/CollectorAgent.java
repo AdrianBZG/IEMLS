@@ -38,24 +38,10 @@ import java.util.Optional;
  *
  */
 public class CollectorAgent extends Agent {
-    /**
-     * Position Agent
-     */
-    private Tuple<Integer, Integer> position = new Tuple<>(0,0);
 
     private ArrayList<Resource> resources = new ArrayList<>();
 
     private ArrayList<Tuple<Integer, Integer>> visitedPoints = new ArrayList<>();
-
-    /**
-     * Reference to map
-     */
-    private EnvironmentMap map;
-
-    /**
-     * Algorithm into Agent
-     */
-    private Algorithm algorithm;
 
     /**
      * The agent specie
@@ -86,7 +72,7 @@ public class CollectorAgent extends Agent {
         ArrayList<MapObject> list = new ArrayList<>();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
-                map.get(getPosition().getX() + i, getPosition().getY() + j)
+                getMap().get(getPosition().getX() + i, getPosition().getY() + j)
                         .ifPresent(list::add);
 
             }
@@ -118,112 +104,6 @@ public class CollectorAgent extends Agent {
      */
     public Resource getLastResource () {
         return resources.get(resources.size() - 1);
-    }
-
-    /**
-     * Get all allowed actions for the actual position of the agent.
-     * @return an array with all allowed actions.
-     */
-    public ArrayList<Directions> getAllowedActions () {
-        ArrayList<Directions> allowedDirections = new ArrayList<>();
-        for (Directions dir : Directions.values())
-            if (checkAllowedPos(Position.getInDirection(getPosition(), dir)))
-                allowedDirections.add(dir);
-
-        return allowedDirections;
-    }
-
-    public boolean checkAllowedPos (Tuple<Integer, Integer> nextPos) {
-        return ((!map.get(nextPos).isPresent() ||
-                (map.get(nextPos).get().getType() != TypeObject.Obstacle &&
-                        map.get(nextPos).get().getType() != TypeObject.Agent)));
-    }
-
-
-    public void move(Directions directions) {
-        switch (directions) {
-            case DOWN:
-                this.getPosition().chgSnd((y) -> y + 1);
-                break;
-            case UP:
-                this.getPosition().chgSnd((y) -> y - 1);
-                break;
-            case LEFT:
-                this.getPosition().chgFst((x) -> x - 1);
-                break;
-            case RIGHT:
-                this.getPosition().chgFst((x) -> x + 1);
-                break;
-        }
-    }
-
-    /**
-     * Get left element of agent
-     * @return
-     */
-    public MapObject left() {
-        return map.get(getPosition().getX() - 1, getPosition().getY()).get();
-    }
-
-    /**
-     * Get right element of agent
-     * @return
-     */
-    public MapObject right() {
-        return map.get(getPosition().getX() + 1, getPosition().getY()).get();
-    }
-
-    /**
-     * Get down element of agent
-     * @return
-     */
-    public MapObject down() {
-        return map.get(getPosition().getX(), getPosition().getY() + 1).get();
-    }
-
-    /**
-     * Get up element of agent
-     * @return
-     */
-    public MapObject up() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
-    }
-
-    /**
-     * Get up left corner element of agent
-     * @return
-     */
-    public MapObject upLeft() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
-    }
-
-    /*
-     * Get up right corner element of agent
-     * @return
-     */
-    public MapObject upRight() {
-        return map.get(getPosition().getX() + 1, getPosition().getY() - 1).get();
-    }
-
-    /**
-     * Get up down right corner element of agent
-     * @return
-     */
-    public MapObject downRight() {
-        return map.get(getPosition().getX() + 1, getPosition().getY() + 1).get();
-    }
-
-    /**
-     * Get down left corner element of agent
-     * @return
-     */
-    public MapObject downLeft() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() + 1).get();
-    }
-
-    @Override
-    public TypeObject getType() {
-        return TypeObject.Agent;
     }
 
     @Override
@@ -278,43 +158,6 @@ public class CollectorAgent extends Agent {
 
         Optional<String> result = dialog.showAndWait();
     }
-
-    /**
-     *
-     */
-    public Algorithm getAlgorithm() {
-        return algorithm;
-    }
-
-    public void setAlgorithm(Algorithm algorithm) {
-        this.algorithm = algorithm;
-    }
-
-    /**
-     * Set position of agent
-     * @param x
-     * @param y
-     */
-    public void setPosition(Integer x, Integer y) {
-        position.setFst(x);
-        position.setSnd(y);
-    }
-
-    /**
-     *
-     * @param pos
-     */
-    public void setPosition(Tuple<Integer, Integer> pos) {
-        position = pos;
-    }
-
-    public Tuple<Integer, Integer> getPosition () { return position; }
-
-    public void setMap(EnvironmentMap map) {
-        this.map = map;
-    }
-
-    public EnvironmentMap getMap () { return map; }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

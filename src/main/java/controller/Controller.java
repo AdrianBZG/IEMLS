@@ -18,6 +18,7 @@ import model.object.MapObject;
 import model.object.Resource;
 import model.object.agent.Agent;
 import model.species.Specie;
+import view.CellAgentView;
 import view.CellObjectView;
 import view.EnvironmentView;
 
@@ -26,7 +27,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * TODO: Commenta algo
+ * Main controller of GUI
  *
  */
 public class Controller implements Initializable {
@@ -56,6 +57,9 @@ public class Controller implements Initializable {
     @FXML
     public Label initialMessage;
 
+    @FXML
+    public ListView<Agent> agentList;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -75,6 +79,7 @@ public class Controller implements Initializable {
         noiseChoose.getSelectionModel().selectFirst();
 
         new Specie("Default specie");
+
     }
 
 
@@ -120,6 +125,8 @@ public class Controller implements Initializable {
                 int height = Math.abs(Integer.parseInt(yDim.getText()));
                 environmentView = new EnvironmentView(width, height, noiseChoose.getSelectionModel().getSelectedItem());
                 centralPane.setCenter(environmentView);
+                agentList.setItems(environmentView.getAgentsManager().getAgents());
+                agentList.setCellFactory(value -> new CellAgentView());
             } catch (Exception e) {
                 errorDialog("Fail To build a map with " + xDim.getText() + " x " + yDim.getText());
             }
