@@ -18,6 +18,7 @@ public class NeuralAgentView extends ObjectView {
         right.setFill(Color.BLUE);
 
         FontIcon icon = new FontIcon(FontAwesome.RANDOM);
+        icon.setFill(Color.WHITE);
         icon.setIconSize(16);
         icon.setTranslateX(-16.5);
         icon.setTranslateY(-6);

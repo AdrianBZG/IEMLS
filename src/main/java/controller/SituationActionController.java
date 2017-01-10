@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 
 import model.dsl.Expr.ExprLexer;
 import model.dsl.Expr.ExprParser;
+import org.kordamp.ikonli.fontawesome.FontAwesome;
+import org.kordamp.ikonli.javafx.FontIcon;
 import util.Directions;
 
 /**
@@ -85,9 +87,10 @@ public class SituationActionController implements Initializable {
     }
 
     private class DeleteCell extends TableCell<SituationRule, Boolean> {
-        final Button cellButton = new Button("Delete");
+        final Button cellButton = new Button("");
 
         DeleteCell(){
+            cellButton.setGraphic(new FontIcon(FontAwesome.TIMES));
             //Action when the button is pressed
             cellButton.setOnAction(new EventHandler<ActionEvent>(){
                 @Override

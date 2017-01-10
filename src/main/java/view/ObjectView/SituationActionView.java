@@ -15,9 +15,10 @@ public class SituationActionView extends ObjectView {
         Circle right = new Circle(10);
         right.setTranslateX(-10);
         right.setTranslateY(-10);
-        right.setFill(Color.RED);
+        right.setFill(Color.BLUE);
 
         FontIcon icon = new FontIcon(FontAwesome.HISTORY);
+        icon.setFill(Color.WHITE);
         icon.setIconSize(16);
         icon.setTranslateX(-16.5);
         icon.setTranslateY(-6);

@@ -18,6 +18,7 @@ public class PAAgent extends ObjectView {
         right.setFill(Color.BLUE);
 
         FontIcon icon = new FontIcon(FontAwesome.EYE);
+        icon.setFill(Color.WHITE);
         icon.setIconSize(16);
         icon.setTranslateX(-16.5);
         icon.setTranslateY(-6);

@@ -34,6 +34,7 @@ public class ExplorerAgentView extends ObjectView {
         right.setFill(Color.BLUE);
 
         FontIcon icon = new FontIcon(FontAwesome.SEARCH);
+        icon.setFill(Color.WHITE);
         icon.setIconSize(16);
         icon.setTranslateX(-16.5);
         icon.setTranslateY(-6);
