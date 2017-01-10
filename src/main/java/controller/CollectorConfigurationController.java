@@ -22,8 +22,8 @@ public class CollectorConfigurationController implements Initializable {
     @FXML
     public ChoiceBox choiceSpecie;
 
-    @FXML
-    public VBox vBoxScript;
+    //@FXML
+    //public VBox vBoxScript;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -35,7 +35,7 @@ public class CollectorConfigurationController implements Initializable {
 
         VirtualizedScrollPane virtualizedScrollPane = new VirtualizedScrollPane<>(new ScriptEditorView());
         VBox.setVgrow(virtualizedScrollPane, Priority.ALWAYS);
-        vBoxScript.getChildren().add(virtualizedScrollPane);
+       // vBoxScript.getChildren().add(virtualizedScrollPane);
     }
 
     public Algorithm getAlgorithm() {
