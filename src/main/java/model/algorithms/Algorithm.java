@@ -5,6 +5,7 @@ import model.algorithms.AStar.AStar;
 import model.algorithms.AStar.LRTAStar;
 import model.algorithms.AStar.RTAStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
+import model.algorithms.swarm_aco.AntColonyOptimization;
 import model.object.agent.Agent;
 
 import java.util.ArrayList;
@@ -19,10 +20,12 @@ public abstract class Algorithm implements Cloneable {
     /**
      * All available algorithms
      */
-    private static ArrayList<Algorithm> algorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> explorationAlgorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> collectionAlgorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> swarmAlgorithms = new ArrayList<>();
 
     static {
-        algorithms.add(new CustomExplorer());
+        explorationAlgorithms.add(new CustomExplorer());
 
         /* Genetic algorithm for explorer using the follow default parameters:
             - 100 Population size
@@ -31,14 +34,25 @@ public abstract class Algorithm implements Cloneable {
             - 2 ElitismCount
             - 10 Tournament size
          */
-        algorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
-        algorithms.add(new AStar());
-        algorithms.add(new RTAStar());
-        algorithms.add(new LRTAStar());
+        explorationAlgorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
+
+        collectionAlgorithms.add(new AStar());
+        collectionAlgorithms.add(new RTAStar());
+        collectionAlgorithms.add(new LRTAStar());
+
+        swarmAlgorithms.add(new AntColonyOptimization());
     }
 
-    public static ArrayList<Algorithm> getAlgorithms() {
-        return algorithms;
+    public static ArrayList<Algorithm> getExplorationAlgorithms() {
+        return explorationAlgorithms;
+    }
+
+    public static ArrayList<Algorithm> getCollectionAlgorithms() {
+        return collectionAlgorithms;
+    }
+
+    public static ArrayList<Algorithm> getSwarmAlgorithms() {
+        return swarmAlgorithms;
     }
 
     /**

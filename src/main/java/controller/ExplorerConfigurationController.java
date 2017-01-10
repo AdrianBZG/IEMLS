@@ -14,13 +14,10 @@ import view.ScriptEditorView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by eleazardd on 3/01/17.
- */
-public class ConfigurationController implements Initializable {
+public class ExplorerConfigurationController implements Initializable {
 
     @FXML
-    public ChoiceBox choiceAlgorithm;
+    public ChoiceBox choiceExplorationAlgorithm;
 
     @FXML
     public ChoiceBox choiceSpecie;
@@ -30,8 +27,8 @@ public class ConfigurationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        choiceAlgorithm.setItems(FXCollections.observableArrayList(Algorithm.getAlgorithms()));
-        choiceAlgorithm.getSelectionModel().selectFirst();
+        choiceExplorationAlgorithm.setItems(FXCollections.observableArrayList(Algorithm.getExplorationAlgorithms()));
+        choiceExplorationAlgorithm.getSelectionModel().selectFirst();
 
         choiceSpecie.setItems(FXCollections.observableArrayList(Specie.getSpecies()));
         choiceSpecie.getSelectionModel().selectFirst();
@@ -42,6 +39,6 @@ public class ConfigurationController implements Initializable {
     }
 
     public Algorithm getAlgorithm() {
-        return (Algorithm) choiceAlgorithm.getSelectionModel().getSelectedItem();
+        return (Algorithm) choiceExplorationAlgorithm.getSelectionModel().getSelectedItem();
     }
 }

@@ -6,26 +6,20 @@
 
 package model.object.agent;
 
-import controller.ConfigurationController;
+import controller.ExplorerConfigurationController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import model.algorithms.Algorithm;
-import model.map.EnvironmentMap;
 import model.object.MapObject;
 import model.object.Resource;
-import model.object.TypeObject;
 import model.species.Specie;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
-import util.Directions;
-import util.Position;
 import util.Tuple;
 import view.ErrorView;
 import view.ObjectView.CollectorAgentView;
-import view.ObjectView.ExplorerAgentView;
 import view.ObjectView.ObjectView;
 
 import java.io.IOException;
@@ -138,13 +132,13 @@ public class CollectorAgent extends Agent {
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("AgentConfiguration.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("CollectionAgentConfiguration.fxml"));
             Parent root = fxmlLoader.load();
             dialog.getDialogPane().setContent(root);
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
-                    ConfigurationController configurationController = fxmlLoader.getController();
-                    setAlgorithm(configurationController.getAlgorithm());
+                    ExplorerConfigurationController explorerConfigurationController = fxmlLoader.getController();
+                    setAlgorithm(explorerConfigurationController.getAlgorithm());
                     return null;
                 }
                 return null;

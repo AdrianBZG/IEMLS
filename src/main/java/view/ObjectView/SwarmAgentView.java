@@ -9,15 +9,15 @@ import org.kordamp.ikonli.javafx.FontIcon;
  * Perception-Action view
  * Created by eleazardd on 9/01/17.
  */
-public class PAAgent extends ObjectView {
+public class SwarmAgentView extends ObjectView {
 
-    public PAAgent() {
+    public SwarmAgentView() {
         Circle right = new Circle(10);
         right.setTranslateX(-10);
         right.setTranslateY(-10);
         right.setFill(Color.BLUE);
 
-        FontIcon icon = new FontIcon(FontAwesome.EYE);
+        FontIcon icon = new FontIcon(FontAwesome.BUG);
         icon.setIconSize(16);
         icon.setTranslateX(-16.5);
         icon.setTranslateY(-6);
