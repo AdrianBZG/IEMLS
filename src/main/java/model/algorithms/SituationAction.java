@@ -3,12 +3,26 @@ package model.algorithms;
 import model.dsl.IEval;
 import model.object.agent.Agent;
 import util.Directions;
+import util.Tuple;
+
+import java.util.ArrayList;
 
 /**
- * TODO: Document it
+ *
  * Created by eleazardd on 10/01/17.
  */
 public class SituationAction extends Algorithm {
+
+    private ArrayList<Tuple<IEval, Directions>> rules = new ArrayList<>();
+
+    private ArrayList<Tuple<Integer, Integer>> visited = new ArrayList<>();
+
+    public SituationAction() {
+    }
+
+    public SituationAction(SituationAction situationAction) {
+        rules = (ArrayList<Tuple<IEval,Directions>>) situationAction.rules.clone();
+    }
 
     /**
      * Initialize algorithm, it could run in background
@@ -29,6 +43,7 @@ public class SituationAction extends Algorithm {
     @Override
     public void update(Agent agent) {
 
+
     }
 
     /**
@@ -41,7 +56,7 @@ public class SituationAction extends Algorithm {
 
     @Override
     public Algorithm clone() {
-        return null;
+        return new SituationAction(this);
     }
 
     @Override

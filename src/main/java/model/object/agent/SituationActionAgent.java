@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import model.algorithms.Algorithm;
 import model.algorithms.SituationAction;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -22,7 +23,13 @@ import java.util.Optional;
  */
 public class SituationActionAgent extends Agent {
 
+    public SituationActionAgent() {
+        setAlgorithm(new SituationAction());
+    }
 
+    public SituationActionAgent(SituationActionAgent situationActionAgent) {
+        setAlgorithm(situationActionAgent.getAlgorithm().clone());
+    }
 
     /**
      * Representation of object in 2D dimension
@@ -89,5 +96,9 @@ public class SituationActionAgent extends Agent {
         }
 
         Optional<String> s = dialog.showAndWait();
+    }
+
+    public Agent clone() {
+        return new SituationActionAgent(this);
     }
 }
