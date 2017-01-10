@@ -24,6 +24,7 @@ import view.CellAgentView;
 import view.CellObjectView;
 import view.EnvironmentView;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -92,7 +93,19 @@ public class Controller implements Initializable {
 
     @FXML
     public void onLoadMap () throws IOException, ClassNotFoundException {
-        environmentView.getEnvironmentMap().loadMap();
+        JFileChooser fc= new JFileChooser();
+        fc.setCurrentDirectory(new File("./maps"));
+        int ret = fc.showOpenDialog(null);
+
+
+        if (ret == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fc.getSelectedFile();
+            environmentView = new EnvironmentView(file.getAbsolutePath());
+            centralPane.setCenter(environmentView);
+            agentList.setItems(environmentView.getAgentsManager().getAgents());
+            agentList.setCellFactory(value -> new CellAgentView());
+        }
     }
 
     @FXML
