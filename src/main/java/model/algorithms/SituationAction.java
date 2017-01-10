@@ -17,11 +17,14 @@ public class SituationAction extends Algorithm {
 
     private ArrayList<Tuple<Integer, Integer>> visited = new ArrayList<>();
 
+    private Agent agent;
+
     public SituationAction() {
     }
 
     public SituationAction(SituationAction situationAction) {
         rules = (ArrayList<Tuple<IEval,Directions>>) situationAction.rules.clone();
+        visited = (ArrayList<Tuple<Integer, Integer>>) visited.clone();
     }
 
     /**
@@ -31,7 +34,7 @@ public class SituationAction extends Algorithm {
      */
     @Override
     public void start(Agent agent) {
-
+        this.agent = agent;
     }
 
     /**
@@ -43,6 +46,24 @@ public class SituationAction extends Algorithm {
     @Override
     public void update(Agent agent) {
 
+        boolean find = false;
+        int i = 0;
+
+        while (!find && i < rules.size()) {
+            Tuple<IEval, Directions> rule = rules.get(i);
+            if (rule.getFst().satisfy(agent)) {
+                find = true;
+                if (agent.getAllowedActions().contains(rule.getSnd())) {
+                    visited.add(agent.getPosition());
+                    agent.move(rule.getSnd());
+                    agent.getMap().removeAt(agent.getPosition().getX(), agent.getPosition().getY());
+                }
+                else {
+                    //new ErrorView("Table Perception-Action is incoherent check it");
+                }
+            }
+            i++;
+        }
 
     }
 
@@ -65,12 +86,15 @@ public class SituationAction extends Algorithm {
     }
 
     public boolean isVisited(Directions directions) {
-        // TODO:
-        return false;
+        Tuple<Integer, Integer> lastPosition = agent.getPosition();
+        agent.move(directions);
+        boolean result = visited.contains(agent.getPosition());
+        agent.setPosition(lastPosition);
+        return result;
     }
 
 
     public void addRule(IEval eval, Directions directions) {
-
+        rules.add(new Tuple<>(eval, directions));
     }
 }

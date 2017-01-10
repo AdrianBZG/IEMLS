@@ -10,18 +10,27 @@ grammar Expr;
     import model.dsl.IEval;
 }
 
+
 expresion returns [IEval e]
+:
+    expr EOF
+        { $e = $expr.e; }
+;
+
+
+expr returns [IEval e]
 :   { $e = new IEval(); }
     FREE atom
         { $e.free($atom.d); }
+    | PARENOPEN expr PARENCLOSE // don't do anything why it should be identity action (no modified $e)
     | VISITED atom
         { $e.visited($atom.d); }
-    | e1=expresion AND e2=expresion
+    | e1=expr AND e2=expr
         { $e.and($e1.e, $e2.e); }
-    | e1=expresion OR e2=expresion
+    | e1=expr OR e2=expr
         { $e.or($e1.e, $e2.e); }
-    | NOT expresion
-        { $e.not($expresion.e); }
+    | NOT expr
+        { $e.not($expr.e); }
 ;
 
 atom returns [Directions d]
@@ -57,6 +66,16 @@ OR
 NOT
 :
     'not' | '!'
+;
+
+PARENOPEN
+:
+    '('
+;
+
+PARENCLOSE
+:
+    ')'
 ;
 
 COMMENT: '//' ~[\r\n]* -> skip ;
