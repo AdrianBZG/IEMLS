@@ -1,5 +1,6 @@
 package model.algorithms;
 
+import model.dsl.IEval;
 import model.object.agent.Agent;
 import util.Directions;
 
@@ -51,5 +52,10 @@ public class SituationAction extends Algorithm {
     public boolean isVisited(Directions directions) {
         // TODO:
         return false;
+    }
+
+
+    public void addRule(IEval eval, Directions directions) {
+
     }
 }

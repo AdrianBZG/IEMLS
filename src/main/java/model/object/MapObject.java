@@ -34,6 +34,7 @@ public abstract class MapObject implements Cloneable {
                 new ExplorerAgent(),
                 new CollectorAgent(),
                 new PerceptionActionAgent(),
+                new SituationActionAgent(),
                 new SwarmAgent()));
     }
 

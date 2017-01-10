@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 
 import model.dsl.Expr.ExprLexer;
 import model.dsl.Expr.ExprParser;
+import util.Directions;
+
 /**
  *
  * Created by Eleazar Díaz Delgado on 9/01/17.
@@ -63,6 +65,22 @@ public class SituationActionController implements Initializable {
 
         public SimpleStringProperty actionProperty() {
             return action;
+        }
+
+        /**
+         * Get a IEval item from a rule string
+         * @return
+         */
+        public IEval getIEval() {
+            ANTLRInputStream in = new ANTLRInputStream(expression.get());
+            ExprLexer exprLexer = new ExprLexer(in);
+            CommonTokenStream tokens = new CommonTokenStream(exprLexer);
+            ExprParser parser = new ExprParser(tokens);
+            return parser.expresion().e;
+        }
+
+        public Directions getDirection() {
+            return Directions.valueOf(action.get());
         }
     }
 
@@ -150,16 +168,4 @@ public class SituationActionController implements Initializable {
     }
 
 
-    /**
-     * Get a IEval item from a rule string
-     * @param rule
-     * @return
-     */
-    public IEval getIEval(String rule) {
-        ANTLRInputStream in = new ANTLRInputStream(rule);
-        ExprLexer exprLexer = new ExprLexer(in);
-        CommonTokenStream tokens = new CommonTokenStream(exprLexer);
-        ExprParser parser = new ExprParser(tokens);
-        return parser.expresion().e;
-    }
 }
