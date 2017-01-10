@@ -37,7 +37,7 @@ import java.util.*;
  * TODO: Unload unused Chunk from memory to disk
  *
  */
-public class EnvironmentMap {
+public class EnvironmentMap implements Cloneable {
 
     private static int CHUNK_SIZE = 32;
 
@@ -56,6 +56,15 @@ public class EnvironmentMap {
      */
     public EnvironmentMap() {
         getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
+    }
+
+    /**
+     * Map copy constructor
+     */
+    public EnvironmentMap(HashMap<Sector, Chunk> map, Optional<Tuple<Integer, Integer>> dimensions, Optional<IGenerator> generator) {
+        this.map = map;
+        this.dimensions = dimensions;
+        this.generator = generator;
     }
 
     /**
@@ -319,6 +328,11 @@ public class EnvironmentMap {
      */
     public void loadMap () {
 
+    }
+
+    @Override
+    public EnvironmentMap clone() {
+        return new EnvironmentMap(this.map, this.dimensions, this.generator);
     }
 
 

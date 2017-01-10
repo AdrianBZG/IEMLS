@@ -4,6 +4,8 @@ package model.algorithms.neuralnetworks;
  * Created by adrian on 10/01/17.
  */
 import model.map.EnvironmentMap;
+import model.object.Resource;
+import model.object.TypeObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,12 +16,11 @@ public class EvaluateAgent {
 
     private List<EnvironmentMap> maps = new ArrayList<>();
 
-    public EvaluateAgent(int size)
+    public EvaluateAgent(NeuralNetworkAlgorithm agent, int size)
     {
         for(int i=0;i<size;i++)
         {
-            EnvironmentMap map = new EnvironmentMap();
-            map.generateRandomMap();
+            EnvironmentMap map = agent.getEnvironment().clone();
             this.maps.add(map);
         }
     }
@@ -31,6 +32,7 @@ public class EvaluateAgent {
         for(EnvironmentMap map: maps)
         {
             agent.setEnvironment(map);
+            map.set(0,0, new Resource(1,"Dummy"));
             agent.setX(0);
             agent.setY(0);
 
