@@ -198,15 +198,17 @@ public class RTAStar extends Algorithm {
                         needToRecalculate = false;
                         IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
                         path = shortestPath(initialPos, goal);
-                        movement = 0;
+                    } else {
+                        needToRecalculate = true;
                     }
                 }
-            } else if (path != null && !needToRecalculate && movement < path.size()) {
-                Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement++)).getPosition();
+            } else if (!needToRecalculate) {
+                Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement)).getPosition();
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
                 agent.move (dir);
-                agent.getMap().removeAt(agent);
-                if (path.size() == movement) {
+                agent.getMap().removeAt(nextPos);
+                needToRecalculate = true;
+                if (agent.getPosition().getX() == goal.getX() && agent.getPosition().getY() == goal.getY()) {
                     goal = null;
                 }
             }
