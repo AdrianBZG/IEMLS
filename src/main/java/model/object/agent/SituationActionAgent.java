@@ -1,10 +1,7 @@
 package model.object.agent;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import view.ObjectView.ObjectView;
-import model.dsl.Expr.ExprLexer;
-import model.dsl.Expr.ExprParser;
+
 /**
  * TODO: Document it
  * Created by eleazardd on 10/01/17.
@@ -20,12 +17,6 @@ public class SituationActionAgent extends Agent {
      */
     @Override
     public ObjectView getVisualObject() {
-        ANTLRInputStream in = new ANTLRInputStream("hello");
-
-        ExprLexer exprLexer = new ExprLexer(in);
-        CommonTokenStream tokens = new CommonTokenStream(exprLexer);
-        ExprParser parser = new ExprParser(tokens);
-
         return null;
     }
 
