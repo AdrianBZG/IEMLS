@@ -20,6 +20,9 @@ import util.Tuple;
 import view.EnvironmentView;
 
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 
 
@@ -223,7 +226,39 @@ public class EnvironmentMap {
      * This method saves the map to a file. Is connected with the menu item save map button
      */
     public void saveMap () {
-
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("./maps"));
+        int retrival = chooser.showSaveDialog(null);
+        if (retrival == JFileChooser.APPROVE_OPTION) {
+            try {
+                FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt");
+                fw.write(dimensions.get().getX() + "\n");
+                fw.write(dimensions.get().getY() + "\n");
+                for (int i = 0; i <= dimensions.get().getX(); i++) {
+                    String line = "";
+                    for (int j = 0; j <= dimensions.get().getY(); j++) {
+                        if (get(i, j).isPresent()) {
+                            switch(get(i, j).get().getType()) {
+                                case Obstacle:
+                                    line += "1 ";
+                                    break;
+                                case Resource:
+                                    line += "2 ";
+                                    break;
+                            }
+                        }
+                        else {
+                            line += "0 ";
+                        }
+                    }
+                    line += "\n";
+                    fw.write(line);
+                }
+                fw.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     /**
