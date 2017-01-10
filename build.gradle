@@ -52,6 +52,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.7-M3'
 
+    // https://mvnrepository.com/artifact/org.encog/encog-core/3.3.0
+    compile group: 'org.encog', name: 'encog-core', version: '3.3.0'
+
     antlr "org.antlr:antlr4:4.6"
 }
 

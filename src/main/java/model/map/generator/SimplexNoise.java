@@ -21,15 +21,15 @@ public class SimplexNoise implements IGenerator {
     private short permMod12[] = new short[512];
 
     public SimplexNoise() {
-        calculateRamdonValues();
+        calculateRandomValues();
     }
 
     @Override
     public void newSeed() {
-        calculateRamdonValues();
+        calculateRandomValues();
     }
 
-    private void calculateRamdonValues() {
+    private void calculateRandomValues() {
         Random rand = new Random();
         for(int i=0; i<512; i++)
         {
