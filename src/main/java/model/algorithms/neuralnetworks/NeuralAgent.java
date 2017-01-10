@@ -5,10 +5,8 @@ package model.algorithms.neuralnetworks;
  */
 import model.map.EnvironmentMap;
 import org.encog.ml.data.MLData;
-import org.encog.neural.data.NeuralData;
 import org.encog.neural.data.basic.BasicNeuralData;
 import org.encog.neural.networks.BasicNetwork;
-import org.encog.neural.networks.layers.BasicLayer;
 
 public class NeuralAgent {
 
@@ -16,14 +14,14 @@ public class NeuralAgent {
     private EnvironmentMap environment;
     private int x;
     private int y;
-    NeuralData vision;
+    BasicNeuralData vision;
 
     public NeuralAgent(BasicNetwork brain, EnvironmentMap environment) {
         this.brain = brain;
         this.environment = environment;
         this.x = 0;
         this.y = 0;
-        this.vision = new BasicNeuralData(Constants.VISION_POINTS);
+        this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
     }
 
     public void updateVision() {
@@ -44,20 +42,20 @@ public class NeuralAgent {
         int ySW = y + 1;
 
         // twelve o'clock
-        this.vision.setData(Constants.VISION_POINT_12_OCLOCK, environment
-                .isWall(x, y, Maze.NORTH) ? Constants.HI : Constants.LO);
+        this.vision.setData(NeuralConstants.VISION_POINT_12_OCLOCK, environment
+                .isWall(x, y, Maze.NORTH) ? NeuralConstants.HI : NeuralConstants.LO);
 
         // three o'clock
-        this.vision.setData(Constants.VISION_POINT_3_OCLOCK, environment
-                .isWall(x, y, Maze.EAST) ? Constants.HI : Constants.LO);
+        this.vision.setData(NeuralConstants.VISION_POINT_3_OCLOCK, environment
+                .isWall(x, y, Maze.EAST) ? NeuralConstants.HI : NeuralConstants.LO);
 
         // six o'clock
-        this.vision.setData(Constants.VISION_POINT_6_OCLOCK, environment
-                .isWall(x, y, Maze.SOUTH) ? Constants.HI : Constants.LO);
+        this.vision.setData(NeuralConstants.VISION_POINT_6_OCLOCK, environment
+                .isWall(x, y, Maze.SOUTH) ? NeuralConstants.HI : NeuralConstants.LO);
 
         // nine o'clock
-        this.vision.setData(Constants.VISION_POINT_9_OCLOCK, environment
-                .isWall(x, y, Maze.WEST) ? Constants.HI : Constants.LO);
+        this.vision.setData(NeuralConstants.VISION_POINT_9_OCLOCK, environment
+                .isWall(x, y, Maze.WEST) ? NeuralConstants.HI : NeuralConstants.LO);
     }
 
     public boolean move(int direction) {
@@ -85,11 +83,11 @@ public class NeuralAgent {
     }
 
     private int directionFromIndex(int i) {
-        if (i == Constants.MOTOR_NORTH)
+        if (i == NeuralConstants.MOTOR_NORTH)
             return Maze.NORTH;
-        else if (i == Constants.MOTOR_SOUTH)
+        else if (i == NeuralConstants.MOTOR_SOUTH)
             return Maze.SOUTH;
-        else if (i == Constants.MOTOR_EAST)
+        else if (i == NeuralConstants.MOTOR_EAST)
             return Maze.EAST;
         else
             return Maze.WEST;
