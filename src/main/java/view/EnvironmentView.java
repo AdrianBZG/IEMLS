@@ -22,6 +22,7 @@ import model.object.agent.ExplorerAgent;
 import rx.observables.JavaFxObservable;
 import util.Tuple;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -79,6 +80,20 @@ public class EnvironmentView extends Pane {
         environmentMap.setDimensions(dimX, dimY);
         setup();
     }
+
+    /**
+     * This constructor is used when we load a map from a file
+     */
+    public EnvironmentView (String fileName) throws IOException {
+        createEnvironmentMapByFile(fileName);
+        setup();
+    }
+
+
+    public void setEnvironmentMap (EnvironmentMap map) {
+        this.environmentMap = map;
+    }
+
 
     /**
      * Setup map
@@ -299,6 +314,11 @@ public class EnvironmentView extends Pane {
      */
     public EnvironmentMap getEnvironmentMap() {
         return environmentMap;
+    }
+
+    public void createEnvironmentMapByFile(String fileName) throws IOException {
+        if (environmentMap == null)
+            environmentMap = new EnvironmentMap(fileName);
     }
 
     public double getTileSize() {

@@ -21,8 +21,7 @@ import view.EnvironmentView;
 
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.*;
 
 
@@ -50,7 +49,6 @@ public class EnvironmentMap {
 
     Optional<IGenerator> generator = Optional.empty();
 
-    EnvironmentView mapView = null;
 
     /**
      * Build a empty map
@@ -69,7 +67,58 @@ public class EnvironmentMap {
         generateChunkNoise(Sector.pos(0,0));
     }
 
+    /**
+     * This constructor constructs the map by loading it from a file.
+     * @param fileName containing the map info.
+     */
+    public EnvironmentMap (String fileName) throws IOException {
+        getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
 
+            Integer width = Integer.valueOf(line);
+            line = br.readLine();
+            Integer height = Integer.valueOf(line);
+
+            setDimensions(width, height);
+
+            int column = 0;
+            while (line != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+                line = br.readLine();
+                if (line != null) {
+                    String[] objects = line.split(" ");
+                    System.out.println(objects.length);
+                    if (objects != null) {
+                        for (int row = 0; row < objects.length; row++) {
+                            switch (Integer.valueOf(objects[row])) {
+                                case 1:
+                                    set(column, row, new Block());
+                                    break;
+                                case 2:
+                                    set(column, row, new Resource(50, "Food"));
+                                    break;
+                            }
+                        }
+                    }
+                }
+                column++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            br.close();
+        }
+    }
+
+
+    /**
+     *
+     * @param pos
+     */
     private void generateChunkNoise(Sector pos) {
         if (generator.isPresent()) {
             for (int i = 0; i < CHUNK_SIZE; i++) {
@@ -147,8 +196,6 @@ public class EnvironmentMap {
             }
             object.setPosition((new Tuple<>(x, y)));
             chunk.set(Math.abs(x % CHUNK_SIZE), Math.abs(y % CHUNK_SIZE), object);
-            if (mapView != null)
-                mapView.paintEnvironmentMap();
         }
     }
 
@@ -212,6 +259,10 @@ public class EnvironmentMap {
 
     public Optional<Tuple<Integer, Integer>> getDimensions() {
         return dimensions;
+    }
+
+    public void setDimensions (Tuple<Integer, Integer> dim) {
+        this.dimensions = Optional.of(dim);
     }
 
     public void setDimensions(int x, int y) {
