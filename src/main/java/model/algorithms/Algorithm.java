@@ -5,6 +5,7 @@ import model.algorithms.AStar.AStar;
 import model.algorithms.AStar.LRTAStar;
 import model.algorithms.AStar.RTAStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
+import model.algorithms.swarm_aco.AntColonyOptimization;
 import model.object.agent.Agent;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public abstract class Algorithm implements Cloneable {
      */
     private static ArrayList<Algorithm> explorationAlgorithms = new ArrayList<>();
     private static ArrayList<Algorithm> collectionAlgorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> swarmAlgorithms = new ArrayList<>();
 
     static {
         explorationAlgorithms.add(new CustomExplorer());
@@ -37,6 +39,8 @@ public abstract class Algorithm implements Cloneable {
         collectionAlgorithms.add(new AStar());
         collectionAlgorithms.add(new RTAStar());
         collectionAlgorithms.add(new LRTAStar());
+
+        swarmAlgorithms.add(new AntColonyOptimization());
     }
 
     public static ArrayList<Algorithm> getExplorationAlgorithms() {
@@ -45,6 +49,10 @@ public abstract class Algorithm implements Cloneable {
 
     public static ArrayList<Algorithm> getCollectionAlgorithms() {
         return collectionAlgorithms;
+    }
+
+    public static ArrayList<Algorithm> getSwarmAlgorithms() {
+        return swarmAlgorithms;
     }
 
     /**
