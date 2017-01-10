@@ -21,6 +21,15 @@ public class SimplexNoise implements IGenerator {
     private short permMod12[] = new short[512];
 
     public SimplexNoise() {
+        calculateRamdonValues();
+    }
+
+    @Override
+    public void newSeed() {
+        calculateRamdonValues();
+    }
+
+    private void calculateRamdonValues() {
         Random rand = new Random();
         for(int i=0; i<512; i++)
         {
@@ -28,7 +37,6 @@ public class SimplexNoise implements IGenerator {
             permMod12[i] = (short)(perm[i] % 12);
         }
     }
-
 
     // This method is a *lot* faster than using (int)Math.floor(x)
     private int fastfloor(double x) {

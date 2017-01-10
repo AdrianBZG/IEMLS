@@ -116,8 +116,10 @@ public class Controller implements Initializable {
      * TODO: Reset change seed in noiseChoose to don't repeat map
      */
     public void generateMap() {
+        IGenerator selectedItem = noiseChoose.getSelectionModel().getSelectedItem();
+        selectedItem.newSeed();
         if (xDim.getText().equals("") && yDim.getText().equals("")) {
-            environmentView = new EnvironmentView(noiseChoose.getSelectionModel().getSelectedItem());
+            environmentView = new EnvironmentView(selectedItem);
             centralPane.setCenter(environmentView);
         }
         else {

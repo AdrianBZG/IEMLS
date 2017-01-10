@@ -17,6 +17,11 @@ public class VoronoiNoise implements IGenerator {
     public VoronoiNoise() {
     }
 
+    @Override
+    public void newSeed() {
+        seed = new Random().nextInt();
+    }
+
     private double getDistance(double xDist, double zDist) {
         switch(distanceMethod) {
             case 0:

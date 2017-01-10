@@ -17,4 +17,6 @@ public interface IGenerator {
 
     String getGeneratorName();
 
+    void newSeed();
+
 }

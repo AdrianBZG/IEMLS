@@ -7,6 +7,9 @@ public class NullNoise implements IGenerator {
     }
 
     @Override
+    public void newSeed() {}
+
+    @Override
     public double generateAtPoint(double x, double y) {
         return 0.0;
     }

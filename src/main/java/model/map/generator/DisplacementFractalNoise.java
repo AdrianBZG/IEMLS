@@ -3,7 +3,6 @@ package model.map.generator;
 import java.util.Random;
 
 /**
- * Created by eleazardd on 9/11/16.
  * Taken from a Stefan Gustavson gist
  *
  * TODO: Improve
@@ -21,6 +20,15 @@ public class DisplacementFractalNoise implements IGenerator {
     private short permMod12[] = new short[512];
 
     public DisplacementFractalNoise() {
+        calculateRamdonValues();
+    }
+
+    @Override
+    public void newSeed() {
+        calculateRamdonValues();
+    }
+
+    private void calculateRamdonValues() {
         Random rand = new Random();
         for(int i=0; i<512; i++)
         {
