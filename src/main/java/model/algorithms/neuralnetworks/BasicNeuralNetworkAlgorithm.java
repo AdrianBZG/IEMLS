@@ -13,7 +13,7 @@ import org.encog.neural.networks.BasicNetwork;
 import util.Directions;
 import util.Position;
 
-public class NeuralNetworkAlgorithm extends Algorithm {
+public class BasicNeuralNetworkAlgorithm extends Algorithm {
 
     private BasicNetwork brain;
     private Agent agent;
@@ -22,7 +22,7 @@ public class NeuralNetworkAlgorithm extends Algorithm {
     private int y;
     BasicNeuralData vision;
 
-    public NeuralNetworkAlgorithm(BasicNetwork brain) {
+    public BasicNeuralNetworkAlgorithm(BasicNetwork brain) {
         this.brain = brain;
         this.environment = agent.getMap();
         this.x = 0;
@@ -174,12 +174,12 @@ public class NeuralNetworkAlgorithm extends Algorithm {
 
     @Override
     public String toString() {
-        return "Neural Network";
+        return "Basic Neural Network";
     }
 
     @Override
     public Algorithm clone() {
-        return new NeuralNetworkAlgorithm(this.brain);
+        return new BasicNeuralNetworkAlgorithm(this.brain);
     }
 
     @Override

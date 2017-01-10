@@ -5,7 +5,6 @@ package model.algorithms.neuralnetworks;
  */
 import model.map.EnvironmentMap;
 import model.object.Resource;
-import model.object.TypeObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ public class EvaluateAgent {
 
     private List<EnvironmentMap> maps = new ArrayList<>();
 
-    public EvaluateAgent(NeuralNetworkAlgorithm agent, int size)
+    public EvaluateAgent(BasicNeuralNetworkAlgorithm agent, int size)
     {
         for(int i=0;i<size;i++)
         {
@@ -25,7 +24,7 @@ public class EvaluateAgent {
         }
     }
 
-    public int evaluate(NeuralNetworkAlgorithm agent)
+    public int evaluate(BasicNeuralNetworkAlgorithm agent)
     {
         int score = 0;
 
