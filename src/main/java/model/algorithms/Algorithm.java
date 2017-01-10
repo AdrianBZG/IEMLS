@@ -19,10 +19,11 @@ public abstract class Algorithm implements Cloneable {
     /**
      * All available algorithms
      */
-    private static ArrayList<Algorithm> algorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> explorationAlgorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> collectionAlgorithms = new ArrayList<>();
 
     static {
-        algorithms.add(new CustomExplorer());
+        explorationAlgorithms.add(new CustomExplorer());
 
         /* Genetic algorithm for explorer using the follow default parameters:
             - 100 Population size
@@ -31,14 +32,19 @@ public abstract class Algorithm implements Cloneable {
             - 2 ElitismCount
             - 10 Tournament size
          */
-        algorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
-        algorithms.add(new AStar());
-        algorithms.add(new RTAStar());
-        algorithms.add(new LRTAStar());
+        explorationAlgorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
+
+        collectionAlgorithms.add(new AStar());
+        collectionAlgorithms.add(new RTAStar());
+        collectionAlgorithms.add(new LRTAStar());
     }
 
-    public static ArrayList<Algorithm> getAlgorithms() {
-        return algorithms;
+    public static ArrayList<Algorithm> getExplorationAlgorithms() {
+        return explorationAlgorithms;
+    }
+
+    public static ArrayList<Algorithm> getCollectionAlgorithms() {
+        return collectionAlgorithms;
     }
 
     /**

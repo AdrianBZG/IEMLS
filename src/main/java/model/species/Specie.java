@@ -1,25 +1,16 @@
 package model.species;
 
-import controller.ConfigurationController;
-import controller.SpeciesController;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import model.object.agent.Agent;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import view.ErrorView;
-import view.SpecieItemView;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class Specie implements Cloneable {
 
