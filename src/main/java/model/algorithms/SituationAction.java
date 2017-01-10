@@ -1,6 +1,7 @@
 package model.algorithms;
 
 import model.object.agent.Agent;
+import util.Directions;
 
 /**
  * TODO: Document it
@@ -45,5 +46,10 @@ public class SituationAction extends Algorithm {
     @Override
     public int getAlgorithmType() {
         return 0;
+    }
+
+    public boolean isVisited(Directions directions) {
+        // TODO:
+        return false;
     }
 }

@@ -3,8 +3,8 @@ package model.object.agent;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import view.ObjectView.ObjectView;
-import model.Expr.ExprLexer;
-import model.Expr.ExprParser;
+import model.dsl.Expr.ExprLexer;
+import model.dsl.Expr.ExprParser;
 /**
  * TODO: Document it
  * Created by eleazardd on 10/01/17.
