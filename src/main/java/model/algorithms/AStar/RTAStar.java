@@ -16,7 +16,7 @@ import java.util.Comparator;
 /**
  * Created by rudy on 6/01/17.
  */
-public class AStar extends Algorithm {
+public class RTAStar extends Algorithm {
         // Amount of debug output 0, 1, 2.
         private int verbose = 0;
         // The maximum number of completed nodes. After that number the algorithm returns null.
@@ -35,9 +35,14 @@ public class AStar extends Algorithm {
         private boolean objectiveSet = false;
 
         private ArrayList<ISearchNode> path = new ArrayList<>();
+
         private int movement = 1;
 
-        public AStar() {
+        private GoalPosition goal;
+
+        private boolean needToRecalculate = true;
+
+        public RTAStar() {
         }
 
         /**
@@ -182,32 +187,27 @@ public class AStar extends Algorithm {
     @Override
     public void update(Agent agent) {
         if (this.agent != null) {
-            GoalPosition goal;
-            if (!objectiveSet && AgentsManager.existsExplorers()) {
-
-                ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
-                if (randomExplorer.getResources().size() > 0) {
-                    goal = new GoalPosition(randomExplorer.getLastResource().getPosition());
-                    if (goal != null && goal.isValidPos()) {
-                        objectiveSet = true;
+            if (needToRecalculate && AgentsManager.existsExplorers()) {
+                if(goal == null) {
+                    ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
+                    if (randomExplorer.getResources().size() > 0) {
+                        goal = new GoalPosition(randomExplorer.getLastResource().getPosition());
+                    }
+                } else {
+                    if(goal.isValidPos()) {
+                        needToRecalculate = false;
                         IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
                         path = shortestPath(initialPos, goal);
                         movement = 0;
-                    } else {
-                        System.out.println("Aun no se ha recolectado ningun recurso");
                     }
-
                 }
-
-            } else if (path != null && movement < path.size()) {
+            } else if (path != null && !needToRecalculate && movement < path.size()) {
                 Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement++)).getPosition();
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
                 agent.move (dir);
                 agent.getMap().removeAt(agent);
-                //System.out.println("Path size: " + path.size() + " while movement: " + movement);
                 if (path.size() == movement) {
-                  //  System.out.println("Limit path");
-                    objectiveSet = false;   // Lets go to another goal.
+                    goal = null;
                 }
             }
         } else {
@@ -222,12 +222,12 @@ public class AStar extends Algorithm {
 
     @Override
     public String toString() {
-        return "A*";
+        return "RTA*";
     }
 
     @Override
     public Algorithm clone() {
-        return new AStar();
+        return new RTAStar();
     }
 
     @Override
