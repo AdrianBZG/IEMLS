@@ -72,6 +72,7 @@ public class EnvironmentMap {
      * @param fileName containing the map info.
      */
     public EnvironmentMap (String fileName) throws IOException {
+        getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         try {
             StringBuilder sb = new StringBuilder();
@@ -95,10 +96,10 @@ public class EnvironmentMap {
                         for (int row = 0; row < objects.length; row++) {
                             switch (Integer.valueOf(objects[row])) {
                                 case 1:
-                                    set(row, column, new Block());
+                                    set(column, row, new Block());
                                     break;
                                 case 2:
-                                    set(row, column, new Resource(50, "Food"));
+                                    set(column, row, new Resource(50, "Food"));
                                     break;
                             }
                         }
