@@ -1,6 +1,5 @@
 package model.object.agent;
 
-import controller.PerceptionActionAgentController;
 import controller.SwarmNestConfigurationController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,19 +10,18 @@ import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
 import view.ErrorView;
 import view.ObjectView.ObjectView;
-import view.ObjectView.PAAgent;
-import view.ObjectView.SwarmAgent;
+import view.ObjectView.SwarmAgentView;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class SWRAgent extends Agent {
+public class SwarmAgent extends Agent {
 
 
-    public SWRAgent() {
+    public SwarmAgent() {
     }
 
-    public SWRAgent(SWRAgent swarmAgent) {
+    public SwarmAgent(SwarmAgent swarmAgent) {
 
     }
 
@@ -35,7 +33,7 @@ public class SWRAgent extends Agent {
      */
     @Override
     public ObjectView getVisualObject() {
-        return new SwarmAgent();
+        return new SwarmAgentView();
     }
 
     /**

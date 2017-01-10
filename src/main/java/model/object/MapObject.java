@@ -9,7 +9,6 @@ package model.object;
 import model.object.agent.*;
 import util.Tuple;
 import view.ObjectView.ObjectView;
-import view.ObjectView.SwarmAgent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public abstract class MapObject implements Cloneable {
                 new ExplorerAgent(),
                 new CollectorAgent(),
                 new PerceptionActionAgent(),
-                new SWRAgent()));
+                new SwarmAgent()));
     }
 
     /**

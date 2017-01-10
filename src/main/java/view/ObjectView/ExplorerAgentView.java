@@ -8,6 +8,8 @@ package view.ObjectView;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import org.kordamp.ikonli.fontawesome.FontAwesome;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Defines visual aspect of a agent with different showOptions to change in function of type of agent
@@ -30,7 +32,12 @@ public class ExplorerAgentView extends ObjectView {
         right.setTranslateX(-10);
         right.setTranslateY(-10);
         right.setFill(Color.BLUE);
-        getChildren().addAll(right);
+
+        FontIcon icon = new FontIcon(FontAwesome.SEARCH);
+        icon.setIconSize(16);
+        icon.setTranslateX(-16.5);
+        icon.setTranslateY(-6);
+        getChildren().addAll(right, icon);
     }
 
 }

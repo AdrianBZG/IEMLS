@@ -9,9 +9,9 @@ import org.kordamp.ikonli.javafx.FontIcon;
  * Perception-Action view
  * Created by eleazardd on 9/01/17.
  */
-public class SwarmAgent extends ObjectView {
+public class SwarmAgentView extends ObjectView {
 
-    public SwarmAgent() {
+    public SwarmAgentView() {
         Circle right = new Circle(10);
         right.setTranslateX(-10);
         right.setTranslateY(-10);

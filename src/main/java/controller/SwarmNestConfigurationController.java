@@ -3,13 +3,11 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import model.algorithms.Algorithm;
 import model.species.Specie;
-import org.fxmisc.flowless.VirtualizedScrollPane;
-import view.ScriptEditorView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,7 +21,11 @@ public class SwarmNestConfigurationController implements Initializable {
     public ChoiceBox choiceSpecie;
 
     @FXML
-    public VBox vBoxScript;
+    public TitledPane titledPane1;
+
+    public Spinner<Integer> agentsNumberSpinner = new Spinner<>(2,10,2);
+
+    public Spinner<Integer> spawnRadiusSpinner = new Spinner<>(1,5,1);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -33,9 +35,16 @@ public class SwarmNestConfigurationController implements Initializable {
         choiceSpecie.setItems(FXCollections.observableArrayList(Specie.getSpecies()));
         choiceSpecie.getSelectionModel().selectFirst();
 
-        VirtualizedScrollPane virtualizedScrollPane = new VirtualizedScrollPane<>(new ScriptEditorView());
-        VBox.setVgrow(virtualizedScrollPane, Priority.ALWAYS);
-        vBoxScript.getChildren().add(virtualizedScrollPane);
+        GridPane grid = new GridPane();
+        grid.setVgap(4);
+        grid.setPadding(new Insets(5,5,5,5));
+        grid.add(new Label("Number of swarm agents for this nest: "),0,0);
+        grid.add(agentsNumberSpinner,1,0);
+        grid.add(new Label("Spawn Radius: "),0,1);
+        grid.add(spawnRadiusSpinner,1,1);
+
+        titledPane1.setContent(grid);
+
     }
 
     public Algorithm getAlgorithm() {
