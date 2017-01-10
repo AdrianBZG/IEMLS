@@ -2,6 +2,7 @@ package model.algorithms;
 
 import javafx.scene.Node;
 import model.algorithms.AStar.AStar;
+import model.algorithms.AStar.LRTAStar;
 import model.algorithms.AStar.RTAStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
 import model.object.agent.Agent;
@@ -33,6 +34,7 @@ public abstract class Algorithm implements Cloneable {
         algorithms.add(new ExplorerGeneticAlgorithm(100, 0.05, 0.9, 2, 10));
         algorithms.add(new AStar());
         algorithms.add(new RTAStar());
+        algorithms.add(new LRTAStar());
     }
 
     public static ArrayList<Algorithm> getAlgorithms() {
