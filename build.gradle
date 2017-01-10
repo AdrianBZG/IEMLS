@@ -1,6 +1,6 @@
 
 apply plugin: 'java'
-
+apply plugin: 'antlr'
 
 task runApp(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
@@ -33,9 +33,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.moeaframework/moeaframework
     compile group: 'org.moeaframework', name: 'moeaframework', version: '2.11'
 
-    // https://mvnrepository.com/artifact/es.usc.citius.hipster/hipster-all
-    compile group: 'es.usc.citius.hipster', name: 'hipster-all', version: '1.0.1'
-
     // https://mvnrepository.com/artifact/io.reactivex/rxjavafx
     compile group: 'io.reactivex', name: 'rxjavafx', version: '0.2.0'
 
@@ -54,4 +51,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx
     compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.7-M3'
+
+    antlr "org.antlr:antlr4:4.6"
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ["-visitor", "-long-messages"]
 }

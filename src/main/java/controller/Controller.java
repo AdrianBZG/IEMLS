@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import model.AgentsManager;
 import model.map.generator.*;
 import model.object.Block;
@@ -23,6 +24,7 @@ import view.CellAgentView;
 import view.CellObjectView;
 import view.EnvironmentView;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -80,7 +82,6 @@ public class Controller implements Initializable {
         noiseChoose.getSelectionModel().selectFirst();
 
         new Specie("Default specie");
-
     }
 
 
