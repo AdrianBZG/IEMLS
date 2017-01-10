@@ -14,4 +14,5 @@ public enum TypeObject {
     Agent,
     Resource,
     Obstacle,
+    Empty,
 }

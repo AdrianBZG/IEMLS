@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import model.algorithms.PerceptionAction;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
+import util.Directions;
 import view.ErrorView;
 import view.ObjectView.ObjectView;
 import view.ObjectView.PAAgent;
@@ -23,6 +25,7 @@ public class PerceptionActionAgent extends Agent {
 
 
     public PerceptionActionAgent() {
+        setAlgorithm(new PerceptionAction());
     }
 
     public PerceptionActionAgent(PerceptionActionAgent perceptionActionAgent) {
@@ -80,6 +83,9 @@ public class PerceptionActionAgent extends Agent {
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
                     PerceptionActionAgentController configurationController = fxmlLoader.getController();
+                    for (PerceptionActionAgentController.PerceptionRule rule : configurationController.tableContent) {
+                        ((PerceptionAction) getAlgorithm()).addRule(rule.getLeft(), rule.getRight(), rule.getUp(), rule.getDown(), Directions.valueOf(rule.getAction()));
+                    }
                     return null;
                 }
                 return null;

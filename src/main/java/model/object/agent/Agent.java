@@ -10,6 +10,7 @@ import util.Position;
 import util.Tuple;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Created by adrian on 8/01/17.
@@ -131,64 +132,64 @@ public abstract class Agent extends MapObject {
      * Get left element of agent
      * @return
      */
-    public MapObject left() {
-        return map.get(getPosition().getX() - 1, getPosition().getY()).get();
+    public Optional<MapObject> left() {
+        return map.get(getPosition().getX() - 1, getPosition().getY());
     }
 
     /**
      * Get right element of agent
      * @return
      */
-    public MapObject right() {
-        return map.get(getPosition().getX() + 1, getPosition().getY()).get();
+    public Optional<MapObject> right() {
+        return map.get(getPosition().getX() + 1, getPosition().getY());
     }
 
     /**
      * Get down element of agent
      * @return
      */
-    public MapObject down() {
-        return map.get(getPosition().getX(), getPosition().getY() + 1).get();
+    public Optional<MapObject> down() {
+        return map.get(getPosition().getX(), getPosition().getY() + 1);
     }
 
     /**
      * Get up element of agent
      * @return
      */
-    public MapObject up() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
+    public Optional<MapObject> up() {
+        return map.get(getPosition().getX() - 1, getPosition().getY() - 1);
     }
 
     /**
      * Get up left corner element of agent
      * @return
      */
-    public MapObject upLeft() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() - 1).get();
+    public Optional<MapObject> upLeft() {
+        return map.get(getPosition().getX() - 1, getPosition().getY() - 1);
     }
 
     /*
      * Get up right corner element of agent
      * @return
      */
-    public MapObject upRight() {
-        return map.get(getPosition().getX() + 1, getPosition().getY() - 1).get();
+    public Optional<MapObject> upRight() {
+        return map.get(getPosition().getX() + 1, getPosition().getY() - 1);
     }
 
     /**
      * Get up down right corner element of agent
      * @return
      */
-    public MapObject downRight() {
-        return map.get(getPosition().getX() + 1, getPosition().getY() + 1).get();
+    public Optional<MapObject> downRight() {
+        return map.get(getPosition().getX() + 1, getPosition().getY() + 1);
     }
 
     /**
      * Get down left corner element of agent
      * @return
      */
-    public MapObject downLeft() {
-        return map.get(getPosition().getX() - 1, getPosition().getY() + 1).get();
+    public Optional<MapObject> downLeft() {
+        return map.get(getPosition().getX() - 1, getPosition().getY() + 1);
     }
 
     @Override

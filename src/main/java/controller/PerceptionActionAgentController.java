@@ -48,7 +48,7 @@ public class PerceptionActionAgentController implements Initializable {
     @FXML
     TableColumn delColumn;
 
-    ObservableList<PerceptionRule> tableContent = FXCollections.observableArrayList();
+    public ObservableList<PerceptionRule> tableContent = FXCollections.observableArrayList();
 
     public class PerceptionRule {
         private final SimpleStringProperty left;
@@ -57,7 +57,7 @@ public class PerceptionActionAgentController implements Initializable {
         private final SimpleStringProperty down;
         private final SimpleStringProperty action;
 
-        private PerceptionRule(String left, String right, String up, String down, String action) {
+        public PerceptionRule(String left, String right, String up, String down, String action) {
             this.left = new SimpleStringProperty(left);
             this.right = new SimpleStringProperty(right);
             this.up = new SimpleStringProperty(up);
