@@ -226,7 +226,6 @@ public class EnvironmentMap {
      * This method saves the map to a file. Is connected with the menu item save map button
      */
     public void saveMap () {
-        String sb = "TEST CONTENT";
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new File("./maps"));
         int retrival = chooser.showSaveDialog(null);
@@ -255,7 +254,6 @@ public class EnvironmentMap {
                     line += "\n";
                     fw.write(line);
                 }
-                fw.write(sb);
                 fw.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
