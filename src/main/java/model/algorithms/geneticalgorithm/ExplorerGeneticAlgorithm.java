@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ExplorerGeneticAlgorithm extends Algorithm {
     public static int maxGenerations = 50;
 
-    private ExplorerAgent agent = null;
+    private Agent agent = null;
     Directions lastDirection = null;
 
     private int populationSize;
@@ -64,7 +64,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
      *            the individual to evaluate
      * @return double The fitness value for individual
      */
-    public double calcFitness(Individual individual, EnvironmentMap map, ExplorerAgent agent) {
+    public double calcFitness(Individual individual, EnvironmentMap map, Agent agent) {
         int score = 0;
 
         // Loop over route and score each move
@@ -249,8 +249,7 @@ public class ExplorerGeneticAlgorithm extends Algorithm {
      */
     @Override
     public void start(Agent agent) {
-        ExplorerAgent castedAgent = (ExplorerAgent)agent;
-        this.agent = castedAgent;
+        this.agent = agent;
     }
 
     /**

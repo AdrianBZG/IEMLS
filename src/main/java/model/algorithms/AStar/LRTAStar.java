@@ -25,7 +25,7 @@ public class LRTAStar extends Algorithm {
         // Number of search steps the AStar will perform before null is returned.
         private int numSearchSteps;
 
-        private ExplorerAgent agent;
+        private Agent agent;
         private EnvironmentMap map;
 
         public ISearchNode bestNodeAfterSearch;
@@ -176,9 +176,8 @@ public class LRTAStar extends Algorithm {
 
     @Override
     public void start(Agent agent) {
-        ExplorerAgent castedAgent = (ExplorerAgent)agent;
-        this.agent = castedAgent;
-        map = castedAgent.getMap();
+        this.agent = agent;
+        map = agent.getMap();
     }
 
     public void setObjective (Tuple<Integer, Integer> objective) {
@@ -207,7 +206,7 @@ public class LRTAStar extends Algorithm {
                 Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement)).getPosition();
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
                 agent.move (dir);
-                agent.getMap().removeAt(nextPos);
+                agent.getMap().removeAt(agent);
                 needToRecalculate = true;
                 if (agent.getPosition().getX() == goal.getX() && agent.getPosition().getY() == goal.getY()) {
                     goal = null;

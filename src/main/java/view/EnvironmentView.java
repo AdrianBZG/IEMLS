@@ -248,14 +248,13 @@ public class EnvironmentView extends Pane {
      */
     public void paintAgents() {
         for (Agent agent : getAgentsManager().getAgents()) {
-            ExplorerAgent castedAgent = (ExplorerAgent)agent;
             Node node = agent.getVisualObject();
             Scale scale = new Scale();
             scale.setX(getZoom());
             scale.setY(getZoom());
             node.getTransforms().add(scale);
-            node.setTranslateX(-getTranslation().getX() + castedAgent.getPosition().getX() * getTileSize());
-            node.setTranslateY(-getTranslation().getY() + castedAgent.getPosition().getY() * getTileSize());
+            node.setTranslateX(-getTranslation().getX() + agent.getPosition().getX() * getTileSize());
+            node.setTranslateY(-getTranslation().getY() + agent.getPosition().getY() * getTileSize());
             getChildren().add(node);
         }
     }

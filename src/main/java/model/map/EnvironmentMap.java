@@ -170,12 +170,11 @@ public class EnvironmentMap {
      * @param agent
      */
     public void removeAt (Agent agent) {
-        ExplorerAgent castedAgent = (ExplorerAgent)agent;
-        get(castedAgent.getPosition()).ifPresent(mapObject -> {
+        get(agent.getPosition()).ifPresent(mapObject -> {
             if (mapObject.getType() == TypeObject.Resource) {
-                castedAgent.addResource((Resource)mapObject);
-                if (agent.getAlgorithm().toString() == "A*")
-                    removeAt(castedAgent.getPosition().getX(), castedAgent.getPosition().getY());
+                agent.addResource((Resource)mapObject);
+                if (agent.getAlgorithm().toString() == "A*" || agent.getAlgorithm().toString() == "RTA*" || agent.getAlgorithm().toString() == "LRTA*")
+                    removeAt(agent.getPosition().getX(), agent.getPosition().getY());
             }
         });
     }

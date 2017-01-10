@@ -38,21 +38,20 @@ public class CustomExplorer extends Algorithm {
 
 
         if (this.agent != null) {
-            ExplorerAgent castedAgent = (ExplorerAgent)agent;
             boolean firstStep = lastDirection == null;
             boolean mustChangeAction = false;
 
             Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
-            EnvironmentMap map = castedAgent.getMap();
+            EnvironmentMap map = agent.getMap();
 
-            ArrayList<Directions> allowedActions = castedAgent.getAllowedActions();
+            ArrayList<Directions> allowedActions = agent.getAllowedActions();
             ArrayList<Directions> resources = new ArrayList<>();
 
 
             for (Directions dir : Directions.values())
                 // Check if the agent is next to a resource in the given direction.
-                map.get(Position.getInDirection(castedAgent.getPosition(), dir)).ifPresent(mapObject -> {
-                            if (mapObject.getType().equals(TypeObject.Resource) && !agent.containsVisitedPoint(Position.getInDirection(castedAgent.getPosition(), dir))) {
+                map.get(Position.getInDirection(agent.getPosition(), dir)).ifPresent(mapObject -> {
+                            if (mapObject.getType().equals(TypeObject.Resource) && !agent.containsVisitedPoint(Position.getInDirection(agent.getPosition(), dir))) {
                                 resources.add(dir);
                             }
                         }
@@ -64,7 +63,7 @@ public class CustomExplorer extends Algorithm {
             } else {
                 Integer action = (int) (Math.random() * allowedActions.size());
                 if (!firstStep && action < ((0.6) * allowedActions.size())) {  // 75 % to take the same action as previous step.
-                    if (castedAgent.checkAllowedPos(Position.getInDirection(castedAgent.getPosition(), lastDirection))) {
+                    if (agent.checkAllowedPos(Position.getInDirection(agent.getPosition(), lastDirection))) {
                         //System.out.println("Same action like before " + lastDirection);
                         nextAction = lastDirection;
                     } else {
@@ -79,7 +78,7 @@ public class CustomExplorer extends Algorithm {
             }
 
             lastDirection = nextAction;
-            castedAgent.move(nextAction);
+            agent.move(nextAction);
             map.removeAt(agent);
         }
         else {
