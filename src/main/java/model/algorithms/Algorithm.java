@@ -23,6 +23,7 @@ public abstract class Algorithm implements Cloneable {
     private static ArrayList<Algorithm> explorationAlgorithms = new ArrayList<>();
     private static ArrayList<Algorithm> collectionAlgorithms = new ArrayList<>();
     private static ArrayList<Algorithm> swarmAlgorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> neuralAlgorithms = new ArrayList<>();
 
     static {
         explorationAlgorithms.add(new CustomExplorer());
@@ -53,6 +54,10 @@ public abstract class Algorithm implements Cloneable {
 
     public static ArrayList<Algorithm> getSwarmAlgorithms() {
         return swarmAlgorithms;
+    }
+
+    public static ArrayList<Algorithm> getNeuralAlgorithms() {
+        return neuralAlgorithms;
     }
 
     /**

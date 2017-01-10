@@ -19,14 +19,14 @@ public class NeuralAgentFactory {
         network.getStructure().finalizeStructure();
         network.reset();
 
-        NeuralNetworkAlgorithm agent = new NeuralNetworkAlgorithm(network,map);
+        NeuralNetworkAlgorithm agent = new NeuralNetworkAlgorithm(network);
         return agent;
     }
 
     public static NeuralNetworkAlgorithm generateSmartMouse(EnvironmentMap map)
     {
         NeuralNetworkAlgorithm agent = NeuralAgentFactory.generateMouse(map);
-        EvaluateAgent eval = new EvaluateAgent(10);
+        EvaluateAgent eval = new EvaluateAgent(agent, 10);
         for(;;)
         {
             agent.getBrain().reset();

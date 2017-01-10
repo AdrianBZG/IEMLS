@@ -76,7 +76,7 @@ public class NeuralAgent extends Agent {
         dialog.getDialogPane().getButtonTypes().addAll(applyChanges, ButtonType.CANCEL);
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("SwarmNestConfiguration.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("NeuralNetworkAgentConfiguration.fxml"));
             Parent root = fxmlLoader.load();
             dialog.getDialogPane().setContent(root);
             dialog.setResultConverter(dialogButton -> {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NeuralNetworkAgentConfigurationController">
+   <children>
+      <Accordion VBox.vgrow="ALWAYS">
+        <panes>
+          <TitledPane animated="false" text="Select the neural network based algorithm">
+            <content>
+                  <BorderPane>
+                     <top>
+                        <ChoiceBox fx:id="choiceNeuralNetworkAlgorithm" prefWidth="150.0" BorderPane.alignment="CENTER" />
+                     </top>
+                  </BorderPane>
+            </content>
+          </TitledPane>
+            <TitledPane fx:id="titledPane1" animated="false" text="Neural network properties">
+                <content>
+                </content>
+          </TitledPane>
+            <TitledPane animated="false" text="Species Management">
+                <content>
+                    <BorderPane>
+                        <top>
+                            <ChoiceBox fx:id="choiceSpecie" prefWidth="150.0" BorderPane.alignment="CENTER" />
+                        </top>
+                    </BorderPane>
+                </content>
+            </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+</VBox>
