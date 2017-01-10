@@ -31,22 +31,6 @@ public class NeuralNetworkAlgorithm extends Algorithm {
     }
 
     public void updateVision() {
-        // North-East Corner
-        int xNE = x + 1;
-        int yNE = y - 1;
-
-        // North-West Corner
-        int xNW = x - 1;
-        int yNW = y - 1;
-
-        // South-East Corner
-        int xSE = x + 1;
-        int ySE = y + 1;
-
-        // South-West Corner
-        int xSW = x - 1;
-        int ySW = y + 1;
-
         // twelve o'clock
         boolean wallNorth = false;
         if(environment.get(Position.getInDirection(agent.getPosition(), Directions.UP)) != null) {
@@ -177,7 +161,7 @@ public class NeuralNetworkAlgorithm extends Algorithm {
     @Override
     public void update(Agent agent) {
         if (this.agent != null) {
-
+            autonomousMoveDirection();
         } else {
             start(agent);
         }
