@@ -6,6 +6,7 @@
 
 package model.object.agent;
 
+import controller.CollectorConfigurationController;
 import controller.ExplorerConfigurationController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -137,8 +138,8 @@ public class CollectorAgent extends Agent {
             dialog.getDialogPane().setContent(root);
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
-                    ExplorerConfigurationController explorerConfigurationController = fxmlLoader.getController();
-                    setAlgorithm(explorerConfigurationController.getAlgorithm());
+                    CollectorConfigurationController configurationController = fxmlLoader.getController();
+                    setAlgorithm(configurationController.getAlgorithm());
                     return null;
                 }
                 return null;
