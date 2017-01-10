@@ -9,7 +9,7 @@ import org.encog.neural.networks.layers.BasicLayer;
 
 public class NeuralAgentFactory {
 
-    public static NeuralAgent generateMouse(EnvironmentMap map)
+    public static NeuralNetworkAlgorithm generateMouse(EnvironmentMap map)
     {
         BasicNetwork network = new BasicNetwork();
         network.addLayer(new BasicLayer(NeuralConstants.INPUT_NEURON_COUNT));
@@ -19,13 +19,13 @@ public class NeuralAgentFactory {
         network.getStructure().finalizeStructure();
         network.reset();
 
-        NeuralAgent agent = new NeuralAgent(network,map);
+        NeuralNetworkAlgorithm agent = new NeuralNetworkAlgorithm(network,map);
         return agent;
     }
 
-    public static NeuralAgent generateSmartMouse(EnvironmentMap map)
+    public static NeuralNetworkAlgorithm generateSmartMouse(EnvironmentMap map)
     {
-        NeuralAgent agent = NeuralAgentFactory.generateMouse(map);
+        NeuralNetworkAlgorithm agent = NeuralAgentFactory.generateMouse(map);
         EvaluateAgent eval = new EvaluateAgent(10);
         for(;;)
         {

@@ -24,7 +24,7 @@ public class EvaluateAgent {
         }
     }
 
-    public int evaluate(NeuralAgent agent)
+    public int evaluate(NeuralNetworkAlgorithm agent)
     {
         int score = 0;
 
