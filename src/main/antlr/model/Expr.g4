@@ -8,15 +8,19 @@ grammar Expr;
     package model.Expr;
 }
 
-add
-    :    NUMBER PLUS NUMBER
-    ;
+expresion
+:
+    expresion AND expresion
+    | expresion OR expresion
+    | NOT expresion
+;
 
-NUMBER
-    :    ('0'..'9')+
-    ;
 
-PLUS
-    :    ('+')
-    ;
+AND
+:
+    'and' | '&&' | '&'
+;
 
+OR
+:
+    'or' | '||' | '|'
