@@ -69,6 +69,14 @@ public class SituationActionController implements Initializable {
             return action;
         }
 
+        public void setExpression(String expression) {
+            this.expression.set(expression);
+        }
+
+        public void setAction(String action) {
+            this.action.set(action);
+        }
+
         /**
          * Get a IEval item from a rule string
          * @return
@@ -85,6 +93,32 @@ public class SituationActionController implements Initializable {
             return Directions.valueOf(action.get());
         }
     }
+
+
+    private class ChoiceCell extends TableCell<SituationRule, String> {
+        final ChoiceBox<Directions> cellChoice = new ChoiceBox<>(FXCollections.observableArrayList(Directions.values()));
+
+        ChoiceCell() {
+            cellChoice.getSelectionModel().selectFirst();
+            cellChoice.setOnAction(actionEvent -> {
+                tableContent.get(getIndex()).setAction(cellChoice.getSelectionModel().getSelectedItem().toString());
+            });
+        }
+
+        //Display button if the row is not empty
+        @Override
+        protected void updateItem(String t, boolean empty) {
+            super.updateItem(t, empty);
+            if(!empty && t != null){
+                cellChoice.getSelectionModel().select(Directions.valueOf(t));
+                setGraphic(cellChoice);
+            }
+            else{
+                setGraphic(null);
+            }
+        }
+    }
+
 
     private class DeleteCell extends TableCell<SituationRule, Boolean> {
         final Button cellButton = new Button("");
@@ -116,8 +150,71 @@ public class SituationActionController implements Initializable {
         }
     }
 
+
+    private class TextCell extends TableCell<SituationRule, String> {
+        final TextField cellText = new TextField("");
+
+        TextCell(){
+            cellText.textProperty().addListener((observable, oldValue, newValue) -> {
+                tableContent.get(getIndex()).setExpression(newValue);
+            });
+        }
+
+        //Display button if the row is not empty
+        @Override
+        protected void updateItem(String t, boolean empty) {
+            super.updateItem(t, empty);
+            if(!empty && t != null){
+                cellText.setText(t);
+                setGraphic(cellText);
+            }
+            else{
+                setGraphic(null);
+            }
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        expressionColumn.setCellFactory(
+                new Callback<TableColumn<SituationRule, String>, TableCell<SituationRule, String>>() {
+
+                    @Override
+                    public TableCell<SituationRule, String> call(TableColumn<SituationRule, String> p) {
+                        return new TextCell();
+                    }
+
+                });
+        expressionColumn.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<SituationRule, String>,
+                        ObservableValue<String>>() {
+
+                    @Override
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<SituationRule, String> p) {
+                        return new SimpleStringProperty(p.getValue().getExpression());
+                    }
+                });
+
+        actionColumn.setCellFactory(
+                new Callback<TableColumn<SituationRule, String>, TableCell<SituationRule, String>>() {
+
+                    @Override
+                    public TableCell<SituationRule, String> call(TableColumn<SituationRule, String> p) {
+                        return new ChoiceCell();
+                    }
+
+                });
+        actionColumn.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<SituationRule, String>,
+                        ObservableValue<String>>() {
+
+                    @Override
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<SituationRule, String> p) {
+                        return new SimpleStringProperty(p.getValue().getAction());
+                    }
+                });
+
 
         delColumn.setCellFactory(
                 new Callback<TableColumn<SituationRule, Boolean>, TableCell<SituationRule, Boolean>>() {
