@@ -23,10 +23,8 @@ public class SituationActionAgent extends Agent {
         ANTLRInputStream in = new ANTLRInputStream("hello");
 
         ExprLexer exprLexer = new ExprLexer(in);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        CommonTokenStream tokens = new CommonTokenStream(exprLexer);
         ExprParser parser = new ExprParser(tokens);
-        parser.add();
-        parser.
 
         return null;
     }

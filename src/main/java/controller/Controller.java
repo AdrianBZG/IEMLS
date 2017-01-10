@@ -93,15 +93,13 @@ public class Controller implements Initializable {
 
     @FXML
     public void onLoadMap () throws IOException, ClassNotFoundException {
-        JFileChooser fc= new JFileChooser();
-        fc.setCurrentDirectory(new File("./maps"));
-        int ret = fc.showOpenDialog(null);
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File("./maps"));
+        File selectedFile = fc.showOpenDialog(null);
 
-
-        if (ret == JFileChooser.APPROVE_OPTION)
+        if (selectedFile != null)
         {
-            File file = fc.getSelectedFile();
-            environmentView = new EnvironmentView(file.getAbsolutePath());
+            environmentView = new EnvironmentView(selectedFile.getAbsolutePath());
             centralPane.setCenter(environmentView);
             agentList.setItems(environmentView.getAgentsManager().getAgents());
             agentList.setCellFactory(value -> new CellAgentView());

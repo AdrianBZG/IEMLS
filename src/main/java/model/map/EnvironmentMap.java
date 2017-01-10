@@ -6,6 +6,7 @@
 
 package model.map;
 
+import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import model.map.generator.IGenerator;
 import model.object.Block;
@@ -94,6 +95,7 @@ public class EnvironmentMap {
                     System.out.println(objects.length);
                     if (objects != null) {
                         for (int row = 0; row < objects.length; row++) {
+                            get(column, row);
                             switch (Integer.valueOf(objects[row])) {
                                 case 1:
                                     set(column, row, new Block());
@@ -277,12 +279,12 @@ public class EnvironmentMap {
      * This method saves the map to a file. Is connected with the menu item save map button
      */
     public void saveMap () {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File("./maps"));
-        int retrival = chooser.showSaveDialog(null);
-        if (retrival == JFileChooser.APPROVE_OPTION) {
+        FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(new File("./maps"));
+        File file = chooser.showSaveDialog(null);
+        if (file != null) {
             try {
-                FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt");
+                FileWriter fw = new FileWriter(file.getAbsoluteFile()+".txt");
                 fw.write(dimensions.get().getX() + "\n");
                 fw.write(dimensions.get().getY() + "\n");
                 for (int i = 0; i <= dimensions.get().getX(); i++) {
