@@ -30,6 +30,14 @@ public class BasicNeuralNetworkAlgorithm extends Algorithm {
         this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
     }
 
+    public BasicNeuralNetworkAlgorithm() {
+        this.brain = null;
+        this.environment = null;
+        this.x = 0;
+        this.y = 0;
+        this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
+    }
+
     public void updateVision() {
         // twelve o'clock
         boolean wallNorth = false;
@@ -155,7 +163,8 @@ public class BasicNeuralNetworkAlgorithm extends Algorithm {
     @Override
     public void start(Agent agent) {
         this.agent = agent;
-        environment = agent.getMap();
+        this.environment = agent.getMap();
+        this.brain = new BasicNetwork();
     }
 
     @Override

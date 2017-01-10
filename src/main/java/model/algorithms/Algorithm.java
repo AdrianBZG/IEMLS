@@ -5,8 +5,10 @@ import model.algorithms.AStar.AStar;
 import model.algorithms.AStar.LRTAStar;
 import model.algorithms.AStar.RTAStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
+import model.algorithms.neuralnetworks.BasicNeuralNetworkAlgorithm;
 import model.algorithms.swarm_aco.AntColonyOptimization;
 import model.object.agent.Agent;
+import org.encog.neural.networks.BasicNetwork;
 
 import java.util.ArrayList;
 
@@ -42,6 +44,8 @@ public abstract class Algorithm implements Cloneable {
         collectionAlgorithms.add(new LRTAStar());
 
         swarmAlgorithms.add(new AntColonyOptimization());
+
+        neuralAlgorithms.add(new BasicNeuralNetworkAlgorithm());
     }
 
     public static ArrayList<Algorithm> getExplorationAlgorithms() {

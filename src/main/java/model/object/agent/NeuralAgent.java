@@ -1,5 +1,6 @@
 package model.object.agent;
 
+import controller.NeuralNetworkAgentConfigurationController;
 import controller.SwarmNestConfigurationController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -81,7 +82,7 @@ public class NeuralAgent extends Agent {
             dialog.getDialogPane().setContent(root);
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
-                    SwarmNestConfigurationController configurationController = fxmlLoader.getController();
+                    NeuralNetworkAgentConfigurationController configurationController = fxmlLoader.getController();
                     return null;
                 }
                 return null;
