@@ -9,6 +9,7 @@ package model.map;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import model.AgentsManager;
+import model.ResourcesManager;
 import model.map.generator.IGenerator;
 import model.object.Block;
 import model.object.MapObject;
@@ -73,6 +74,7 @@ public class EnvironmentMap implements Cloneable {
      * @param generator
      */
     public EnvironmentMap(IGenerator generator) {
+        ResourcesManager.totalAmountOfResources = 0;
         this.generator = Optional.of(generator);
         getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
         generateChunkNoise(Sector.pos(0,0));
@@ -83,6 +85,8 @@ public class EnvironmentMap implements Cloneable {
      * @param fileName containing the map info.
      */
     public EnvironmentMap (String fileName) throws IOException {
+        ResourcesManager.totalAmountOfResources = 0;
+
         getMap().put(Sector.pos(0,0), new Chunk(CHUNK_SIZE));
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         try {
@@ -112,6 +116,7 @@ public class EnvironmentMap implements Cloneable {
                                     break;
                                 case 2:
                                     set(column, row, new Resource((int) (Math.random() * 10), "Resource"));
+                                    ResourcesManager.totalAmountOfResources++;
                                     break;
                             }
                         }
@@ -192,6 +197,7 @@ public class EnvironmentMap implements Cloneable {
      * Set a object into map position, it ensure that not overlap other objects, *the chunk should already create*
      */
     public void set(int x, int y, MapObject object) {
+        if (object.getType() == TypeObject.Resource) ResourcesManager.totalAmountOfResources++;
         if (getDimensions().isPresent()) {
             if (getDimensions().get().getWidth() < x || getDimensions().get().getHeight() < y
                     || x < 0 || y < 0) {
@@ -236,6 +242,7 @@ public class EnvironmentMap implements Cloneable {
             if (mapObject.getType() == TypeObject.Resource) {
                 agent.addResource((Resource)mapObject);
                 if (agent.getAlgorithm().getAlgorithmType() == 1) {
+                    ResourcesManager.totalAmountOfResources--;
                     removeAt(agent.getPosition().getX(), agent.getPosition().getY());
                 }
             }

@@ -6,6 +6,7 @@ import model.algorithms.AStar.LRTAStar;
 import model.algorithms.AStar.MAStar;
 import model.algorithms.AStar.RTAStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
+import model.algorithms.machinelearning.QLearningAlgorithm;
 import model.algorithms.neuralnetworks.BasicNeuralNetworkAlgorithm;
 import model.algorithms.swarm_aco.AntColonyOptimization;
 import model.object.agent.Agent;
@@ -27,6 +28,7 @@ public abstract class Algorithm implements Cloneable {
     private static ArrayList<Algorithm> collectionAlgorithms = new ArrayList<>();
     private static ArrayList<Algorithm> swarmAlgorithms = new ArrayList<>();
     private static ArrayList<Algorithm> neuralAlgorithms = new ArrayList<>();
+    private static ArrayList<Algorithm> machineLearningAlgorithms = new ArrayList<>();
 
     static {
         explorationAlgorithms.add(new CustomExplorer());
@@ -48,6 +50,8 @@ public abstract class Algorithm implements Cloneable {
         swarmAlgorithms.add(new AntColonyOptimization());
 
         neuralAlgorithms.add(new BasicNeuralNetworkAlgorithm());
+
+        machineLearningAlgorithms.add(new QLearningAlgorithm());
     }
 
     public static ArrayList<Algorithm> getExplorationAlgorithms() {
@@ -64,6 +68,10 @@ public abstract class Algorithm implements Cloneable {
 
     public static ArrayList<Algorithm> getNeuralAlgorithms() {
         return neuralAlgorithms;
+    }
+
+    public static ArrayList<Algorithm> getMachineLearningAlgorithms() {
+        return machineLearningAlgorithms;
     }
 
     /**

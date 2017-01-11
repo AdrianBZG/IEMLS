@@ -36,7 +36,8 @@ public abstract class MapObject implements Cloneable {
                 new PerceptionActionAgent(),
                 new SituationActionAgent(),
                 new NeuralAgent(),
-                new SwarmAgent()));
+                new SwarmAgent(),
+                new QLearningAgent()));
     }
 
     /**
