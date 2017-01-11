@@ -5,6 +5,7 @@ package model.algorithms.neuralnetworks;
  */
 import model.map.EnvironmentMap;
 import model.object.Resource;
+import model.object.agent.NeuralAgent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,30 +16,29 @@ public class EvaluateAgent {
 
     private List<EnvironmentMap> maps = new ArrayList<>();
 
-    public EvaluateAgent(BasicNeuralNetworkAlgorithm agent, int size)
+    public EvaluateAgent(NeuralAgent agent, int size)
     {
         for(int i=0;i<size;i++)
         {
-            EnvironmentMap map = agent.getEnvironment().clone();
+            EnvironmentMap map = agent.getMap().clone();
             this.maps.add(map);
         }
     }
 
-    public int evaluate(BasicNeuralNetworkAlgorithm agent)
+    public int evaluate(NeuralAgent agent)
     {
         int score = 0;
 
         for(EnvironmentMap map: maps)
         {
-            agent.setEnvironment(map);
+            agent.setMap(map);
             map.set(0,0, new Resource(1,"Dummy"));
-            agent.setX(0);
-            agent.setY(0);
+            agent.setPosition(0,0);
 
             Set<String> segmentScore = new HashSet<String>();
             for(int i=0;i<100;i++)
             {
-                String key = agent.getX()+":"+agent.getY();
+                String key = agent.getPosition().getX()+":"+agent.getPosition().getY();
                 segmentScore.add(key);
                 agent.move();
             }

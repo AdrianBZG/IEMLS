@@ -4,12 +4,13 @@ package model.algorithms.neuralnetworks;
  * Created by adrian on 10/01/17.
  */
 import model.map.EnvironmentMap;
+import model.object.agent.NeuralAgent;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 
 public class NeuralAgentFactory {
 
-    public static BasicNeuralNetworkAlgorithm generateMouse(EnvironmentMap map)
+    public static NeuralAgent generateAgent(EnvironmentMap map)
     {
         BasicNetwork network = new BasicNetwork();
         network.addLayer(new BasicLayer(NeuralConstants.INPUT_NEURON_COUNT));
@@ -19,13 +20,13 @@ public class NeuralAgentFactory {
         network.getStructure().finalizeStructure();
         network.reset();
 
-        BasicNeuralNetworkAlgorithm agent = new BasicNeuralNetworkAlgorithm(network);
+        NeuralAgent agent = new NeuralAgent(network, map);
         return agent;
     }
 
-    public static BasicNeuralNetworkAlgorithm generateSmartMouse(EnvironmentMap map)
+    public static NeuralAgent generateSmartAgent(EnvironmentMap map)
     {
-        BasicNeuralNetworkAlgorithm agent = NeuralAgentFactory.generateMouse(map);
+        NeuralAgent agent = NeuralAgentFactory.generateAgent(map);
         EvaluateAgent eval = new EvaluateAgent(agent, 10);
         for(;;)
         {

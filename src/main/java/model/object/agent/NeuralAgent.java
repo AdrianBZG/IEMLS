@@ -7,9 +7,18 @@ import javafx.scene.Parent;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import model.algorithms.neuralnetworks.NeuralConstants;
+import model.map.EnvironmentMap;
+import model.object.TypeObject;
 import model.species.Specie;
+import org.encog.ml.data.MLData;
+import org.encog.neural.data.NeuralData;
+import org.encog.neural.data.basic.BasicNeuralData;
+import org.encog.neural.networks.BasicNetwork;
 import org.kordamp.ikonli.fontawesome.FontAwesome;
 import org.kordamp.ikonli.javafx.FontIcon;
+import util.Directions;
+import util.Position;
 import view.ErrorView;
 import view.ObjectView.NeuralAgentView;
 import view.ObjectView.ObjectView;
@@ -25,11 +34,117 @@ public class NeuralAgent extends Agent {
      */
     private Specie specie;
 
-    public NeuralAgent() {
+    private BasicNetwork brain;
+    BasicNeuralData vision;
+
+    public NeuralAgent(BasicNetwork brain, EnvironmentMap map) {
+        this.brain = brain;
+        this.setMap(map);
+        this.setPosition(0,0);
+        this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
     }
 
     public NeuralAgent(NeuralAgent neuralAgent) {
+        this.brain = neuralAgent.brain;
+        this.setMap(neuralAgent.getMap());
+        this.setPosition(neuralAgent.getPosition());
+        this.vision = neuralAgent.vision;
+    }
 
+    public NeuralAgent() {
+        this.brain = null;
+        this.setMap(null);
+        this.setPosition(0,0);
+        this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
+    }
+
+    public void updateVision() {
+        // twelve o'clock
+        boolean wallNorth = false;
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+            wallNorth = getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)).get().getType().equals(TypeObject.Obstacle);
+        }
+
+        boolean wallEast = false;
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+            wallEast = getMap().get(Position.getInDirection(this.getPosition(), Directions.RIGHT)).get().getType().equals(TypeObject.Obstacle);
+        }
+
+        boolean wallSouth = false;
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+            wallSouth = getMap().get(Position.getInDirection(this.getPosition(), Directions.DOWN)).get().getType().equals(TypeObject.Obstacle);
+        }
+
+        boolean wallWest = false;
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+            wallWest = getMap().get(Position.getInDirection(this.getPosition(), Directions.LEFT)).get().getType().equals(TypeObject.Obstacle);
+        }
+
+        this.vision.setData(NeuralConstants.VISION_POINT_12_OCLOCK, wallNorth ? NeuralConstants.HI : NeuralConstants.LO);
+
+        // three o'clock
+        this.vision.setData(NeuralConstants.VISION_POINT_3_OCLOCK, wallEast ? NeuralConstants.HI : NeuralConstants.LO);
+
+        // six o'clock
+        this.vision.setData(NeuralConstants.VISION_POINT_6_OCLOCK, wallSouth ? NeuralConstants.HI : NeuralConstants.LO);
+
+        // nine o'clock
+        this.vision.setData(NeuralConstants.VISION_POINT_9_OCLOCK, wallWest ? NeuralConstants.HI : NeuralConstants.LO);
+    }
+
+    @Override
+    public void move(Directions direction) {
+        if(getMap().get(Position.getInDirection(this.getPosition(), direction)) != null) {
+            if(getMap().get(Position.getInDirection(this.getPosition(), direction)).get().getType().equals(TypeObject.Obstacle)) {
+                return;
+            }
+        }
+
+        this.move(direction);
+    }
+
+    private Directions directionFromIndex(int i) {
+        if (i == NeuralConstants.MOTOR_NORTH)
+            return Directions.UP;
+        else if (i == NeuralConstants.MOTOR_SOUTH)
+            return Directions.DOWN;
+        else if (i == NeuralConstants.MOTOR_EAST)
+            return Directions.RIGHT;
+        else
+            return Directions.LEFT;
+    }
+
+    public Directions autonomousMoveDirection() {
+        updateVision();
+        MLData result = this.brain.compute(this.vision);
+
+        double winningOutput = Double.NEGATIVE_INFINITY;
+        Directions winningDirection = Directions.UP;
+
+        for (int i = 0; i < result.size(); i++) {
+            // determine direction
+            Directions direction = directionFromIndex(i);
+
+            if(getMap().get(Position.getInDirection(this.getPosition(), direction)) != null) {
+                if(getMap().get(Position.getInDirection(this.getPosition(), direction)).get().getType().equals(TypeObject.Obstacle)) {
+                    continue;
+                }
+            }
+
+            // evaluate if this is a "winning" direction
+            double thisOutput = result.getData(i);
+            if (thisOutput > winningOutput) {
+                winningOutput = thisOutput;
+                winningDirection = direction;
+            }
+        }
+
+        return winningDirection;
+    }
+
+    public void move() {
+        Directions direction = autonomousMoveDirection();
+        move(direction);
     }
 
 
@@ -96,4 +211,19 @@ public class NeuralAgent extends Agent {
         Optional<String> s = dialog.showAndWait();
     }
 
+    public BasicNetwork getBrain() {
+        return brain;
+    }
+
+    public void setBrain(BasicNetwork brain) {
+        this.brain = brain;
+    }
+
+    public BasicNeuralData getVision() {
+        return vision;
+    }
+
+    public void setVision(BasicNeuralData vision) {
+        this.vision = vision;
+    }
 }
