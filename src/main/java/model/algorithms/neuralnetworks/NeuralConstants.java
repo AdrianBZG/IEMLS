@@ -4,11 +4,11 @@ package model.algorithms.neuralnetworks;
  * Created by adrian on 10/01/17.
  */
 public class NeuralConstants {
-    final public static int VISION_POINTS = 12;
+    final public static int VISION_POINTS = 4;
     final public static int VISION_POINT_12_OCLOCK = 0;
-    final public static int VISION_POINT_3_OCLOCK = 3;
-    final public static int VISION_POINT_6_OCLOCK = 6;
-    final public static int VISION_POINT_9_OCLOCK = 9;
+    final public static int VISION_POINT_3_OCLOCK = 1;
+    final public static int VISION_POINT_6_OCLOCK = 2;
+    final public static int VISION_POINT_9_OCLOCK = 3;
 
     final public static int MOTOR_NORTH = 0;
     final public static int MOTOR_EAST = 1;

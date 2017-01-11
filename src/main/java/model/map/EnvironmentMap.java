@@ -201,7 +201,7 @@ public class EnvironmentMap implements Cloneable {
         if (chunk != null) {
             removeAt(x,y);
             if (object.getType() == TypeObject.Agent) {
-                ExplorerAgent agent = (ExplorerAgent)object;
+                Agent agent = (Agent)object;
                 agent.setPosition(new Tuple<>(x, y));
                 agent.setMap(this);
             }

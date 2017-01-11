@@ -7,6 +7,7 @@ import model.map.EnvironmentMap;
 import model.object.agent.NeuralAgent;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
+import util.Tuple;
 
 public class NeuralAgentFactory {
 
@@ -15,7 +16,7 @@ public class NeuralAgentFactory {
         BasicNetwork network = new BasicNetwork();
         network.addLayer(new BasicLayer(NeuralConstants.INPUT_NEURON_COUNT));
         network.addLayer(new BasicLayer(60));
-        //network.addLayer(new BasicLayer(30));
+        network.addLayer(new BasicLayer(30));
         network.addLayer(new BasicLayer(NeuralConstants.OUTPUT_NEURON_COUNT));
         network.getStructure().finalizeStructure();
         network.reset();
@@ -24,9 +25,11 @@ public class NeuralAgentFactory {
         return agent;
     }
 
-    public static NeuralAgent generateSmartAgent(EnvironmentMap map)
+    public static NeuralAgent generateSmartAgent(EnvironmentMap map, Tuple<Integer,Integer> startPos)
     {
         NeuralAgent agent = NeuralAgentFactory.generateAgent(map);
+        agent.setPosition(startPos);
+        map.set(agent.getPosition().getX(), agent.getPosition().getY(), agent);
         EvaluateAgent eval = new EvaluateAgent(agent, 10);
         for(;;)
         {

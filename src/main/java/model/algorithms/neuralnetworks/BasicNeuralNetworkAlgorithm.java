@@ -3,38 +3,45 @@ package model.algorithms.neuralnetworks;
 /**
  * Created by adrian on 10/01/17.
  */
+import controller.NeuralNetworkAgentConfigurationController;
 import model.algorithms.Algorithm;
-import model.map.EnvironmentMap;
-import model.object.TypeObject;
 import model.object.agent.Agent;
 import model.object.agent.NeuralAgent;
-import org.encog.ml.data.MLData;
-import org.encog.neural.data.basic.BasicNeuralData;
-import org.encog.neural.networks.BasicNetwork;
-import util.Directions;
-import util.Position;
+
+import java.util.ArrayList;
 
 public class BasicNeuralNetworkAlgorithm extends Algorithm {
 
-    private NeuralAgent dummyNeuralAgent = null;
-    private NeuralAgent realNeuralAgent = null;
+    private int numberOfAgentsToBeTrained = 20;
+    private Agent agent = null;
+    private Agent initialAgent = null;
+    private ArrayList<NeuralAgent> neuralAgents = null;
 
     @Override
     public void start(Agent agent) {
-        NeuralAgent castedAgent = (NeuralAgent)agent;
-        this.dummyNeuralAgent = castedAgent;
+        this.agent = agent;
+        this.initialAgent = agent;
     }
 
     @Override
     public void update(Agent agent) {
-        if(dummyNeuralAgent == null) {
+        if(agent == null) {
             start(agent);
         }
 
-        if (this.realNeuralAgent != null) {
-            this.realNeuralAgent.autonomousMoveDirection();
+        if (this.neuralAgents != null) {
+            for(NeuralAgent na : neuralAgents) {
+                if(na == NeuralNetworkAgentConfigurationController.bestNeuralAgent) {
+                    System.out.println("The best trained agent has a value of: " + NeuralNetworkAgentConfigurationController.bestAgentScore);
+                    this.agent.setPosition(na.getPosition());
+                }
+            }
         } else {
-            realNeuralAgent = NeuralAgentFactory.generateSmartAgent(dummyNeuralAgent.getMap());
+            neuralAgents = new ArrayList<>();
+            for(int i = 0; i < numberOfAgentsToBeTrained; i++) {
+                NeuralAgent toTrainAgent = NeuralAgentFactory.generateSmartAgent(initialAgent.getMap(), initialAgent.getPosition());
+                neuralAgents.add(toTrainAgent);
+            }
         }
     }
 

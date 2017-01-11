@@ -44,11 +44,24 @@ public class NeuralAgent extends Agent {
         this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
     }
 
+    public NeuralAgent(NeuralAgent neuralAgent, BasicNetwork brain, EnvironmentMap map) {
+        this.brain = neuralAgent.brain;
+        this.setMap(map);
+        if (neuralAgent.getAlgorithm() != null) {
+            setAlgorithm(neuralAgent.getAlgorithm().clone());
+        }
+        setPosition(neuralAgent.getPosition().getX(), neuralAgent.getPosition().getY());
+        this.vision = new BasicNeuralData(NeuralConstants.VISION_POINTS);
+    }
+
     public NeuralAgent(NeuralAgent neuralAgent) {
         this.brain = neuralAgent.brain;
         this.setMap(neuralAgent.getMap());
-        this.setPosition(neuralAgent.getPosition());
         this.vision = neuralAgent.vision;
+        if (neuralAgent.getAlgorithm() != null) {
+            setAlgorithm(neuralAgent.getAlgorithm().clone());
+        }
+        setPosition(neuralAgent.getPosition().getX(), neuralAgent.getPosition().getY());
     }
 
     public NeuralAgent() {
@@ -61,22 +74,22 @@ public class NeuralAgent extends Agent {
     public void updateVision() {
         // twelve o'clock
         boolean wallNorth = false;
-        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)).isPresent()) {
             wallNorth = getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)).get().getType().equals(TypeObject.Obstacle);
         }
 
         boolean wallEast = false;
-        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.RIGHT)).isPresent()) {
             wallEast = getMap().get(Position.getInDirection(this.getPosition(), Directions.RIGHT)).get().getType().equals(TypeObject.Obstacle);
         }
 
         boolean wallSouth = false;
-        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.DOWN)).isPresent()) {
             wallSouth = getMap().get(Position.getInDirection(this.getPosition(), Directions.DOWN)).get().getType().equals(TypeObject.Obstacle);
         }
 
         boolean wallWest = false;
-        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.UP)) != null) {
+        if(getMap().get(Position.getInDirection(this.getPosition(), Directions.LEFT)).isPresent()) {
             wallWest = getMap().get(Position.getInDirection(this.getPosition(), Directions.LEFT)).get().getType().equals(TypeObject.Obstacle);
         }
 
@@ -92,15 +105,15 @@ public class NeuralAgent extends Agent {
         this.vision.setData(NeuralConstants.VISION_POINT_9_OCLOCK, wallWest ? NeuralConstants.HI : NeuralConstants.LO);
     }
 
-    @Override
-    public void move(Directions direction) {
-        if(getMap().get(Position.getInDirection(this.getPosition(), direction)) != null) {
+    public void checkMove(Directions direction) {
+        if(getMap().get(Position.getInDirection(this.getPosition(), direction)).isPresent()) {
             if(getMap().get(Position.getInDirection(this.getPosition(), direction)).get().getType().equals(TypeObject.Obstacle)) {
                 return;
             }
         }
 
-        this.move(direction);
+        //System.out.println("Neural agent antes moverse: " + this.getPosition().getX() + ", " + this.getPosition().getY());
+        move(direction);
     }
 
     private Directions directionFromIndex(int i) {
@@ -125,7 +138,7 @@ public class NeuralAgent extends Agent {
             // determine direction
             Directions direction = directionFromIndex(i);
 
-            if(getMap().get(Position.getInDirection(this.getPosition(), direction)) != null) {
+            if(getMap().get(Position.getInDirection(this.getPosition(), direction)).isPresent()) {
                 if(getMap().get(Position.getInDirection(this.getPosition(), direction)).get().getType().equals(TypeObject.Obstacle)) {
                     continue;
                 }
@@ -142,9 +155,9 @@ public class NeuralAgent extends Agent {
         return winningDirection;
     }
 
-    public void move() {
+    public void performMove() {
         Directions direction = autonomousMoveDirection();
-        move(direction);
+        checkMove(direction);
     }
 
 
@@ -198,6 +211,7 @@ public class NeuralAgent extends Agent {
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
                     NeuralNetworkAgentConfigurationController configurationController = fxmlLoader.getController();
+                    setAlgorithm(configurationController.getAlgorithm());
                     return null;
                 }
                 return null;
@@ -225,5 +239,10 @@ public class NeuralAgent extends Agent {
 
     public void setVision(BasicNeuralData vision) {
         this.vision = vision;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new NeuralAgent(this);
     }
 }

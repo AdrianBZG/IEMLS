@@ -3,6 +3,7 @@ package model.algorithms.neuralnetworks;
 /**
  * Created by adrian on 10/01/17.
  */
+import controller.NeuralNetworkAgentConfigurationController;
 import model.map.EnvironmentMap;
 import model.object.Resource;
 import model.object.agent.NeuralAgent;
@@ -32,20 +33,23 @@ public class EvaluateAgent {
         for(EnvironmentMap map: maps)
         {
             agent.setMap(map);
-            map.set(0,0, new Resource(1,"Dummy"));
-            agent.setPosition(0,0);
 
             Set<String> segmentScore = new HashSet<String>();
-            for(int i=0;i<100;i++)
+            for(int i=0;i<50;i++)
             {
                 String key = agent.getPosition().getX()+":"+agent.getPosition().getY();
                 segmentScore.add(key);
-                agent.move();
+                agent.performMove();
             }
 
             score+=segmentScore.size();
         }
 
+        System.out.println("Agent score: " + ((30*30) - score));
+        if(NeuralNetworkAgentConfigurationController.bestAgentScore < ((30*30) - score)) {
+            NeuralNetworkAgentConfigurationController.bestAgentScore = ((30*30) - score);
+            NeuralNetworkAgentConfigurationController.bestNeuralAgent = agent;
+        }
         return ((30*30) - score);
     }
 }
