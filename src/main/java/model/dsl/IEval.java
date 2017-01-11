@@ -24,28 +24,33 @@ public class IEval {
         return predicate.test(agent);
     }
 
-    public void or(IEval e1, IEval e2) {
-        predicate = e1.predicate.or(e2.predicate);
+    public IEval or(IEval e2) {
+        predicate = predicate.or(e2.predicate);
+        return this;
     }
 
-    public void and(IEval e1, IEval e2) {
-        predicate = e1.predicate.and(e2.predicate);
+    public IEval and(IEval e2) {
+        predicate = predicate.and(e2.predicate);
+        return this;
     }
 
-    public void not(IEval e1) {
+    public IEval not(IEval e1) {
         predicate = e1.predicate.negate();
+        return this;
     }
 
     /**
      * Check if the direction is allowed to transit
      */
-    public void free(Directions directions) {
+    public IEval free(Directions directions) {
         predicate = agent ->
             agent.getAllowedActions().contains(directions);
+        return this;
     }
 
-    public void visited(Directions directions) {
+    public IEval visited(Directions directions) {
         predicate = agent ->
             ((SituationAction) agent.getAlgorithm()).isVisited(directions);
+        return this;
     }
 }

@@ -18,17 +18,17 @@ expresion returns [IEval e]
 ;
 
 
-expr returns [IEval e]
-:   { $e = new IEval(); }
+expr returns [IEval e] @init{ $e = new IEval(); }
+:
     FREE atom
         { $e.free($atom.d); }
     | PARENOPEN expr PARENCLOSE // don't do anything why it should be identity action (no modified $e)
     | VISITED atom
         { $e.visited($atom.d); }
     | e1=expr AND e2=expr
-        { $e.and($e1.e, $e2.e); }
+        { $e = $e1.e.and($e2.e); }
     | e1=expr OR e2=expr
-        { $e.or($e1.e, $e2.e); }
+        { $e = $e1.e.or($e2.e); }
     | NOT expr
         { $e.not($expr.e); }
 ;
