@@ -24,6 +24,8 @@ public class ResourcesManager {
      */
     private static ArrayList<Resource> resources = new ArrayList<>();
 
+    public static int totalAmountOfResources = 0;
+
     /**
      * Add resource to the picked resources.
      * @param res is the picked resource
