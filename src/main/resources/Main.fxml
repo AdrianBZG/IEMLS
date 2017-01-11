@@ -36,7 +36,7 @@
                         <MenuItem fx:id="close" mnemonicParsing="false" text="Close" />
                     </items>
                 </Menu>
-            <Menu mnemonicParsing="false" text="Load Map">
+            <Menu mnemonicParsing="false" text="Edit">
               <items>
                 <MenuItem mnemonicParsing="false" text="Copy" />
                   <MenuItem mnemonicParsing="false" text="Cut" />
@@ -162,7 +162,7 @@
             </Accordion>
             <BorderPane fx:id="centralPane" prefHeight="640.0" prefWidth="646.0" HBox.hgrow="ALWAYS">
                <center>
-                  <Label fx:id="initialMessage" text="Select a new Map to simulate a enviroment with agents" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                  <Label fx:id="initialMessage" text="Select a new Map to simulate a environment with agents" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
