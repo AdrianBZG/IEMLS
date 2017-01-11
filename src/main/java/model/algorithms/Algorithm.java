@@ -3,6 +3,7 @@ package model.algorithms;
 import javafx.scene.Node;
 import model.algorithms.AStar.AStar;
 import model.algorithms.AStar.LRTAStar;
+import model.algorithms.AStar.MAStar;
 import model.algorithms.AStar.RTAStar;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
 import model.algorithms.neuralnetworks.BasicNeuralNetworkAlgorithm;
@@ -42,6 +43,7 @@ public abstract class Algorithm implements Cloneable {
         collectionAlgorithms.add(new AStar());
         collectionAlgorithms.add(new RTAStar());
         collectionAlgorithms.add(new LRTAStar());
+        collectionAlgorithms.add(new MAStar());
 
         swarmAlgorithms.add(new AntColonyOptimization());
 

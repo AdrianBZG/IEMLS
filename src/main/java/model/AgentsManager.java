@@ -11,6 +11,7 @@ import javafx.beans.property.ListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.algorithms.CustomExplorer;
+import model.object.Resource;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
 
@@ -124,6 +125,16 @@ public class AgentsManager {
             return null;
         }
     }
+
+    public static void deleteResourceFromExplorers(Resource res) {
+
+        for (Agent agent : agents) {
+            if (agent.getAlgorithm().toString() == "CustomExplorer" && agent.getResources().size() > 0) {
+                agent.getResources().remove(res);
+            }
+        }
+    }
+
 
     public static boolean existsExplorers () {
         for (Agent agent : agents) {
