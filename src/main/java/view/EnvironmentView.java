@@ -23,6 +23,7 @@ import rx.observables.JavaFxObservable;
 import util.Tuple;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -177,6 +178,19 @@ public class EnvironmentView extends Pane {
                             (int) ((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize()));
                     paintEnvironmentMap();
                 });
+    }
+
+    public void paintAgents(ArrayList<Agent> agents) {
+        for (Agent agent : agents) {
+            Node node = agent.getVisualObject();
+            Scale scale = new Scale();
+            scale.setX(getZoom());
+            scale.setY(getZoom());
+            node.getTransforms().add(scale);
+            node.setTranslateX(-getTranslation().getX() + agent.getPosition().getX() * getTileSize());
+            node.setTranslateY(-getTranslation().getY() + agent.getPosition().getY() * getTileSize());
+            getChildren().add(node);
+        }
     }
 
     /**
