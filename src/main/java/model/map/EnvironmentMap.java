@@ -8,6 +8,7 @@ package model.map;
 
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import model.AgentsManager;
 import model.map.generator.IGenerator;
 import model.object.Block;
 import model.object.MapObject;
@@ -110,7 +111,7 @@ public class EnvironmentMap implements Cloneable {
                                     set(column, row, new Block());
                                     break;
                                 case 2:
-                                    set(column, row, new Resource(50, "Food"));
+                                    set(column, row, new Resource((int) (Math.random() * 10), "Resource"));
                                     break;
                             }
                         }
@@ -139,7 +140,7 @@ public class EnvironmentMap implements Cloneable {
                         set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Block());
                     }
                     else if (gen > 0) {
-                        set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Resource(50, "Food"));
+                        set(pos.getX() * CHUNK_SIZE + i, pos.getY() * CHUNK_SIZE + j, new Resource((int) (Math.random() * 10), "Resource"));
                     }
                 }
             }
@@ -201,7 +202,7 @@ public class EnvironmentMap implements Cloneable {
         if (chunk != null) {
             removeAt(x,y);
             if (object.getType() == TypeObject.Agent) {
-                ExplorerAgent agent = (ExplorerAgent)object;
+                Agent agent = (Agent)object;
                 agent.setPosition(new Tuple<>(x, y));
                 agent.setMap(this);
             }
@@ -234,8 +235,9 @@ public class EnvironmentMap implements Cloneable {
         get(agent.getPosition()).ifPresent(mapObject -> {
             if (mapObject.getType() == TypeObject.Resource) {
                 agent.addResource((Resource)mapObject);
-                if (agent.getAlgorithm().toString() == "A*" || agent.getAlgorithm().toString() == "RTA*" || agent.getAlgorithm().toString() == "LRTA*")
+                if (agent.getAlgorithm().getAlgorithmType() == 1) {
                     removeAt(agent.getPosition().getX(), agent.getPosition().getY());
+                }
             }
         });
     }

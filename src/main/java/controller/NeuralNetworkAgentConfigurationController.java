@@ -10,12 +10,16 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
 import model.algorithms.Algorithm;
+import model.object.agent.NeuralAgent;
 import model.species.Specie;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class NeuralNetworkAgentConfigurationController implements Initializable {
+
+    public static int bestAgentScore = 0;
+    public static NeuralAgent bestNeuralAgent = null;
 
     @FXML
     public ChoiceBox choiceNeuralNetworkAlgorithm;

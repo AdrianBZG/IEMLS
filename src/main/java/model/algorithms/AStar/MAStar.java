@@ -17,7 +17,7 @@ import java.util.Comparator;
 /**
  * Created by rudy on 6/01/17.
  */
-public class LRTAStar extends Algorithm {
+public class MAStar extends Algorithm {
         // Amount of debug output 0, 1, 2.
         private int verbose = 0;
         // The maximum number of completed nodes. After that number the algorithm returns null.
@@ -36,14 +36,9 @@ public class LRTAStar extends Algorithm {
         private boolean objectiveSet = false;
 
         private ArrayList<ISearchNode> path = new ArrayList<>();
-
         private int movement = 1;
 
-        private GoalPosition goal;
-
-        private boolean needToRecalculate = true;
-
-        public LRTAStar() {
+        public MAStar() {
         }
 
         /**
@@ -118,21 +113,20 @@ public class LRTAStar extends Algorithm {
                     }
                     //compute tentativeG
                     double tentativeG = currentNode.g() + currentNode.c(successorNode);
-
+                    //node was already discovered and this path is worse than the last one
+                    if(inOpenSet && tentativeG >= successorNode.g())
+                        continue;
                     successorNode.setParent(currentNode);
                     if(inOpenSet) {
                         // if successorNode is already in data structure it has to be inserted again to
                         // regain the order
-                        if(tentativeG >= successorNode.g()) {
-                            openSet.remove(successorNode);
-                            successorNode.setG(tentativeG);
-                            openSet.add(successorNode);
-                        }
+                        openSet.remove(successorNode);
+                        successorNode.setG(tentativeG);
+                        openSet.add(successorNode);
                     } else {
                         successorNode.setG(tentativeG);
                         openSet.add(successorNode);
                     }
-
                 }
                 closedSet.add(currentNode);
                 this.numSearchSteps += 1;
@@ -188,31 +182,34 @@ public class LRTAStar extends Algorithm {
     @Override
     public void update(Agent agent) {
         if (this.agent != null) {
-            if (needToRecalculate && AgentsManager.existsExplorers()) {
-                if(goal == null) {
-                    ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
-                    if (randomExplorer.getResources().size() > 0) {
-                        goal = new GoalPosition(randomExplorer.getRandomResource().getPosition());
-                        if (map.get(goal.getX(), goal.getY()).isPresent())
-                            AgentsManager.deleteResourceFromExplorers((Resource) map.get(goal.getX(), goal.getY()).get());
-                    }
-                } else {
-                    if(goal.isValidPos()) {
-                        needToRecalculate = false;
-                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map, false);
+            GoalPosition goal;
+            if (!objectiveSet && AgentsManager.existsExplorers()) {
+
+                ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
+                if (randomExplorer.getResources().size() > 0) {
+                    goal = new GoalPosition(randomExplorer.getRandomResource().getPosition());
+                    if (map.get(goal.getX(), goal.getY()).isPresent())
+                        AgentsManager.deleteResourceFromExplorers((Resource) map.get(goal.getX(), goal.getY()).get());
+                    if (goal != null && goal.isValidPos()) {
+                        objectiveSet = true;
+                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map, true);
                         path = shortestPath(initialPos, goal);
+                        movement = 0;
                     } else {
-                        needToRecalculate = true;
+                        System.out.println("Aun no se ha recolectado ningun recurso");
                     }
+
                 }
-            } else if (!needToRecalculate) {
-                Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement)).getPosition();
+
+            } else if (path != null && movement < path.size()) {
+                Tuple<Integer, Integer> nextPos = ((IEMLSSearchNode) path.get(movement++)).getPosition();
                 Directions dir = Position.getDirectionFromPositions(agent.getPosition(), nextPos);
                 agent.move (dir);
                 agent.getMap().removeAt(agent);
-                needToRecalculate = true;
-                if (agent.getPosition().getX() == goal.getX() && agent.getPosition().getY() == goal.getY()) {
-                    goal = null;
+                //System.out.println("Path size: " + path.size() + " while movement: " + movement);
+                if (path.size() == movement) {
+                  //  System.out.println("Limit path");
+                    objectiveSet = false;   // Lets go to another goal.
                 }
             }
         } else {
@@ -227,12 +224,12 @@ public class LRTAStar extends Algorithm {
 
     @Override
     public String toString() {
-        return "LRTA*";
+        return "MA*";
     }
 
     @Override
     public Algorithm clone() {
-        return new LRTAStar();
+        return new MAStar();
     }
 
     @Override

@@ -4,6 +4,7 @@ import model.AgentsManager;
 import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
+import model.object.Resource;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
 import util.Directions;
@@ -190,12 +191,14 @@ public class RTAStar extends Algorithm {
                 if(goal == null) {
                     ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
                     if (randomExplorer.getResources().size() > 0) {
-                        goal = new GoalPosition(randomExplorer.getLastResource().getPosition());
+                        goal = new GoalPosition(randomExplorer.getRandomResource().getPosition());
+                        if (map.get(goal.getX(), goal.getY()).isPresent())
+                            AgentsManager.deleteResourceFromExplorers((Resource) map.get(goal.getX(), goal.getY()).get());
                     }
                 } else {
                     if(goal.isValidPos()) {
                         needToRecalculate = false;
-                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
+                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map, false);
                         path = shortestPath(initialPos, goal);
                     } else {
                         needToRecalculate = true;

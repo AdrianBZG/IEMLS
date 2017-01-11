@@ -4,6 +4,7 @@ import model.AgentsManager;
 import model.algorithms.AStar.datastructures.*;
 import model.algorithms.Algorithm;
 import model.map.EnvironmentMap;
+import model.object.Resource;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
 import util.Directions;
@@ -186,12 +187,14 @@ public class AStar extends Algorithm {
 
                 ExplorerAgent randomExplorer = AgentsManager.getRandomExplorer();
                 if (randomExplorer.getResources().size() > 0) {
-                    goal = new GoalPosition(randomExplorer.getLastResource().getPosition());
+                    goal = new GoalPosition(randomExplorer.getRandomResource().getPosition());
+                    if (map.get(goal.getX(), goal.getY()).isPresent())
+                        AgentsManager.deleteResourceFromExplorers((Resource) map.get(goal.getX(), goal.getY()).get());
+                    movement = 0;
                     if (goal != null && goal.isValidPos()) {
                         objectiveSet = true;
-                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map);
+                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map, false);
                         path = shortestPath(initialPos, goal);
-                        movement = 0;
                     } else {
                         System.out.println("Aun no se ha recolectado ningun recurso");
                     }

@@ -100,6 +100,8 @@ public class ExplorerAgent extends Agent {
         return resources.get(resources.size() - 1);
     }
 
+    public Resource getRandomResource () { return resources.get((int)(Math.random() * (resources.size() - 1)));}
+
     @Override
     public ObjectView getVisualObject() {
         return new ExplorerAgentView();
