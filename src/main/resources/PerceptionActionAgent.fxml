@@ -54,7 +54,7 @@
                         <PropertyValueFactory property="left" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn editable="false" minWidth="-1.0" prefWidth="120.0" sortable="false" text="Left">
+                <TableColumn editable="false" minWidth="-1.0" prefWidth="120.0" sortable="false" text="Right">
                     <cellValueFactory>
                         <PropertyValueFactory property="right" />
                     </cellValueFactory>
