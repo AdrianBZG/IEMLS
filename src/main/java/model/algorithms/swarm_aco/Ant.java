@@ -36,10 +36,12 @@ public class Ant extends Agent {
 
     private State state = State.Wander;
 
-    public Ant(Colony colony) {
-        this.home = colony;
+    public Ant() {
+        // 1. Cast the algorithm
+        AntColony usedAlgorithm = (AntColony)getAlgorithm();
 
-        this.homePoint = new Tuple<Integer,Integer>(0,0);
+        // 2. Set the home point for this Ant
+        this.homePoint = usedAlgorithm.getHomePosition();
         wTimer = 0;
     }
 
@@ -82,8 +84,8 @@ public class Ant extends Agent {
                         }
                     }
 
-                    int dr = possibleMovementPosition.getX() - home.getPosition().getX();
-                    int dc = possibleMovementPosition.getY() - home.getPosition().getY();
+                    int dr = possibleMovementPosition.getX() - homePoint.getX();
+                    int dc = possibleMovementPosition.getY() - homePoint.getY();
 
                     double dist = Math.pow(dr, 2)+Math.pow(dc, 2);
 
@@ -106,7 +108,7 @@ public class Ant extends Agent {
                     this.state = State.Follow;
                     wTimer = 0;
                 }
-                if (Point2D.distance(this.getPosition().getX(), this.getPosition().getY(), home.getPosition().getY(), home.getPosition().getX()) > MAX_WANDER_DISTANCE) {
+                if (Point2D.distance(this.getPosition().getX(), this.getPosition().getY(), homePoint.getY(), homePoint.getX()) > MAX_WANDER_DISTANCE) {
                     this.state = State.Home;
                     break;
                 }
@@ -114,7 +116,7 @@ public class Ant extends Agent {
                 break;
             case Home:
                 moveTo(homePoint);
-                if(!(this.getPosition().getX() == home.getPosition().getX() & this.getPosition().getY() == home.getPosition().getY())){
+                if(!(this.getPosition().getX() == homePoint.getX() & this.getPosition().getY() == homePoint.getY())){
                     if (hasFood) {
                         double p = PheromonesManager.getPheromones().get(this.getPosition());
                         p += dt/300;
@@ -157,7 +159,7 @@ public class Ant extends Agent {
     }
 
     public void tryLeaveFood(Tuple<Integer,Integer> position){
-        if (state == State.Home && position.getX() == home.getPosition().getX() && position.getY() == home.getPosition().getY()) {
+        if (state == State.Home && position.getX() == homePoint.getX() && position.getY() == homePoint.getY()) {
             if (hasFood) {
                 hasFood = false;
                 this.energy = MAX_ENERGY;
@@ -191,7 +193,7 @@ public class Ant extends Agent {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return new Ant(this.home);
+        return new Ant();
     }
 }
 

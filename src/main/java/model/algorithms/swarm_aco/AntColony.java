@@ -2,15 +2,21 @@ package model.algorithms.swarm_aco;
 
 import model.algorithms.Algorithm;
 import model.object.agent.Agent;
+import util.Tuple;
 
 /**
  * Created by adrian on 10/01/17.
  */
-public class AntColonyOptimization extends Algorithm {
+public class AntColony extends Algorithm {
     private Agent agent = null;
 
-
-
+    public Tuple<Integer,Integer> getHomePosition() {
+        if(agent != null) {
+            return agent.getPosition();
+        } else {
+            return new Tuple<Integer,Integer>(0,0);
+        }
+    }
     /**
      * Initialize algorithm, it could run in background
      */
@@ -46,7 +52,7 @@ public class AntColonyOptimization extends Algorithm {
 
     @Override
     public Algorithm clone() {
-        return new AntColonyOptimization();
+        return new AntColony();
     }
 
     @Override
