@@ -144,7 +144,7 @@ public class QLearningAlgorithm extends Algorithm {
     }
 
     private boolean isGoalReached() {
-        return (0.3 * collectedAmountOfResources) >= ResourcesManager.totalAmountOfResources;
+        return collectedAmountOfResources >= 0.5 * ResourcesManager.totalAmountOfResources;
     }
 
     @Override
