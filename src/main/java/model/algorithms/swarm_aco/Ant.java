@@ -5,9 +5,11 @@ package model.algorithms.swarm_aco;
  */
 
 import model.PheromonesManager;
+import model.map.EnvironmentMap;
 import model.object.TypeObject;
 import model.object.agent.Agent;
 import util.Directions;
+import util.Position;
 import util.Tuple;
 import view.ObjectView.AntView;
 import view.ObjectView.ObjectView;
@@ -26,9 +28,12 @@ public class Ant extends Agent {
     private Tuple<Integer,Integer> homePoint;
     public boolean hasFood = false;
     public boolean hasStepped = false;
+
     private int wTimer;
     double energy = MAX_ENERGY;
     public int totalFoodCollected = 0;
+
+    Directions lastDirection = null;
 
     private enum State {
         Follow, Wander, Home
@@ -145,6 +150,47 @@ public class Ant extends Agent {
 
     private void wander() {
         // Moverse como el CustomExplorer
+        boolean firstStep = lastDirection == null;
+        boolean mustChangeAction = false;
+
+        Directions nextAction = null;  // Its possible to don't have any allowed action, so the agent will be still.
+        EnvironmentMap map = this.getMap();
+
+        ArrayList<Directions> allowedActions = this.getAllowedActions();
+        ArrayList<Directions> resources = new ArrayList<>();
+
+
+        for (Directions dir : Directions.values())
+            // Check if the agent is next to a resource in the given direction.
+            map.get(Position.getInDirection(this.getPosition(), dir)).ifPresent(mapObject -> {
+                        if (mapObject.getType().equals(TypeObject.Resource) && !this.containsVisitedPoint(Position.getInDirection(this.getPosition(), dir))) {
+                            resources.add(dir);
+                        }
+                    }
+            );
+
+        if (resources.size() > 0) { // If there are resources near.
+            //System.out.println("Next to resource");
+            nextAction = resources.get((int) (Math.random() * resources.size()));
+        } else {
+            Integer action = (int) (Math.random() * allowedActions.size());
+            if (!firstStep && action < ((0.6) * allowedActions.size())) {  // 75 % to take the same action as previous step.
+                if (this.checkAllowedPos(Position.getInDirection(this.getPosition(), lastDirection))) {
+                    //System.out.println("Same action like before " + lastDirection);
+                    nextAction = lastDirection;
+                } else {
+                    mustChangeAction = true;
+                }
+            } else {
+                mustChangeAction = true;
+            }
+        }
+        if (mustChangeAction) {
+            nextAction = allowedActions.get((int) (Math.random() * allowedActions.size()));
+        }
+
+        lastDirection = nextAction;
+        this.move(nextAction);
     }
 
     public void tryTakeFood(Tuple<Integer,Integer> position){
