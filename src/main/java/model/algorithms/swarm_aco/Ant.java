@@ -21,7 +21,7 @@ public class Ant extends Agent {
     static final double PHER_THRESH=  .1;
     static final double MAX_ENERGY = 5;
     static final double ENERGY_THRESH = MAX_ENERGY/3;               // ants don't wander in strait lines less than
-    static final double ENERGY_LOSS_FACOTR = 240000;				//1/2 energy should be needed to return home
+    static final double ENERGY_LOSS_FACTOR = 240000;				//1/2 energy should be needed to return home
 
     private Tuple<Integer,Integer> homePoint;
     public boolean hasFood = false;
@@ -45,14 +45,12 @@ public class Ant extends Agent {
         wTimer = 0;
     }
 
-    public boolean step(double dt, float terrain) {
-        if(this.hasStepped){return false;}
+    public boolean step() {
+        if(this.hasStepped){ return false; }
 
         this.hasStepped =true;
         tryTakeFood(this.getPosition());
         tryLeaveFood(this.getPosition());
-
-        double sec = dt / 1000.0;
 
         switch (state) {
             case Follow:
@@ -119,7 +117,7 @@ public class Ant extends Agent {
                 if(!(this.getPosition().getX() == homePoint.getX() & this.getPosition().getY() == homePoint.getY())){
                     if (hasFood) {
                         double p = PheromonesManager.getPheromones().get(this.getPosition());
-                        p += dt/300;
+                        p += 1/300;
                         PheromonesManager.getPheromonesTimer().put(this.getPosition(), 0.00);
                         PheromonesManager.getPheromonesTimer().put(this.getPosition(), p*1.25);
                         // Dibujar feromona aqui
@@ -128,7 +126,7 @@ public class Ant extends Agent {
                 break;
         }
 
-        energy -= dt/ENERGY_LOSS_FACOTR;
+        energy -= 1/ENERGY_LOSS_FACTOR;
         if (energy < ENERGY_THRESH) {
             this.state = State.Home;
         }

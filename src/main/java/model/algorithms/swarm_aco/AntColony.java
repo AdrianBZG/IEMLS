@@ -4,11 +4,15 @@ import model.algorithms.Algorithm;
 import model.object.agent.Agent;
 import util.Tuple;
 
+import java.util.ArrayList;
+
 /**
  * Created by adrian on 10/01/17.
  */
 public class AntColony extends Algorithm {
+    private int numberOfColonyAnts = 4;         // Default is 4
     private Agent agent = null;
+    private ArrayList<Ant> colonyAnts = new ArrayList<>();
 
     public Tuple<Integer,Integer> getHomePosition() {
         if(agent != null) {
@@ -17,12 +21,35 @@ public class AntColony extends Algorithm {
             return new Tuple<Integer,Integer>(0,0);
         }
     }
+
+    private void initializeColonyAnts() {
+        Ant newAnt1 = new Ant();
+        newAnt1.setAlgorithm(this);
+        newAnt1.setPosition(agent.getPosition().getX() + 1, agent.getPosition().getY());
+        colonyAnts.add(newAnt1);
+
+        Ant newAnt2 = new Ant();
+        newAnt2.setAlgorithm(this);
+        newAnt2.setPosition(agent.getPosition().getX() - 1, agent.getPosition().getY());
+        colonyAnts.add(newAnt2);
+
+        Ant newAnt3 = new Ant();
+        newAnt3.setAlgorithm(this);
+        newAnt3.setPosition(agent.getPosition().getX(), agent.getPosition().getY() + 1);
+        colonyAnts.add(newAnt3);
+
+        Ant newAnt4 = new Ant();
+        newAnt4.setAlgorithm(this);
+        newAnt4.setPosition(agent.getPosition().getX(), agent.getPosition().getY() - 1);
+        colonyAnts.add(newAnt4);
+    }
     /**
      * Initialize algorithm, it could run in background
      */
     @Override
     public void start(Agent agent) {
         this.agent = agent;
+        initializeColonyAnts();
     }
 
     /**
@@ -32,6 +59,10 @@ public class AntColony extends Algorithm {
     @Override
     public void update(Agent agent) {
         if (this.agent != null) {
+            for(Ant ant : colonyAnts) {
+                ant.step();
+            }
+            //EnvironmentView.paintAgents(colonyAnts)
         }
         else {
             start(agent);
@@ -58,5 +89,13 @@ public class AntColony extends Algorithm {
     @Override
     public int getAlgorithmType() {
         return 2;
+    }
+
+    public int getNumberOfColonyAnts() {
+        return numberOfColonyAnts;
+    }
+
+    public void setNumberOfColonyAnts(int numberOfColonyAnts) {
+        this.numberOfColonyAnts = numberOfColonyAnts;
     }
 }
