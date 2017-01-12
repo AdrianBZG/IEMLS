@@ -9,6 +9,7 @@ import model.PheromonesManager;
 import model.algorithms.AStar.*;
 import model.algorithms.AStar.datastructures.*;
 import model.map.EnvironmentMap;
+import model.object.Pheromone;
 import model.object.Resource;
 import model.object.TypeObject;
 import model.object.agent.Agent;
@@ -18,6 +19,8 @@ import util.Position;
 import util.Tuple;
 import view.ObjectView.AntView;
 import view.ObjectView.ObjectView;
+import view.ObjectView.PheromoneView;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -138,7 +141,9 @@ public class Ant extends Agent {
                         p += 1/300;
                         PheromonesManager.getPheromonesTimer().put(this.getPosition(), 0.00);
                         PheromonesManager.getPheromonesTimer().put(this.getPosition(), p*1.25);
-                        // Dibujar feromona aqui
+
+                        // Able to draw the pheromone trail
+                        this.getMap().set(this.getPosition().getX(), this.getPosition().getY(), new Pheromone());
                     }
                 }
                 break;
