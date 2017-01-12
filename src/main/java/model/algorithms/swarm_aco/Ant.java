@@ -140,7 +140,7 @@ public class Ant extends Agent {
                         double p = PheromonesManager.getPheromones().get(this.getPosition());
                         p += 1/300;
                         PheromonesManager.getPheromonesTimer().put(this.getPosition(), 0.00);
-                        PheromonesManager.getPheromonesTimer().put(this.getPosition(), p*1.25);
+                        PheromonesManager.getPheromones().put(this.getPosition(), p*1.25);
 
                         // Able to draw the pheromone trail
                         this.getMap().set(this.getPosition().getX(), this.getPosition().getY(), new Pheromone());

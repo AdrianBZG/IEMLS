@@ -1,5 +1,6 @@
 package model.algorithms.swarm_aco;
 
+import model.PheromonesManager;
 import model.algorithms.Algorithm;
 import model.object.agent.Agent;
 import util.Tuple;
@@ -43,6 +44,15 @@ public class AntColony extends Algorithm {
         newAnt4.setPosition(agent.getPosition().getX(), agent.getPosition().getY() - 1);
         colonyAnts.add(newAnt4);
     }
+
+    private void initializePheromones() {
+        for(int i = 0; i < agent.getMap().getDimensions().get().getX(); i ++){
+            for(int j = 0; j < agent.getMap().getDimensions().get().getY(); j ++){
+                PheromonesManager.getPheromones().put(new Tuple<Integer,Integer>(i,j), 0.0);
+            }
+        }
+    }
+
     /**
      * Initialize algorithm, it could run in background
      */
@@ -50,6 +60,7 @@ public class AntColony extends Algorithm {
     public void start(Agent agent) {
         this.agent = agent;
         initializeColonyAnts();
+        initializePheromones();
     }
 
     /**

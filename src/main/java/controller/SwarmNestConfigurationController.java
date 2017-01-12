@@ -23,7 +23,7 @@ public class SwarmNestConfigurationController implements Initializable {
     @FXML
     public TitledPane titledPane1;
 
-    public Spinner<Integer> agentsNumberSpinner = new Spinner<>(2,10,2);
+    public Spinner<Integer> agentsNumberSpinner = new Spinner<>(1,10,4);
 
     public Spinner<Integer> spawnRadiusSpinner = new Spinner<>(1,5,1);
 
