@@ -77,7 +77,8 @@ public class QLearningAlgorithm extends Algorithm {
                 Select one among all possible actions for the current state o
                 Using this possible action, consider to go to the next state o
                 Get maximum Q value of this next state based on all possible actions o
-                Compute o Set the next state as the current state
+                Compute o
+                Set the next state as the current state
          */
             // For each episode
             // Select random initial state

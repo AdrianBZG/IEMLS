@@ -28,21 +28,25 @@ public class AntColony extends Algorithm {
     private void initializeColonyAnts() {
         Ant newAnt1 = new Ant();
         newAnt1.setAlgorithm(this);
+        newAnt1.setMap(agent.getMap());
         newAnt1.setPosition(agent.getPosition().getX() + 1, agent.getPosition().getY());
         colonyAnts.add(newAnt1);
 
         Ant newAnt2 = new Ant();
         newAnt2.setAlgorithm(this);
+        newAnt2.setMap(agent.getMap());
         newAnt2.setPosition(agent.getPosition().getX() - 1, agent.getPosition().getY());
         colonyAnts.add(newAnt2);
 
         Ant newAnt3 = new Ant();
         newAnt3.setAlgorithm(this);
+        newAnt3.setMap(agent.getMap());
         newAnt3.setPosition(agent.getPosition().getX(), agent.getPosition().getY() + 1);
         colonyAnts.add(newAnt3);
 
         Ant newAnt4 = new Ant();
         newAnt4.setAlgorithm(this);
+        newAnt4.setMap(agent.getMap());
         newAnt4.setPosition(agent.getPosition().getX(), agent.getPosition().getY() - 1);
         colonyAnts.add(newAnt4);
     }
