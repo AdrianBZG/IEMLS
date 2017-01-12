@@ -14,11 +14,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import model.AgentsManager;
+import model.algorithms.swarm_aco.AntColony;
 import model.map.EnvironmentMap;
 import model.map.generator.IGenerator;
 import model.object.MapObject;
 import model.object.agent.Agent;
 import model.object.agent.ExplorerAgent;
+import model.object.agent.SwarmAgent;
 import rx.observables.JavaFxObservable;
 import util.Tuple;
 
@@ -149,7 +151,13 @@ public class EnvironmentView extends Pane {
                             int posX = (int) Math.floor((mouseEvent.getX() + getTranslation().getX() + getTileSize()) / getTileSize());
                             int posY = (int) Math.floor((mouseEvent.getY() + getTranslation().getY() + getTileSize()) / getTileSize());
 
-                            if (pencil instanceof Agent) {
+                            if (pencil instanceof SwarmAgent) {
+                                SwarmAgent swarmAgent = (SwarmAgent) pencil.clone();
+                                swarmAgent.setPosition(posX, posY);
+                                swarmAgent.setMap(getEnvironmentMap());
+                                ((AntColony) swarmAgent.getAlgorithm()).setEnvironmentView(this);
+                            }
+                            else if (pencil instanceof Agent) {
                                 Agent agent = (Agent) pencil.clone();
                                 agent.setPosition(posX, posY);
                                 agent.setMap(getEnvironmentMap());

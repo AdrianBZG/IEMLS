@@ -17,7 +17,6 @@ import java.util.Optional;
 
 public class SwarmAgent extends Agent {
 
-
     public SwarmAgent() {
     }
 

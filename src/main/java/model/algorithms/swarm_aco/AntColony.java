@@ -4,6 +4,7 @@ import model.PheromonesManager;
 import model.algorithms.Algorithm;
 import model.object.agent.Agent;
 import util.Tuple;
+import view.EnvironmentView;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class AntColony extends Algorithm {
     private int numberOfColonyAnts = 4;         // Default is 4
     private Agent agent = null;
     private ArrayList<Ant> colonyAnts = new ArrayList<>();
+    private EnvironmentView environmentView = null;
 
     public Tuple<Integer,Integer> getHomePosition() {
         if(agent != null) {
@@ -73,7 +75,7 @@ public class AntColony extends Algorithm {
             for(Ant ant : colonyAnts) {
                 ant.step();
             }
-            //EnvironmentView.paintAgents(colonyAnts)
+            //environmentView.paintAgents(colonyAnts);
         }
         else {
             start(agent);
@@ -108,5 +110,13 @@ public class AntColony extends Algorithm {
 
     public void setNumberOfColonyAnts(int numberOfColonyAnts) {
         this.numberOfColonyAnts = numberOfColonyAnts;
+    }
+
+    public EnvironmentView getEnvironmentView() {
+        return environmentView;
+    }
+
+    public void setEnvironmentView(EnvironmentView environmentView) {
+        this.environmentView = environmentView;
     }
 }
