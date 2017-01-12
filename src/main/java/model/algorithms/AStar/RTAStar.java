@@ -31,10 +31,6 @@ public class RTAStar extends Algorithm {
 
         public ISearchNode bestNodeAfterSearch;
 
-        private Tuple<Integer, Integer> objective = new Tuple<>(0,0);
-
-        private boolean objectiveSet = false;
-
         private ArrayList<ISearchNode> path = new ArrayList<>();
 
         private int movement = 1;
@@ -178,10 +174,6 @@ public class RTAStar extends Algorithm {
     public void start(Agent agent) {
         this.agent = agent;
         map = agent.getMap();
-    }
-
-    public void setObjective (Tuple<Integer, Integer> objective) {
-        this.objective = objective;
     }
 
     @Override
