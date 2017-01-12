@@ -15,4 +15,5 @@ public enum TypeObject {
     Resource,
     Obstacle,
     Empty,
+    Pheromone,
 }

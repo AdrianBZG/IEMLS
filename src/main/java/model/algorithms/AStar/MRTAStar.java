@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- * Created by rudy on 6/01/17.
+ * Created by adrian on 12/01/17.
  */
-public class RTAStar extends Algorithm {
+public class MRTAStar extends Algorithm {
         // Amount of debug output 0, 1, 2.
         private int verbose = 0;
         // The maximum number of completed nodes. After that number the algorithm returns null.
@@ -39,7 +39,7 @@ public class RTAStar extends Algorithm {
 
         private boolean needToRecalculate = true;
 
-        public RTAStar() {
+        public MRTAStar() {
         }
 
         /**
@@ -190,7 +190,7 @@ public class RTAStar extends Algorithm {
                 } else {
                     if(goal.isValidPos()) {
                         needToRecalculate = false;
-                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map, false);
+                        IEMLSSearchNode initialPos = new IEMLSSearchNode(agent.getPosition().getX(), agent.getPosition().getY(), null, goal, map, true);
                         path = shortestPath(initialPos, goal);
                     } else {
                         needToRecalculate = true;
@@ -218,12 +218,12 @@ public class RTAStar extends Algorithm {
 
     @Override
     public String toString() {
-        return "RTA*";
+        return "MRTA*";
     }
 
     @Override
     public Algorithm clone() {
-        return new RTAStar();
+        return new MRTAStar();
     }
 
     @Override
