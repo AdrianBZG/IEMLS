@@ -1,9 +1,6 @@
 package model.algorithms;
 
-import model.algorithms.AStar.AStar;
-import model.algorithms.AStar.LRTAStar;
-import model.algorithms.AStar.MAStar;
-import model.algorithms.AStar.RTAStar;
+import model.algorithms.AStar.*;
 import model.algorithms.geneticalgorithm.ExplorerGeneticAlgorithm;
 import model.algorithms.machinelearning.QLearningAlgorithm;
 import model.algorithms.neuralnetworks.BasicNeuralNetworkAlgorithm;
@@ -44,6 +41,7 @@ public abstract class Algorithm implements Cloneable {
         collectionAlgorithms.add(new RTAStar());
         collectionAlgorithms.add(new LRTAStar());
         collectionAlgorithms.add(new MAStar());
+        collectionAlgorithms.add(new MRTAStar());
 
         swarmAlgorithms.add(new AntColony());
 
