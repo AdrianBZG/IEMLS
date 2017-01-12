@@ -75,6 +75,7 @@ public class SwarmAgent extends Agent {
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == applyChanges) {
                     SwarmNestConfigurationController configurationController = fxmlLoader.getController();
+                    setAlgorithm(configurationController.getAlgorithm().clone());
                     return null;
                 }
                 return null;

@@ -74,8 +74,9 @@ public class AntColony extends Algorithm {
         if (this.agent != null) {
             for(Ant ant : colonyAnts) {
                 ant.step();
+                environmentView.paintAgent(ant);
             }
-            //environmentView.paintAgents(colonyAnts);
+
         }
         else {
             start(agent);
