@@ -1,17 +1,13 @@
 # IEMLS: Interactive Environment & Machine Learning Simulator
-Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject
 
-## Preview (Version 2, not finished)
+Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject, participating in the XI National Open Source Contest.
 
-![IEMLS v2](http://i.imgur.com/pXctCYk.png "IEMLS v2")
+## PREVIEW OF IEMLS v4
 
-## Requirements
-
-- Java 8
-- On Ubuntu systems you need **openjfx**
+![IEMLS v4](http://i.imgur.com/WnZPkRL.jpg "IEMLS v4")
 
 
-## Documentation
+## DOCUMENTATION
 
 Configuration of Agents
 - Using JRuby
@@ -23,13 +19,35 @@ Configuration of Agents
 IEMLS API docs
 - TODO: URL
 
+## DEPENDENCIES
 
-## Contributing
-   
+| Name         | Version                          |
+|--------------|----------------------------------|
+| Java           | >= 8                         |
+| openjfx | any |
+| reactivex      |                    any              |
+| antlr      |                    >= 4              |
+| fontawesome      |                    any              |
+| encog      |                    >= 3.0.0              |
+
+## BUILDING
+
+See [INSTALL.md](INSTALL.md)
+
+## CONTRIBUTING
+
+1. Find a thing to fix/implement in [Issues](https://github.com/AdrianBZG/SyncMe/issues?direction=desc&sort=created&state=open) or come up with your own idea, [create a discussion issue](https://github.com/AdrianBZG/SyncMe/issues/new) for it and get a feedback.
+2. [Fork the repo](https://help.github.com/articles/fork-a-repo)
+3. Create your feature branch (`git checkout -b my-new-feature`)
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. [Create new Pull Request](https://help.github.com/articles/using-pull-requests)
+
 Understanding embed JRuby into IEMLS
 
 - https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 - https://github.com/jruby/jruby/wiki/JRubyAndJavaCodeExamples
+
 
 ## FAQs
 
