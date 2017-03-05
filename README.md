@@ -1,6 +1,6 @@
 # IEMLS: Interactive Environment & Machine Learning Simulator
 
-Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject, participating in the XI National Open Source Contest.
+Interactive Environment & Machine Learning Simulator for the Intelligent Systems subject.
 
 ## PREVIEW OF IEMLS v4
 
@@ -64,7 +64,7 @@ into the editor.
 ## DEVELOPERS
 
 ### Adrián Rodríguez Bazaga
-  - Email: arodriba@ull.es
+  - Email: adrian@qmindgroup.com
   - [Personal page](http://www.adrianbazaga.com/)
 
 ### Eleazar Díaz Delgado
